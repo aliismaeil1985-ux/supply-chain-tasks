@@ -19675,6 +19675,52 @@ window.secQuickForce=secQuickForce;
   .stat-card.sc-overdue .sc-icon-wrap span{ font-size:16px !important; }
   .stat-card.sc-overdue .sc-value{ font-size:20px !important; }
 }
+
+/* ════════════════════════════════════════════════════════════
+   أزرار الهيدر على الجوال — مجموعة متناسقة أنيقة — v13.45
+   كانت الأزرار غير متجانسة (قائمة 44px زرقاء / جرس 40px أبيض /
+   صورة 36px خضراء). نوحّدها: نفس الحجم (40px) ونصف القطر (12px)
+   ومحاذاة رأسية واحدة، بلوحة ألوان نيلية متناغمة مع هوية المنصة.
+   ════════════════════════════════════════════════════════════ */
+@media (max-width:768px){
+  /* زر القائمة ☰ — نيلي راقٍ متناغم مع الهوية (بدل الأزرق المنفصل) */
+  #sb-hamburger{
+    width:40px !important; height:40px !important; top:6px !important; inset-inline-end:10px !important;
+    border-radius:12px !important; gap:4px !important;
+    background:linear-gradient(135deg,#6366f1,#4f46e5) !important;
+    box-shadow:0 4px 13px rgba(79,70,229,.32), inset 0 1px 0 rgba(255,255,255,.25) !important;
+    border:none !important;
+  }
+  #sb-hamburger span{ width:18px !important; height:2px !important; border-radius:2px !important; background:#fff !important; }
+
+  /* صف الأزرار: محاذاة ومسافات متناسقة */
+  #main-hdr-mgr .hdr-right, #main-hdr-emp .hdr-right{ gap:9px !important; align-items:center !important; }
+
+  /* الجرس 🔔 — سطح ناعم نيلي متناسق مع زرّ القائمة */
+  #main-hdr-mgr #notif-bell-mgr, #main-hdr-emp #notif-bell-emp{
+    width:40px !important; height:40px !important; border-radius:12px !important;
+    background:rgba(99,102,241,.09) !important; border:1px solid rgba(99,102,241,.18) !important;
+    color:#4f46e5 !important; box-shadow:none !important; transition:background .18s ease !important;
+  }
+  #main-hdr-mgr #notif-bell-mgr:active, #main-hdr-emp #notif-bell-emp:active{ background:rgba(99,102,241,.18) !important; }
+  #main-hdr-mgr #notif-bell-mgr .notif-bell-icon, #main-hdr-emp #notif-bell-emp .notif-bell-icon{ font-size:18px !important; line-height:1 !important; }
+
+  /* الصورة الرمزية — نفس الحجم/النصف مع إطار وظلّ راقٍ */
+  #main-hdr-mgr #mgr-avt, #main-hdr-emp #emp-avt{
+    width:40px !important; height:40px !important; min-width:40px !important; border-radius:12px !important;
+    border:1.5px solid rgba(255,255,255,.7) !important;
+    box-shadow:0 3px 9px rgba(15,23,42,.16) !important; font-size:14.5px !important;
+  }
+
+  /* بادج الإشعارات — حبّة حمراء أنيقة في الزاوية */
+  #main-hdr-mgr #notif-bell-mgr .notif-badge, #main-hdr-emp #notif-bell-emp .notif-badge{
+    min-width:18px !important; height:18px !important; padding:0 4px !important;
+    font-size:9.5px !important; font-weight:800 !important; line-height:18px !important;
+    background:linear-gradient(135deg,#fb7185,#e11d48) !important; color:#fff !important;
+    border:2px solid var(--card,#fff) !important; box-shadow:0 2px 6px rgba(225,29,72,.45) !important;
+    top:-6px !important; inset-inline-end:-6px !important; inset-inline-start:auto !important; left:auto !important; right:auto !important;
+  }
+}
 </style>
 <script>
 /* ════════════════════════════════════════════════════════════
