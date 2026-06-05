@@ -26,7 +26,7 @@
    الزمني عن آخر مرة (أي تم تعديل الملف وإعادة نشره) نزيد رقم النسخة
    الفرعي تلقائياً ونخزّنه. هكذا يرتفع الرقم تلقائياً بلا تدخّل يدوي.
    ============================================================ */
-const APP_BUILD='2026-06-07T09:00:00Z'; /* AUTO-BUMP: يتغيّر مع كل إعادة بناء للملف */
+const APP_BUILD='2026-06-07T10:00:00Z'; /* AUTO-BUMP: يتغيّر مع كل إعادة بناء للملف */
 const APP_VERSION=(function(){
   var BASE_MAJOR=13;            /* الرقم الرئيسي الثابت */
   var FALLBACK='v13.39';         /* قيمة احتياطية إن تعذّر التخزين */
@@ -2314,6 +2314,7 @@ function getDeptOptionsHtml(selectedVal){
 /* FIX-PW3: نسخة عميقة لكلمات المرور الافتراضية قبل أي حذف */
 const _DEFAULT_PASSWORDS={};
 try{ USERS.forEach(function(u){ if(u.id&&u.password) _DEFAULT_PASSWORDS[u.id]=u.password; }); }catch(_e){}
+try{ window.USERS=USERS; }catch(_e){}
 let DB={users:USERS.map(function(u){return Object.assign({},u);}),tasks:(function(){
 function T(id,title,status,priority,uids,deadline,progress,compDate,startDate,desc){
 return {id,serial:'AD',title,description:desc||'',priority:priority||'medium',
@@ -19141,14 +19142,21 @@ function secPwWidth(sc){ return [0,25,50,75,100][sc]+'%'; }
 /* ── مساعد قراءة DB بشكل آمن ── */
 function getUsers(){
   try{
-    /* محاولة قراءة DB بكل الطرق الممكنة */
-    if(window.DB && Array.isArray(window.DB.users) && window.DB.users.length) return window.DB.users;
-    /* قراءة من localStorage كبديل */
+    /* 1) من window.DB (الأحدث) */
+    if(window.DB && Array.isArray(window.DB.users) && window.DB.users.length>0)
+      return window.DB.users;
+    /* 2) من localStorage */
     var raw=localStorage.getItem('mDB');
     if(raw){
       var obj=JSON.parse(raw);
-      if(obj && Array.isArray(obj.users) && obj.users.length) return obj.users;
+      if(obj && Array.isArray(obj.users) && obj.users.length>0) return obj.users;
     }
+    /* 3) من USERS الثابتة في الكود (دائماً متوفرة) */
+    if(typeof window.USERS !== 'undefined' && Array.isArray(window.USERS) && window.USERS.length>0)
+      return window.USERS;
+    /* 4) محاولة أخيرة عبر DB المحلي */
+    if(typeof DB !== 'undefined' && DB && Array.isArray(DB.users) && DB.users.length>0)
+      return DB.users;
     return [];
   }catch(e){ return []; }
 }
@@ -19315,7 +19323,12 @@ function secCheckForceOnLogin(uid){
 
 /* ═══ لوحة الأمان ═══ */
 function secRenderDashboard(){
+  /* إعادة المحاولة إن لم تُوجد بيانات بعد */
   var users=getUsers().filter(function(u){ return u.role!=='admin'; });
+  if(!users.length){
+    setTimeout(secRenderDashboard, 500);
+    return;
+  }
   var log=getLoginLog();
   var tokens=secGetTokens();
   var forced=secGetForced();
@@ -19424,4 +19437,186 @@ window.secQuickForce=secQuickForce;
 
 })();
 </script>
+<style id="mobile-topbar-fix">
+/* ════════════════════════════════════════════════════════════
+   إصلاح شريط الهيدر العلوي على الجوال — v13.40
+   المشكلة: تكدّس 10–13 زراً في hdr-right + تداخل زر القائمة (☰)
+   مع نص الترحيب عند عرض الجوال، فتتراكم العناصر وتختفي التنسيقات.
+   الحل: شريط علوي نظيف بصف واحد لا يفيض أبداً — يبقى فيه الترحيب
+   (مع قصّ) + جرس الإشعارات + الصورة الرمزية فقط، وبقية الإجراءات
+   متاحة من القائمة الجانبية (الدرج) التي تُفتح بزر ☰.
+   ════════════════════════════════════════════════════════════ */
+@media (max-width:768px){
+  /* الهيدر: صف واحد، يترك فراغاً لزر القائمة الثابت (☰) أعلى اليمين */
+  #main-hdr-mgr, #main-hdr-emp{
+    display:flex !important;
+    align-items:center !important;
+    flex-wrap:nowrap !important;
+    gap:8px !important;
+    height:54px !important;
+    padding-inline-start:62px !important; /* يكشف زر القائمة ☰ (يمين RTL) */
+    padding-inline-end:12px !important;
+    padding-block:0 !important;
+  }
+  /* الجهة اليمنى (الترحيب/العنوان) تتقلّص وتُقصّ بدل أن تدفع الأزرار */
+  #main-hdr-mgr .hdr-left, #main-hdr-emp .hdr-left{
+    flex:1 1 auto !important; min-width:0 !important; overflow:hidden !important; gap:8px !important;
+  }
+  #main-hdr-mgr .hdr-greet, #main-hdr-emp .hdr-greet{ min-width:0 !important; }
+  #main-hdr-mgr .hdr-greet-hi, #main-hdr-emp .hdr-greet-hi{
+    font-size:15px !important; line-height:1.25 !important;
+    white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important;
+  }
+  /* إخفاء زر العودة للرئيسية المكرّر (متوفّر في الدرج) وشارة الدور على الضيّق */
+  #main-hdr-mgr .hdr-left > button:first-child{ display:none !important; }
+  /* الجهة اليسرى: نُبقي فقط الإشعارات + الصورة الرمزية */
+  #main-hdr-mgr .hdr-right, #main-hdr-emp .hdr-right{
+    flex:0 0 auto !important; gap:8px !important; flex-wrap:nowrap !important;
+    margin-inline-start:auto !important; padding:0 !important;
+  }
+  #main-hdr-mgr .hdr-right > *, #main-hdr-emp .hdr-right > *{ display:none !important; }
+  #main-hdr-mgr #notif-bell-mgr, #main-hdr-emp #notif-bell-emp{
+    display:inline-flex !important; align-items:center !important; justify-content:center !important;
+    width:42px !important; height:42px !important; padding:0 !important; font-size:18px !important;
+    border-radius:12px !important; position:relative !important; flex-shrink:0 !important;
+  }
+  #main-hdr-mgr #mgr-avt, #main-hdr-emp #emp-avt{
+    display:inline-flex !important; align-items:center !important; justify-content:center !important;
+    width:38px !important; height:38px !important; min-width:38px !important; font-size:14px !important;
+    border-radius:11px !important; flex-shrink:0 !important;
+  }
+  /* أبعاد لمس مريحة لزر القائمة ☰ ووضوحه فوق الهيدر */
+  #sb-hamburger{
+    width:44px !important; height:44px !important; top:5px !important;
+    inset-inline-end:8px !important; z-index:650 !important;
+  }
+}
+/* جوال ضيّق جداً */
+@media (max-width:520px){
+  #main-hdr-mgr, #main-hdr-emp{ height:52px !important; padding-inline-start:62px !important; padding-inline-end:10px !important; }
+  #main-hdr-mgr .badge-role, #main-hdr-emp .badge-role{ display:none !important; }
+  #main-hdr-mgr .hdr-greet-hi, #main-hdr-emp .hdr-greet-hi{ font-size:14.5px !important; }
+  #main-hdr-mgr #notif-bell-mgr, #main-hdr-emp #notif-bell-emp{ width:40px !important; height:40px !important; }
+  #main-hdr-mgr #mgr-avt, #main-hdr-emp #emp-avt{ width:36px !important; height:36px !important; min-width:36px !important; }
+}
+/* ── صفّ التبويبات وأزرار الفلاتر: تمرير أفقي نظيف بلا فيض ── */
+@media (max-width:640px){
+  #mgr-tabs{ flex-wrap:nowrap !important; overflow-x:auto !important; -webkit-overflow-scrolling:touch !important; scrollbar-width:none; }
+  #mgr-tabs::-webkit-scrollbar{ display:none; }
+  #mgr-tabs .tab{ flex:0 0 auto !important; white-space:nowrap !important; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   تصغير عرض الإشعارات على الجوال — v13.41
+   لوحة الإشعارات كانت تملأ الشاشة (≈348×644 وصفوف 51px).
+   نجعلها بطاقة مدمجة أصغر، بصفوف وخطوط وحشوات أصغر، وكذلك
+   نُصغّر بطاقات التوست المنبثقة. توضع بعد كل القواعد السابقة
+   (بما فيها كتلة TANIA_NTF_PANEL_LAYOUT) لتكسبها بالأولوية.
+   ════════════════════════════════════════════════════════════ */
+@media (max-width:640px){
+  /* ── اللوحة: بطاقة مدمجة بدل ملء الشاشة ── */
+  #ntf-panel, #ntf-panel.ntf-panel-show{
+    width:min(330px, calc(100vw - 20px)) !important;
+    max-width:min(330px, calc(100vw - 20px)) !important;
+    left:auto !important; right:8px !important;
+    top:calc(var(--hdr-h,54px) + 6px) !important;
+    max-height:min(64vh, 480px) !important;
+    border-radius:14px !important;
+  }
+  .ntf-panel-body{ max-height:calc(min(64vh,480px) - 120px) !important; }
+  /* الرأس مدمج */
+  .ntf-panel-hdr{ padding:9px 11px 7px !important; }
+  .ntf-panel-hdr-title, .ntf-panel-hdr-text{ font-size:12.5px !important; font-weight:600 !important; }
+  .ntf-panel-hdr-icon{ font-size:14px !important; }
+  .ntf-panel-hdr-btn{ padding:5px 7px !important; font-size:10px !important; }
+  .ntf-btn-label{ display:none !important; }
+  .ntf-panel-close-btn{ width:26px !important; height:26px !important; font-size:12px !important; }
+  /* التبويبات أصغر */
+  .ntf-panel-tabs{ padding:6px 8px 0 !important; gap:2px !important; }
+  .ntf-panel-tab{ padding:5px 8px !important; font-size:10.5px !important; gap:3px !important; }
+  .ntf-tab-count{ font-size:8.5px !important; min-width:14px !important; padding:1px 3px !important; }
+  /* الصفوف مدمجة (الارتفاع من ~51px إلى ~38px) */
+  .ntf-thead{ display:none !important; }
+  .ntf-tr td{ padding:6px 4px !important; }
+  .ntf-td-icon{ width:26px !important; }
+  .ntf-tr-icon-wrap{ width:24px !important; height:24px !important; font-size:12px !important; border-radius:7px !important; }
+  .ntf-tr-title{ font-size:11.5px !important; line-height:1.3 !important; max-width:calc(100vw - 130px) !important; }
+  .ntf-tr-sub{ font-size:10px !important; line-height:1.3 !important; max-width:calc(100vw - 130px) !important; }
+  .ntf-dl-badge{ font-size:8.5px !important; padding:1px 4px !important; }
+  .ntf-td-acts{ gap:2px !important; }
+  .ntf-tr-act, .ntf-tr-open{ opacity:1 !important; width:24px !important; height:24px !important; font-size:11px !important; }
+  .ntf-date-group{ font-size:9.5px !important; }
+  /* الفوتر مدمج */
+  .ntf-panel-footer{ padding:7px 10px !important; gap:5px !important; }
+  .ntf-footer-btn{ padding:5px 8px !important; font-size:10px !important; }
+  .ntf-footer-time{ font-size:9px !important; }
+
+  /* ── بطاقات التوست المنبثقة: أصغر وغير ممتدة بعرض الشاشة ── */
+  #ntf-toast-stack{
+    width:min(300px, calc(100vw - 20px)) !important;
+    max-width:min(300px, calc(100vw - 20px)) !important;
+    left:auto !important; right:8px !important;
+    top:calc(var(--hdr-h,54px) + 8px) !important;
+    gap:7px !important;
+  }
+  .ntf-toast-card{ border-radius:12px !important; }
+  .ntf-toast-inner{ padding:9px 32px 9px 11px !important; gap:8px !important; }
+  .ntf-toast-icon{ width:28px !important; height:28px !important; font-size:14px !important; border-radius:8px !important; }
+  .ntf-toast-title{ font-size:12px !important; -webkit-line-clamp:1 !important; }
+  .ntf-toast-msg{ font-size:10.5px !important; -webkit-line-clamp:2 !important; }
+  .ntf-toast-time{ font-size:9px !important; }
+  .ntf-toast-type-pill{ font-size:8.5px !important; padding:1px 5px !important; }
+  .ntf-toast-close{ width:22px !important; height:22px !important; top:6px !important; left:6px !important; font-size:11px !important; }
+}
+/* جوال ضيّق جداً */
+@media (max-width:380px){
+  #ntf-panel, #ntf-panel.ntf-panel-show{ width:calc(100vw - 16px) !important; max-width:calc(100vw - 16px) !important; right:8px !important; }
+  #ntf-toast-stack{ width:calc(100vw - 16px) !important; max-width:calc(100vw - 16px) !important; right:8px !important; }
+  .ntf-tr-title{ max-width:calc(100vw - 110px) !important; }
+  .ntf-tr-sub{ max-width:calc(100vw - 110px) !important; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   إعادة تنظيم القائمة الجانبية (الدرج) على الجوال — v13.42
+   • رفع الشعار للأعلى: إخفاء زر الطي + رأس مدمج + شعار أصغر.
+   • أزرار منظمة بأحجام لمس مريحة ومسافات متساوية.
+   • تمرير عمودي عند الحاجة بدل قصّ الفوتر على الشاشات القصيرة.
+   ════════════════════════════════════════════════════════════ */
+@media (max-width:768px){
+  /* الدرج يمرّر عمودياً عند الحاجة (كان overflow:hidden يقصّ الفوتر) */
+  #tania-sidebar{ overflow-y:auto !important; -webkit-overflow-scrolling:touch !important; }
+  #tania-sidebar::-webkit-scrollbar{ width:0; }
+
+  /* ── رفع الشعار للأعلى ── */
+  #tania-sidebar .sb-top-toggle{ display:none !important; }   /* زر الطي بلا فائدة في الدرج */
+  #tania-sidebar .sb-header{ padding:16px 14px 10px !important; }
+  #tania-sidebar .sb-header > div{ padding:0 !important; gap:2px !important; }
+  #tania-sidebar .sb-header .sb-logo-wrap .tania-mark,
+  #tania-sidebar .sb-logo-wrap .tania-mark,
+  #tania-sidebar .sb-header .tania-mark{ width:80px !important; min-width:0 !important; max-width:80px !important; height:auto !important; margin:0 auto !important; transition:none !important; }
+  #tania-sidebar .sb-logo-wrap > div{ gap:2px !important; padding:0 !important; }
+  #tania-sidebar .sb-brand-name{ font-size:14px !important; margin-top:4px !important; }
+  #tania-sidebar .sb-brand-dept{ font-size:10.5px !important; }
+
+  /* ── بطاقة المستخدم مدمجة ── */
+  #tania-sidebar .sb-user-card{ margin:0 12px 10px !important; padding:10px 12px !important; }
+  #tania-sidebar .sb-section-label{ padding:6px 16px 5px !important; font-size:10.5px !important; }
+
+  /* ── الأزرار: أحجام لمس مريحة ومسافات منتظمة ── */
+  #tania-sidebar .sb-menu{ gap:6px !important; padding:4px 12px 10px !important; }
+  #tania-sidebar .sb-item{ min-height:44px !important; padding:9px 12px !important; border-radius:12px !important; font-size:14px !important; }
+  #tania-sidebar .sb-item .sb-item-icon{ width:30px !important; height:30px !important; font-size:16px !important; flex-shrink:0 !important; }
+  #tania-sidebar .sb-home-btn{ min-height:44px !important; }
+  #tania-sidebar .sb-child{ min-height:40px !important; padding-top:7px !important; padding-bottom:7px !important; }
+  #tania-sidebar .sb-hr{ margin:6px 12px !important; }
+  #tania-sidebar .sb-grp-3d{ padding:12px 13px !important; min-height:48px !important; }
+
+  /* ── صف الإحصائيات منظم ── */
+  #tania-sidebar .sb-badges-row{ margin:0 12px 8px !important; }
+
+  /* ── الفوتر: أزرار منتظمة ودائمة الظهور ── */
+  #tania-sidebar .sb-footer{ gap:7px !important; padding:9px 12px calc(14px + env(safe-area-inset-bottom,0px)) !important; border-top:1px solid var(--border,rgba(0,0,0,.08)) !important; }
+  #tania-sidebar .sb-footer-btn{ min-height:42px !important; padding:9px 12px !important; }
+}
+</style>
 </body></html>
