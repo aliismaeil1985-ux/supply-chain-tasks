@@ -4634,10 +4634,10 @@ var names = data.map(function(e){ return e.name; });
 var C_DONE = '#10b981';
 var C_INP = '#3b82f6';
 var C_PEND = '#f59e0b';
-var _chPrefsE=(function(){try{return JSON.parse(localStorage.getItem('TANIA_CHART_PREFS'))||{};}catch(e){return {};}})(); var options = {
+var _chPrefsE=(function(){try{return JSON.parse(localStorage.getItem('TANIA_CHART_PREFS'))||{};}catch(e){return {};}})(); var _isNarrowE = (typeof window!=='undefined' && window.innerWidth<=640); var options = {
 chart:{
 type: (_chPrefsE.emp||'bar'),
-height: Math.max(360, data.length * 68 + 110),
+height: _isNarrowE ? Math.max(210, data.length * 44 + 70) : Math.max(360, data.length * 68 + 110),
 stacked: false,
 background: 'transparent',
 fontFamily: "'Cairo','Tajawal',sans-serif",
@@ -4754,12 +4754,12 @@ labels:{ colors:[textClr] }
 theme:{ mode: isDark ? 'dark' : 'light' },
 responsive:[
 { breakpoint:768, options:{
-chart:{ height: Math.max(300, data.length*60+90) },
+chart:{ height: Math.max(220, data.length*40+60) },
 plotOptions:{ bar:{ columnWidth:'65%', borderRadius:4, dataLabels:{ position:'top' } } },
 dataLabels:{ offsetY:-35, textAnchor:'middle', style:{ fontSize:'10px' } }
 }},
 { breakpoint:480, options:{
-chart:{ height: Math.max(260, data.length*54+80) },
+chart:{ height: Math.max(200, data.length*36+55) },
 plotOptions:{ bar:{ columnWidth:'75%', borderRadius:3, dataLabels:{ position:'top' } } },
 dataLabels:{ offsetY:-30, textAnchor:'middle', style:{ fontSize:'9px' } },
 xaxis:{ labels:{ style:{ fontSize:'10px' } } }
@@ -19618,5 +19618,101 @@ window.secQuickForce=secQuickForce;
   #tania-sidebar .sb-footer{ gap:7px !important; padding:9px 12px calc(14px + env(safe-area-inset-bottom,0px)) !important; border-top:1px solid var(--border,rgba(0,0,0,.08)) !important; }
   #tania-sidebar .sb-footer-btn{ min-height:42px !important; padding:9px 12px !important; }
 }
+
+/* ════════════════════════════════════════════════════════════
+   تصغير البطاقات وضبط الرسوم على الجوال — v13.43
+   البطاقات كانت بحشوات كبيرة (18–26px) تستهلك مساحة الشاشة،
+   والرسوم البيانية طويلة (300–400px). نقلّص الحشوات والأنصاف،
+   ونخفّض ارتفاع الرسوم (عبر JS) لتظهر بنسبة مريحة على الجوال.
+   ════════════════════════════════════════════════════════════ */
+@media (max-width:600px){
+  /* حشوات البطاقات داخل لوحات المدير والموظف */
+  #mgr-mydash [style*="padding:26px"], #mgr-ov [style*="padding:26px"], #mgr-daily [style*="padding:26px"], #pg-emp [style*="padding:26px"]{ padding:15px !important; }
+  #mgr-mydash [style*="padding:24px"], #mgr-ov [style*="padding:24px"], #mgr-daily [style*="padding:24px"], #pg-emp [style*="padding:24px"]{ padding:15px !important; }
+  #mgr-mydash [style*="padding:22px"], #mgr-ov [style*="padding:22px"], #mgr-daily [style*="padding:22px"], #pg-emp [style*="padding:22px"]{ padding:14px !important; }
+  #mgr-mydash [style*="padding:20px"], #mgr-ov [style*="padding:20px"], #mgr-daily [style*="padding:20px"], #pg-emp [style*="padding:20px"]{ padding:14px !important; }
+  #mgr-mydash [style*="padding:18px"], #mgr-ov [style*="padding:18px"], #mgr-daily [style*="padding:18px"], #pg-emp [style*="padding:18px"]{ padding:13px !important; }
+  /* أنصاف أقطار أصغر قليلاً */
+  #mgr-mydash [style*="border-radius:20px"], #mgr-ov [style*="border-radius:20px"], #pg-emp [style*="border-radius:20px"]{ border-radius:16px !important; }
+  #mgr-mydash [style*="border-radius:22px"], #mgr-ov [style*="border-radius:22px"], #pg-emp [style*="border-radius:22px"]{ border-radius:16px !important; }
+  /* بطاقة درجة الإنتاجية وما شابه: عناوين أصغر قليلاً */
+  #mgr-mydash, #mgr-ov, #mgr-daily{ --card-gap:12px; }
+  /* حاويات الرسوم: حشوة أقل لإتاحة عرض أوسع للرسم */
+  .apexcharts-canvas{ margin:0 auto !important; }
+  /* تقليل الارتفاع المحجوز لحاويات الرسوم ليطابق ارتفاع الرسم المصغّر */
+  #md-status-chart, #md-priority-chart, #kpi-donut-chart,
+  #emp-priority-chart, #emp-status-chart, #status-chart, #priority-chart{ min-height:205px !important; }
+  #md-trend-chart, #kpi-line-chart{ min-height:235px !important; }
+  #emp-task-bars-apex{ min-height:0 !important; }
+
+  /* ── مفتاح الرسم الدائري (donut/pie): صف واحد بدل صفّين على الجوال ── */
+  .apexcharts-legend.apx-legend-position-bottom,
+  .apexcharts-legend.apx-legend-position-top{
+    flex-wrap:nowrap !important; flex-direction:row !important;
+    justify-content:center !important; align-items:center !important;
+    padding:2px 0 !important; gap:0 !important;
+    width:100% !important; max-width:100% !important; inset-inline:0 !important;
+  }
+  .apexcharts-legend.apx-legend-position-bottom .apexcharts-legend-series,
+  .apexcharts-legend.apx-legend-position-top .apexcharts-legend-series{
+    margin:2px 6px !important; display:inline-flex !important; align-items:center !important; white-space:nowrap !important;
+  }
+  .apexcharts-legend-text{ font-size:10.5px !important; }
+  .apexcharts-legend-marker{ width:9px !important; height:9px !important; margin-inline-end:3px !important; }
+
+  /* ── بطاقة "متأخرة" (sc-overdue): تصغير الفنار 🚨 لتطابق باقي البطاقات ── */
+  .stat-card.sc-overdue{ padding:10px 11px !important; min-height:74px !important; justify-content:space-between !important; }
+  .stat-card.sc-overdue > div[style*="flex-direction:column"]{ flex-direction:row !important; justify-content:center !important; align-items:center !important; gap:9px !important; margin:1px 0 !important; }
+  .stat-card.sc-overdue .sc-icon-wrap{ width:34px !important; height:34px !important; border-radius:10px !important; box-shadow:none !important; flex-shrink:0 !important; }
+  .stat-card.sc-overdue .sc-icon-wrap span{ font-size:18px !important; }
+  .stat-card.sc-overdue .sc-value{ font-size:23px !important; margin-top:0 !important; }
+  .stat-card.sc-overdue .sc-label{ font-size:9.5px !important; }
+  .stat-card.sc-overdue .sc-footer{ font-size:9px !important; margin-top:2px !important; }
+}
+@media (max-width:380px){
+  .stat-card.sc-overdue{ min-height:66px !important; padding:8px 9px !important; }
+  .stat-card.sc-overdue .sc-icon-wrap{ width:30px !important; height:30px !important; }
+  .stat-card.sc-overdue .sc-icon-wrap span{ font-size:16px !important; }
+  .stat-card.sc-overdue .sc-value{ font-size:20px !important; }
+}
 </style>
+<script>
+/* ════════════════════════════════════════════════════════════
+   ضبط ارتفاع الرسوم البيانية على الجوال — v13.43
+   ApexCharts يُحدّد ارتفاعاً ثابتاً (300/350/400px) يجعل الرسم
+   طويلاً ومزدحماً على شاشات الجوال الضيّقة. نلفّ المُنشئ لتقليل
+   الارتفاع تلقائياً عند العرض ≤640px مع إبقاء حدّ أدنى مقروء.
+   ════════════════════════════════════════════════════════════ */
+(function(){
+  function wrapApex(){
+    if(typeof window.ApexCharts !== 'function') return false;
+    if(window.ApexCharts.__taniaHeightPatched) return true;
+    var Orig = window.ApexCharts;
+    function Patched(el, opts){
+      try{
+        if(window.innerWidth <= 640 && opts && opts.chart){
+          var h = opts.chart.height;
+          if(typeof h === 'number' && h > 200){
+            opts.chart.height = Math.max(200, Math.round(h * 0.7));
+          }
+          if(window.innerWidth <= 480){
+            opts.legend = opts.legend || {};
+            if(opts.legend.fontSize == null) opts.legend.fontSize = '11px';
+            opts.legend.itemMargin = opts.legend.itemMargin || { horizontal: 5, vertical: 2 };
+          }
+        }
+      }catch(e){}
+      return new Orig(el, opts);
+    }
+    Patched.prototype = Orig.prototype;
+    try{ Object.keys(Orig).forEach(function(k){ try{ Patched[k] = Orig[k]; }catch(e){} }); }catch(e){}
+    Patched.__taniaHeightPatched = true;
+    window.ApexCharts = Patched;
+    return true;
+  }
+  if(!wrapApex()){
+    var n = 0, iv = setInterval(function(){ n++; if(wrapApex() || n > 150) clearInterval(iv); }, 80);
+  }
+})();
+</script>
 </body></html>
