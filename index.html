@@ -184,8 +184,8 @@ if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
 notif('❌ يرجى إدخال بريد إلكتروني صحيح','err');
 return;
 }
-if(!password || password.length < 4){
-notif('❌ كلمة المرور يجب أن تكون 4 أحرف على الأقل','err');
+if(!password || password.length < 8){
+notif('❌ كلمة المرور يجب أن تكون 8 أحرف على الأقل','err');
 return;
 }
 if(DB.users.some(u => u.email.toLowerCase() === email.toLowerCase())){
@@ -1088,12 +1088,39 @@ html.light .hub3-ring-svg circle:first-of-type{ stroke:rgba(31,37,70,.14); }
 
 /* جوال صغير < 480 */
 @media(max-width:480px){
-  .hub3-card{ width:calc(50% - 6px); padding:12px 10px; border-radius:16px; }
-  .hub3-row{ gap:8px; }
-  .hub3-dept-title{ font-size:12px; }
-  .hub3-dept-btn span{ font-size:10px; }
-  .hub3-main{ padding:0 10px 20px; }
+  /* بطاقات الإدارات أصغر على الجوال — 3 في الصف للمحافظة على الترتيب الأصلي */
+  .hub3-card{
+    width:calc(33.33% - 7px) !important;
+    min-width:96px !important;
+    padding:10px 7px 9px !important;
+    border-radius:14px !important;
+  }
+  .hub3-row{ gap:8px !important; flex-wrap:wrap !important; justify-content:center !important; }
+  .hub3-ico-area{ height:52px !important; margin-bottom:6px !important; }
+  .hub3-ico-area img{ max-height:44px !important; max-width:44px !important; }
+  .hub3-act-chip{ width:44px !important; height:44px !important; font-size:22px !important; }
+  .hub3-dept-title{ font-size:10.5px !important; margin-bottom:4px !important; line-height:1.25 !important; }
+  .hub3-dept-desc{ display:none !important; }
+  .hub3-dept-btn{ padding:6px 0 !important; font-size:10px !important; border-radius:10px !important; }
+  .hub3-dept-btn span{ font-size:9.5px !important; }
+  .hub3-main{ padding:0 10px 20px !important; }
   .hub3-hdr-actions{ gap:6px; }
+  .hub3-grid{ gap:10px !important; }
+}
+
+/* جوال أوسع قليلاً: 3 بطاقات كذلك */
+@media(min-width:481px) and (max-width:640px){
+  .hub3-card{
+    width:calc(33.33% - 8px) !important;
+    min-width:110px !important;
+    padding:12px 9px 11px !important;
+    border-radius:16px !important;
+  }
+  .hub3-ico-area{ height:60px !important; }
+  .hub3-ico-area img{ max-height:52px !important; }
+  .hub3-dept-desc{ display:none !important; }
+  .hub3-dept-title{ font-size:11.5px !important; }
+  .hub3-dept-btn{ padding:7px 0 !important; font-size:10.5px !important; }
 }
 
 /* ── شريط جانبي Hub ── */
@@ -1354,7 +1381,7 @@ html.dark .tania-mark{ filter:drop-shadow(0 2px 8px rgba(0,0,0,.45)); }
 .hdr-center .hdr-sec-ico{ font-size:1.2em; line-height:1; }
 .hdr-center .hdr-sec-title{ font-weight:800; color:var(--text); font-size:clamp(14px,1.4vw,18px); letter-spacing:-.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;  display:none; }
 @media(max-width:1000px){ .hdr-center{ display:none; } }
-@media(max-width:520px){ .hdr-greet-sub{ display:none; } }
+/* hdr-greet-sub يظهر دائماً على الجوال — مُتحكَّم به عبر قواعد الجوال فقط */
 @media (min-width:769px) and (max-width:1100px){ #tania-sidebar .sb-logo-wrap .tania-mark{ width:44px !important; } #tania-sidebar .sb-logo-wrap > div > div:last-child{ display:none !important; } }
 @media(max-width:768px){ #tania-sidebar .sb-logo-wrap .tania-mark{ width:clamp(104px,60%,140px); } .hdr-logo-tania .tania-mark{ width:38px; } }
 @media(max-width:520px){ .hdr-logo-tania .tania-mark{ width:34px; } .hdr-logo-wrap{ gap:9px !important; } }
@@ -1695,7 +1722,7 @@ if(hint){ hint.style.transition='opacity 0.8s'; hint.style.opacity='1'; }
   </div>
 
 </div>
-<div class="hdr" id="main-hdr-mgr"> <div class="hdr-left"> <button onclick="if(typeof backToHub==='function')backToHub()" class="btn btn-ghost" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(99,102,241,.12);border:1.5px solid rgba(99,102,241,.25);color:#6366f1;cursor:pointer;font-size:18px;flex-shrink:0" title="رجوع للرئيسية">&#8592;</button> <div class="hdr-greet"> <div class="hdr-greet-hi">مرحباً 👋🏼</div> <div class="hdr-greet-sub"></div> </div> <span id="mgr-role-badge" class="badge-role">إدارة</span> </div> <div class="hdr-right"> <div class="hdr-user-info"> <div id="mgr-name" class="hdr-user-name"></div> <div id="mgr-email" class="hdr-user-email"></div> </div> <button id="admin-panel-btn" class="btn" style="display:none" onclick="openAdminPanel()">🛡️ لوحة الأدمن</button> <button class="tgl" onclick="toggleTheme()" title="تبديل المظهر"><div class="tgl-dot"></div></button> <button onclick="toggleLang()" id="lang-btn" title="تبديل اللغة">EN</button> <button id="back-nav-btn-mgr" style="display:none" onclick="goBack()" title="العودة للصفحة السابقة">&#8592;</button> <button id="notif-bell-mgr" class="btn notif-bell-btn" onclick="toggleNotifPanel('mgr')" title="الإشعارات اليومية"> <span class="notif-bell-icon">🔔</span> <span id="notif-badge-mgr" class="notif-badge" style="display:none">0</span> </button> <button class="btn hdr-logout-btn" onclick="doLogout()" data-t="logout">خروج</button> </div> </div>
+<div class="hdr" id="main-hdr-mgr"> <div class="hdr-left"> <button onclick="if(typeof backToHub==='function')backToHub()" class="btn btn-ghost" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(99,102,241,.12);border:1.5px solid rgba(99,102,241,.25);color:#6366f1;cursor:pointer;font-size:18px;flex-shrink:0" title="رجوع للرئيسية">&#8592;</button> <div class="hdr-greet"> <div class="hdr-greet-hi">مرحباً 👋🏼</div> <div class="hdr-greet-sub"></div> </div> <span id="mgr-role-badge" class="badge-role">إدارة</span> </div> <div class="hdr-right"> <div class="hdr-user-info"> <div id="mgr-name" class="hdr-user-name"></div> <div id="mgr-email" class="hdr-user-email"></div> </div> <button id="admin-panel-btn" class="btn" style="display:none" onclick="openAdminPanel()">🛡️ لوحة الأدمن</button> <button class="tgl" onclick="toggleTheme()" title="تبديل المظهر"><div class="tgl-dot"></div></button> <button onclick="toggleLang()" id="lang-btn" title="تبديل اللغة">EN</button> <button id="back-nav-btn-mgr" style="display:none" onclick="goBack()" title="العودة للصفحة السابقة">&#8592;</button> <button onclick="openTaskModal(null)" title="إضافة مهمة جديدة" style="display:inline-flex;align-items:center;justify-content:center;gap:5px;height:34px;padding:0 12px;border-radius:9px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border:none;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;flex-shrink:0;letter-spacing:.01em;white-space:nowrap">＋ مهمة</button> <button id="notif-bell-mgr" class="btn notif-bell-btn" onclick="toggleNotifPanel('mgr')" title="الإشعارات اليومية"> <span class="notif-bell-icon">🔔</span> <span id="notif-badge-mgr" class="notif-badge" style="display:none">0</span> </button> <button class="btn hdr-logout-btn" onclick="doLogout()" data-t="logout">خروج</button> </div> </div>
 <div class="content"> <div class="tabs" id="mgr-tabs">
   <!-- تبويبات أعمالي -->
   <button class="tab tab-mine" onclick="mgrTab('kpi',this)" id="tab-kpi" style="display:none">📈 <span>مؤشرات الأداء</span></button>
@@ -2029,7 +2056,7 @@ if(hint){ hint.style.transition='opacity 0.8s'; hint.style.opacity='1'; }
 </div>
 
 <!-- § 8+9: جداول صف 2 -->
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px" class="kpi-row">
+<div style="display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:24px" class="kpi-row">
   <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;overflow:hidden">
     <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:6px">
       📋 مؤشرات الأداء التفصيلية
@@ -2039,16 +2066,11 @@ if(hint){ hint.style.transition='opacity 0.8s'; hint.style.opacity='1'; }
       <button onclick="kpiDetView='emp';kpiRenderDetails()" style="font-size:11px;padding:3px 10px;border-radius:7px;background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.2);font-weight:700;cursor:pointer;font-family:inherit">👤 الموظف</button>
       <button onclick="kpiDetView='dept';kpiRenderDetails()" style="font-size:11px;padding:3px 10px;border-radius:7px;background:rgba(124,58,237,.08);color:#7c3aed;border:1px solid rgba(124,58,237,.2);font-weight:700;cursor:pointer;font-family:inherit">🏢 الإدارة</button>
     </div>
-    <div id="kpi-details-table" style="overflow-x:auto;max-height:320px;overflow-y:auto"></div>
+    <div id="kpi-details-table" style="overflow-x:auto;max-height:620px;overflow-y:auto"></div>
   </div>
-  <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;overflow:hidden">
-    <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:6px">
-      🔢 مصفوفة المدير × الأولوية
-      <button onclick="kpiExport('kpi-matrix-table','مصفوفة_الأولوية')" style="margin-right:auto;padding:3px 9px;border-radius:6px;border:1px solid rgba(16,185,129,.3);background:rgba(16,185,129,.08);color:#10b981;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit">⬇️ Excel</button>
-    </div>
-    <div id="kpi-matrix-table" style="overflow-x:auto;max-height:340px;overflow-y:auto"></div>
-  </div>
+  <div id="kpi-matrix-placeholder" style="display:none"></div>
 </div>
+
 
 <!-- § 8: مهام الفريق المكتملة والمتبقية — لمدير الإمداد فقط -->
 <div id="kpi-emp-tasks-row" style="display:none;grid-template-columns:1fr;gap:14px;margin-bottom:14px" class="kpi-row">
@@ -2063,7 +2085,7 @@ if(hint){ hint.style.transition='opacity 0.8s'; hint.style.opacity='1'; }
 
 </div>
 
-<div id="pg-emp" class="page"> <div class="hdr" id="main-hdr-emp"> <div class="hdr-left"> <div class="hdr-greet"> <div class="hdr-greet-hi">مرحباً 👋🏼</div> <div class="hdr-greet-sub"></div> </div> <span class="badge-role">موظف</span> </div> <div class="hdr-right"> <div class="hdr-user-info"> <div id="emp-name" class="hdr-user-name"></div> <div id="emp-dept" class="hdr-user-email"></div> </div>  <button class="tgl" onclick="toggleTheme()" title="تبديل المظهر"><div class="tgl-dot"></div></button> <button onclick="toggleLang()" id="lang-btn-emp" title="تبديل اللغة">EN</button> <button id="back-nav-btn-emp" style="display:none" onclick="goBack()" title="العودة للصفحة السابقة">&#8592;</button> <button id="notif-bell-emp" class="btn notif-bell-btn" onclick="toggleNotifPanel('emp')" title="الإشعارات اليومية"> <span class="notif-bell-icon">🔔</span> <span id="notif-badge-emp" class="notif-badge" style="display:none">0</span> </button> <button class="btn hdr-logout-btn" onclick="doLogout()" data-t="logout">خروج</button> </div> </div> <div class="content"> <div class="stats-grid" id="emp-stats"></div> <div class="tabs"> <button class="tab on" onclick="empTab('dashboard',this)">🏠 لوحة البيانات</button> <button class="tab" onclick="empTab('my',this)">✅ مهامي</button> <button class="tab" onclick="empTab('arch',this)">🗃️ الأرشيف</button> <button class="tab" onclick="empTab('notes',this)">🗒️ ملاحظاتي</button> <button class="tab" onclick="empTab('daily',this)">📅 السجل اليومي</button> </div>  <div id="emp-dashboard" style="display:none">  <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap"> <div style="font-size:13px;font-weight:800;color:var(--text)">🔍 فلتر الرسوم البيانية</div> <div style="display:flex;align-items:center;gap:6px"> <label style="font-size:12px;color:var(--tx3);font-weight:600">من</label> <input type="date" id="emp-chart-from" onchange="renderEmpDashboard()" style="padding:5px 10px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:var(--inp);color:var(--text)"> </div> <div style="display:flex;align-items:center;gap:6px"> <label style="font-size:12px;color:var(--tx3);font-weight:600">إلى</label> <input type="date" id="emp-chart-to" onchange="renderEmpDashboard()" style="padding:5px 10px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:var(--inp);color:var(--text)"> </div> <div style="display:flex;gap:6px;flex-wrap:wrap"> <button onclick="setEmpChartRange('week')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">أسبوع</button> <button onclick="setEmpChartRange('month')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">شهر</button> <button onclick="setEmpChartRange('quarter')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">3 شهور</button> <button onclick="setEmpChartRange('year')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">سنة</button> <button onclick="setEmpChartRange('all')" class="emp-chart-rbtn emp-chart-rbtn-active" style="padding:5px 11px;font-size:11px;font-weight:700;background:linear-gradient(135deg,#3b82f6,#2563eb);border:none;border-radius:7px;cursor:pointer;color:#fff">الكل</button> </div> <div id="emp-chart-filter-lbl" style="font-size:11px;color:var(--tx3)"></div> </div>  <div class="status-circles-container" id="emp-circles-container">  <div class="circle-item" data-id="done"> <div class="circle-box"> <svg viewBox="0 0 100 100"> <circle class="circle-bg" cx="50" cy="50" r="45"></circle> <circle id="emp-circle-done-fill" class="circle-val" cx="50" cy="50" r="45" stroke="#10b981"></circle> </svg> <div class="circle-text"> <div id="emp-circle-done-pct" class="circle-pct">0%</div> <div id="emp-circle-done-count" class="circle-count">0 مهام</div> </div> </div> <div class="circle-lbl">مكتملة</div> </div>  <div class="circle-item" data-id="inp"> <div class="circle-box"> <svg viewBox="0 0 100 100"> <circle class="circle-bg" cx="50" cy="50" r="45"></circle> <circle id="emp-circle-inp-fill" class="circle-val" cx="50" cy="50" r="45" stroke="#3b82f6"></circle> </svg> <div class="circle-text"> <div id="emp-circle-inp-pct" class="circle-pct">0%</div> <div id="emp-circle-inp-count" class="circle-count">0 مهام</div> </div> </div> <div class="circle-lbl">جارية</div> </div>  <div class="circle-item" data-id="pend"> <div class="circle-box"> <svg viewBox="0 0 100 100"> <circle class="circle-bg" cx="50" cy="50" r="45"></circle> <circle id="emp-circle-pend-fill" class="circle-val" cx="50" cy="50" r="45" stroke="#eab308"></circle> </svg> <div class="circle-text"> <div id="emp-circle-pend-pct" class="circle-pct">0%</div> <div id="emp-circle-pend-count" class="circle-count">0 مهام</div> </div> </div> <div class="circle-lbl">انتظار</div> </div> </div>  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px" id="emp-chart-row">  <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;box-shadow:0 4px 20px rgba(0,0,0,.04);position:relative;overflow:hidden"> <div style="position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(180deg,#ef4444,#f97316,#eab308,#22c55e);border-radius:0 20px 20px 0"></div> <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px"> <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#f97316,#ea580c);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 10px rgba(249,115,22,.3)">🎯</div> <div> <div style="font-family:'Almarai',sans-serif;font-size:15px;font-weight:800;color:var(--text)">توزيع مهامي حسب الأولوية</div> <div style="font-size:11px;color:var(--tx3);font-weight:600;margin-top:1px">تصنيف مهامك بحسب مستوى الأهمية</div> </div> </div> <div style="height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:18px"></div> <div style="display:flex;align-items:stretch;gap:4px"> <div style="display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:800;color:var(--tx3);padding:0 2px;white-space:nowrap">عدد المهام</div> <div id="emp-priority-chart" style="min-height:280px;flex:1;min-width:0"></div> </div> </div>  <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;box-shadow:0 4px 20px rgba(0,0,0,.04);position:relative;overflow:hidden"> <div style="position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(180deg,#10b981,#3b82f6,#f59e0b,#ef4444);border-radius:0 20px 20px 0"></div> <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px"> <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 10px rgba(16,185,129,.3)">📈</div> <div> <div style="font-family:'Almarai',sans-serif;font-size:15px;font-weight:800;color:var(--text)">توزيع مهامي حسب الحالة</div> <div style="font-size:11px;color:var(--tx3);font-weight:600;margin-top:1px">نظرة شاملة على تقدم مهامك</div> </div> </div> <div style="height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:18px"></div> <div style="display:flex;align-items:stretch;gap:4px"> <div style="display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:800;color:var(--tx3);padding:0 2px;white-space:nowrap">عدد المهام</div> <div id="emp-status-chart" style="min-height:280px;flex:1;min-width:0"></div> </div> </div> </div>  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px"> <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px"> <div style="font-family:'Almarai',sans-serif;font-size:16px;font-weight:800;color:var(--tx2);margin-bottom:12px;letter-spacing:0.01em">⏰ مواعيدي القادمة</div> <div id="emp-deadline-list"></div> </div> <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px"> <div style="font-family:'Almarai',sans-serif;font-size:16px;font-weight:800;color:var(--tx2);margin-bottom:12px;letter-spacing:0.01em">📋 آخر مهامي</div> <div id="emp-recent-list"></div> </div> </div>  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px"> <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px"> <div style="font-size:15px;font-weight:800;color:var(--text)">📈 تقدم الإنجاز حسب الأولوية</div> </div> <div id="emp-progress-bars"></div> </div> </div>  <div id="emp-my" style="display:none"> <div style="display:flex;gap:9px;margin-bottom:14px;flex-wrap:wrap;align-items:center"> <input id="ef-search" type="text" placeholder="🔍 ابحث برقم أو عنوان..." style="width:200px;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px" onkeyup="renderEmpTasks()"> <select id="ef-sta" style="width:140px" onchange="renderEmpTasks()"> <option value="">كل الحالات</option> <option value="pending">⏳ انتظار</option> <option value="in_progress">🔄 جارية</option> <option value="completed">✅ مكتملة</option> <option value="cancelled">❌ ملغاة</option> </select> <select id="ef-pri" style="width:140px" onchange="renderEmpTasks()"> <option value="">كل الأولويات</option> <option value="urgent">🔴 عاجل</option> <option value="high">🟠 عالية</option> <option value="medium">🟡 متوسطة</option> <option value="low">🟢 منخفضة</option> </select> <div style="display:flex;gap:7px;margin-right:auto"> <button class="btn" style="background:rgba(16,185,129,.15);color:#4ade80;border:1px solid rgba(16,185,129,.25);font-size:13px" onclick="exportExcel()">📊 Excel</button> <button class="btn" style="background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.25);font-size:13px" onclick="printReport()">🖨️ طباعة</button> <button class="btn btn-primary" onclick="openTaskModal(null)">＋ إضافة مهمة</button> </div> </div> <div id="emp-task-list"></div> </div>  <div id="emp-notes-tab" style="display:none"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px"> <div style="font-size:13px;color:var(--tx3)">الملاحظات الموجّهة إليك من المدير</div> <div style="display:flex;gap:7px"> <button class="btn" style="background:rgba(16,185,129,.15);color:#4ade80;border:1px solid rgba(16,185,129,.25);font-size:13px" onclick="exportEmpNotesExcel()">📊 Excel</button> <button class="btn" style="background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.25);font-size:13px" onclick="printEmpNotes()">🖨️ طباعة</button> </div> </div> <div id="emp-notes-list"></div> </div>  <div id="emp-daily" style="display:none"> <h3 id="daily-date" style="font-size:22px;font-weight:800;margin-bottom:18px"></h3> <div id="daily-list" class="gap12"></div> </div>  <div id="emp-arch" style="display:none; margin-top:20px; padding-top:20px; border-top:2px dashed var(--border)"> <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px"> <div> <div style="font-family:'Reem Kufi','Almarai',sans-serif;font-size:clamp(26px,3.5vw,42px);font-weight:700;background:linear-gradient(135deg,#1e40af,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;letter-spacing:-0.01em">🗃️ أرشيفي</div> <div style="font-size:13px;color:var(--tx3);margin-top:4px;font-family:'Noto Naskh Arabic',serif">مهامك المؤرشفة — المكتملة منذ أكثر من 7 أيام أو المؤرشفة يدوياً</div> </div> <div style="display:flex;gap:8px"> <button class="btn" style="background:rgba(16,185,129,.12);color:#4ade80;border:1px solid rgba(16,185,129,.25);font-size:13px" onclick="exportEmpArchiveExcel()">📊 تصدير</button> </div> </div>  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:0 2px 10px rgba(0,0,0,.04)"> <div style="position:relative;flex:1;min-width:180px"> <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none">🔍</span> <input id="emp-arch-search" type="text" placeholder="ابحث في أرشيفك..." oninput="renderEmpArchive()"
+<div id="pg-emp" class="page"> <div class="hdr" id="main-hdr-emp"> <div class="hdr-left"> <div class="hdr-greet"> <div class="hdr-greet-hi">مرحباً 👋🏼</div> <div class="hdr-greet-sub"></div> </div> <span class="badge-role">موظف</span> </div> <div class="hdr-right"> <div class="hdr-user-info"> <div id="emp-name" class="hdr-user-name"></div> <div id="emp-dept" class="hdr-user-email"></div> </div>  <button class="tgl" onclick="toggleTheme()" title="تبديل المظهر"><div class="tgl-dot"></div></button> <button onclick="toggleLang()" id="lang-btn-emp" title="تبديل اللغة">EN</button> <button id="back-nav-btn-emp" style="display:none" onclick="goBack()" title="العودة للصفحة السابقة">&#8592;</button> <button onclick="openTaskModal(null)" title="إضافة مهمة جديدة" style="display:inline-flex;align-items:center;justify-content:center;gap:5px;height:34px;padding:0 12px;border-radius:9px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border:none;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;flex-shrink:0;letter-spacing:.01em;white-space:nowrap">＋ مهمة</button> <button id="notif-bell-emp" class="btn notif-bell-btn" onclick="toggleNotifPanel('emp')" title="الإشعارات اليومية"> <span class="notif-bell-icon">🔔</span> <span id="notif-badge-emp" class="notif-badge" style="display:none">0</span> </button> <button class="btn hdr-logout-btn" onclick="doLogout()" data-t="logout">خروج</button> </div> </div> <div class="content"> <div class="stats-grid" id="emp-stats"></div> <div class="tabs"> <button class="tab on" onclick="empTab('dashboard',this)">🏠 لوحة البيانات</button> <button class="tab" onclick="empTab('my',this)">✅ مهامي</button> <button class="tab" onclick="empTab('arch',this)">🗃️ الأرشيف</button> <button class="tab" onclick="empTab('notes',this)">🗒️ ملاحظاتي</button> <button class="tab" onclick="empTab('daily',this)">📅 السجل اليومي</button> </div>  <div id="emp-dashboard" style="display:none">  <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap"> <div style="font-size:13px;font-weight:800;color:var(--text)">🔍 فلتر الرسوم البيانية</div> <div style="display:flex;align-items:center;gap:6px"> <label style="font-size:12px;color:var(--tx3);font-weight:600">من</label> <input type="date" id="emp-chart-from" onchange="renderEmpDashboard()" style="padding:5px 10px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:var(--inp);color:var(--text)"> </div> <div style="display:flex;align-items:center;gap:6px"> <label style="font-size:12px;color:var(--tx3);font-weight:600">إلى</label> <input type="date" id="emp-chart-to" onchange="renderEmpDashboard()" style="padding:5px 10px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:var(--inp);color:var(--text)"> </div> <div style="display:flex;gap:6px;flex-wrap:wrap"> <button onclick="setEmpChartRange('week')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">أسبوع</button> <button onclick="setEmpChartRange('month')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">شهر</button> <button onclick="setEmpChartRange('quarter')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">3 شهور</button> <button onclick="setEmpChartRange('year')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">سنة</button> <button onclick="setEmpChartRange('all')" class="emp-chart-rbtn emp-chart-rbtn-active" style="padding:5px 11px;font-size:11px;font-weight:700;background:linear-gradient(135deg,#3b82f6,#2563eb);border:none;border-radius:7px;cursor:pointer;color:#fff">الكل</button> </div> <div id="emp-chart-filter-lbl" style="font-size:11px;color:var(--tx3)"></div> </div>  <div class="status-circles-container" id="emp-circles-container">  <div class="circle-item" data-id="done"> <div class="circle-box"> <svg viewBox="0 0 100 100"> <circle class="circle-bg" cx="50" cy="50" r="45"></circle> <circle id="emp-circle-done-fill" class="circle-val" cx="50" cy="50" r="45" stroke="#10b981"></circle> </svg> <div class="circle-text"> <div id="emp-circle-done-pct" class="circle-pct">0%</div> <div id="emp-circle-done-count" class="circle-count">0 مهام</div> </div> </div> <div class="circle-lbl">مكتملة</div> </div>  <div class="circle-item" data-id="inp"> <div class="circle-box"> <svg viewBox="0 0 100 100"> <circle class="circle-bg" cx="50" cy="50" r="45"></circle> <circle id="emp-circle-inp-fill" class="circle-val" cx="50" cy="50" r="45" stroke="#3b82f6"></circle> </svg> <div class="circle-text"> <div id="emp-circle-inp-pct" class="circle-pct">0%</div> <div id="emp-circle-inp-count" class="circle-count">0 مهام</div> </div> </div> <div class="circle-lbl">جارية</div> </div>  <div class="circle-item" data-id="pend"> <div class="circle-box"> <svg viewBox="0 0 100 100"> <circle class="circle-bg" cx="50" cy="50" r="45"></circle> <circle id="emp-circle-pend-fill" class="circle-val" cx="50" cy="50" r="45" stroke="#eab308"></circle> </svg> <div class="circle-text"> <div id="emp-circle-pend-pct" class="circle-pct">0%</div> <div id="emp-circle-pend-count" class="circle-count">0 مهام</div> </div> </div> <div class="circle-lbl">انتظار</div> </div> </div>  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px" id="emp-chart-row">  <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;box-shadow:0 4px 20px rgba(0,0,0,.04);position:relative;overflow:hidden"> <div style="position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(180deg,#ef4444,#f97316,#eab308,#22c55e);border-radius:0 20px 20px 0"></div> <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px"> <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#f97316,#ea580c);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 10px rgba(249,115,22,.3)">🎯</div> <div> <div style="font-family:'Almarai',sans-serif;font-size:15px;font-weight:800;color:var(--text)">توزيع مهامي حسب الأولوية</div> <div style="font-size:11px;color:var(--tx3);font-weight:600;margin-top:1px">تصنيف مهامك بحسب مستوى الأهمية</div> </div> </div> <div style="height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:18px"></div> <div style="display:flex;align-items:stretch;gap:4px"> <div style="display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:800;color:var(--tx3);padding:0 2px;white-space:nowrap">عدد المهام</div> <div id="emp-priority-chart" style="min-height:280px;flex:1;min-width:0"></div> </div> </div>  <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;box-shadow:0 4px 20px rgba(0,0,0,.04);position:relative;overflow:hidden"> <div style="position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(180deg,#10b981,#3b82f6,#f59e0b,#ef4444);border-radius:0 20px 20px 0"></div> <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px"> <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 10px rgba(16,185,129,.3)">📈</div> <div> <div style="font-family:'Almarai',sans-serif;font-size:15px;font-weight:800;color:var(--text)">توزيع مهامي حسب الحالة</div> <div style="font-size:11px;color:var(--tx3);font-weight:600;margin-top:1px">نظرة شاملة على تقدم مهامك</div> </div> </div> <div style="height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:18px"></div> <div style="display:flex;align-items:stretch;gap:4px"> <div style="display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:800;color:var(--tx3);padding:0 2px;white-space:nowrap">عدد المهام</div> <div id="emp-status-chart" style="min-height:280px;flex:1;min-width:0"></div> </div> </div> </div>  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px"> <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px"> <div style="font-family:'Almarai',sans-serif;font-size:16px;font-weight:800;color:var(--tx2);margin-bottom:12px;letter-spacing:0.01em">⏰ مواعيدي القادمة</div> <div id="emp-deadline-list"></div> </div> <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px"> <div style="font-family:'Almarai',sans-serif;font-size:16px;font-weight:800;color:var(--tx2);margin-bottom:12px;letter-spacing:0.01em">📋 آخر مهامي</div> <div id="emp-recent-list"></div> </div> </div>  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px"> <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px"> <div style="font-size:15px;font-weight:800;color:var(--text)">📈 تقدم الإنجاز حسب الأولوية</div> </div> <div id="emp-progress-bars"></div> </div> </div>  <div id="emp-my" style="display:none"> <div style="display:flex;gap:9px;margin-bottom:14px;flex-wrap:wrap;align-items:center"> <input id="ef-search" type="text" placeholder="🔍 ابحث برقم أو عنوان..." style="width:200px;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px" onkeyup="renderEmpTasks()"> <select id="ef-sta" style="width:140px" onchange="renderEmpTasks()"> <option value="">كل الحالات</option> <option value="pending">⏳ انتظار</option> <option value="in_progress">🔄 جارية</option> <option value="completed">✅ مكتملة</option> <option value="cancelled">❌ ملغاة</option> </select> <select id="ef-pri" style="width:140px" onchange="renderEmpTasks()"> <option value="">كل الأولويات</option> <option value="urgent">🔴 عاجل</option> <option value="high">🟠 عالية</option> <option value="medium">🟡 متوسطة</option> <option value="low">🟢 منخفضة</option> </select> <div style="display:flex;gap:7px;margin-right:auto"> <button class="btn" style="background:rgba(16,185,129,.15);color:#4ade80;border:1px solid rgba(16,185,129,.25);font-size:13px" onclick="exportExcel()">📊 Excel</button> <button class="btn" style="background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.25);font-size:13px" onclick="printReport()">🖨️ طباعة</button> <button class="btn btn-primary" onclick="openTaskModal(null)">＋ إضافة مهمة</button> </div> </div> <div id="emp-task-list"></div> </div>  <div id="emp-notes-tab" style="display:none"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px"> <div style="font-size:13px;color:var(--tx3)">الملاحظات الموجّهة إليك من المدير</div> <div style="display:flex;gap:7px"> <button class="btn" style="background:rgba(16,185,129,.15);color:#4ade80;border:1px solid rgba(16,185,129,.25);font-size:13px" onclick="exportEmpNotesExcel()">📊 Excel</button> <button class="btn" style="background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.25);font-size:13px" onclick="printEmpNotes()">🖨️ طباعة</button> </div> </div> <div id="emp-notes-list"></div> </div>  <div id="emp-daily" style="display:none"> <h3 id="daily-date" style="font-size:22px;font-weight:800;margin-bottom:18px"></h3> <div id="daily-list" class="gap12"></div> </div>  <div id="emp-arch" style="display:none; margin-top:20px; padding-top:20px; border-top:2px dashed var(--border)"> <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px"> <div> <div style="font-family:'Reem Kufi','Almarai',sans-serif;font-size:clamp(26px,3.5vw,42px);font-weight:700;background:linear-gradient(135deg,#1e40af,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;letter-spacing:-0.01em">🗃️ أرشيفي</div> <div style="font-size:13px;color:var(--tx3);margin-top:4px;font-family:'Noto Naskh Arabic',serif">مهامك المؤرشفة — المكتملة منذ أكثر من 7 أيام أو المؤرشفة يدوياً</div> </div> <div style="display:flex;gap:8px"> <button class="btn" style="background:rgba(16,185,129,.12);color:#4ade80;border:1px solid rgba(16,185,129,.25);font-size:13px" onclick="exportEmpArchiveExcel()">📊 تصدير</button> </div> </div>  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:0 2px 10px rgba(0,0,0,.04)"> <div style="position:relative;flex:1;min-width:180px"> <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none">🔍</span> <input id="emp-arch-search" type="text" placeholder="ابحث في أرشيفك..." oninput="renderEmpArchive()"
             style="padding:9px 36px 9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;background:var(--inp);color:var(--text);width:100%;direction:rtl;font-family:var(--font-ui)"> </div> <select id="emp-arch-filter-type" onchange="renderEmpArchive()" style="flex:1;min-width:130px;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;background:var(--inp);color:var(--text);font-family:var(--font-ui)"> <option value="">🗂️ كل الأنواع</option> <option value="manual">🖐️ يدوي</option> <option value="auto">🤖 تلقائي</option> </select> <input id="emp-arch-filter-from" type="date" onchange="renderEmpArchive()" title="من تاريخ أرشفة"
           style="flex:1;min-width:130px;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;background:var(--inp);color:var(--text);font-family:var(--font-ui)"> <input id="emp-arch-filter-to" type="date" onchange="renderEmpArchive()" title="إلى تاريخ أرشفة"
           style="flex:1;min-width:130px;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;background:var(--inp);color:var(--text);font-family:var(--font-ui)"> <button onclick="clearEmpArchiveFilters()" class="btn" style="background:rgba(100,116,139,.12);color:var(--tx2);border:1px solid var(--border);font-size:12px;padding:9px 14px;white-space:nowrap">✕ مسح الفلاتر</button> <span id="emp-arch-results-count" style="font-size:12px;color:var(--tx3);font-weight:700;white-space:nowrap;margin-right:4px"></span> </div> <div id="emp-arch-list"></div> </div> </div>
@@ -2272,7 +2294,22 @@ if(hint){ hint.style.transition='opacity 0.8s'; hint.style.opacity='1'; }
             🔑 تغيير كلمة المرور<br><span style="font-size:11px;opacity:.7;font-weight:400">تغيير كلمات مرور الحسابات</span> </button> </div> </div>  <div style="background:linear-gradient(135deg,rgba(20,184,166,.08),rgba(13,148,136,.06));border:1px solid rgba(20,184,166,.25);border-radius:14px;padding:16px"> <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"> <span style="font-size:20px">🔤</span> <div> <div style="font-weight:800;font-size:14px;color:var(--text)">إعدادات الخطوط والألوان</div> <div style="font-size:11px;color:var(--tx3);margin-top:2px">تحكم في خط وحجم ولون كل شاشة بشكل مستقل</div> </div> <button onclick="openFontSettings()" style="margin-right:auto;padding:7px 14px;background:linear-gradient(135deg,rgba(20,184,166,.2),rgba(13,148,136,.15));color:#14b8a6;border:1px solid rgba(20,184,166,.35);border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:Tajawal,sans-serif">
             🔤 فتح مدير الخطوط
           </button> </div> <div style="font-size:12px;color:var(--tx3);line-height:1.8">
-          يمكنك تخصيص الخط والحجم واللون لكل شاشة على حدة:<br> <span style="color:var(--text);font-weight:600">شاشة الدخول • لوحة المدير • لوحة الموظف • النوافذ • الأزرار • النص العام</span> </div> </div>  <div style="background:linear-gradient(135deg,rgba(234,179,8,.08),rgba(202,138,4,.06));border:1px solid rgba(234,179,8,.2);border-radius:14px;padding:16px"> <div style="font-weight:800;font-size:14px;color:var(--text);margin-bottom:12px">🖨️ إعدادات الطباعة</div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px"> <label style="display:flex;align-items:center;gap:8px;padding:12px;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25);border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:#fbbf24"> <input type="checkbox" id="admin-print-hide-charts" style="width:16px;height:16px;cursor:pointer" onchange="syncPrintSettings()"> <span>إخفاء الرسوم</span> </label> <label style="display:flex;align-items:center;gap:8px;padding:12px;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25);border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:#fbbf24"> <input type="checkbox" id="admin-print-hide-buttons" style="width:16px;height:16px;cursor:pointer" onchange="syncPrintSettings()"> <span>إخفاء الأزرار</span> </label> <label style="display:flex;align-items:center;gap:8px;padding:12px;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25);border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:#fbbf24"> <input type="checkbox" id="admin-print-bw" style="width:16px;height:16px;cursor:pointer" onchange="syncPrintSettings()"> <span>أبيض وأسود</span> </label> </div> <button onclick="if(CU?.role!=='admin'){notif('❌ للأدمن فقط','err');return;}printReport()" class="btn" style="margin-top:10px;width:100%;padding:10px;background:rgba(234,179,8,.15);color:#fbbf24;border:1px solid rgba(234,179,8,.3);font-size:13px;font-weight:700;border-radius:10px">
+          يمكنك تخصيص الخط والحجم واللون لكل شاشة على حدة:<br> <span style="color:var(--text);font-weight:600">شاشة الدخول • لوحة المدير • لوحة الموظف • النوافذ • الأزرار • النص العام</span> </div> </div>  <!-- § الأمان والسجلات -->
+  <div style="background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(220,38,38,.06));border:1px solid rgba(239,68,68,.2);border-radius:14px;padding:16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <div style="font-weight:800;font-size:14px;color:var(--text)">🔒 سجل الأمان وتسجيلات الدخول</div>
+      <button onclick="adminShowSecLog()" style="padding:5px 12px;border-radius:8px;border:1px solid rgba(239,68,68,.3);background:rgba(239,68,68,.1);color:#f87171;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">🔄 تحديث</button>
+    </div>
+    <div id="admin-sec-log" style="max-height:200px;overflow-y:auto;font-size:11.5px;line-height:1.7;background:var(--card);border-radius:10px;padding:10px;border:1px solid var(--border)">
+      <div style="color:var(--tx3)">اضغط تحديث لعرض السجل...</div>
+    </div>
+    <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button onclick="adminClearLoginLog()" style="padding:8px 12px;border-radius:8px;border:1px solid rgba(239,68,68,.3);background:rgba(239,68,68,.08);color:#f87171;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">🗑️ مسح سجل الدخول</button>
+      <button onclick="adminClearLockout()" style="padding:8px 12px;border-radius:8px;border:1px solid rgba(234,179,8,.3);background:rgba(234,179,8,.08);color:#fbbf24;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">🔓 رفع القفل عن جميع الحسابات</button>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,rgba(234,179,8,.08),rgba(202,138,4,.06));border:1px solid rgba(234,179,8,.2);border-radius:14px;padding:16px"> <div style="font-weight:800;font-size:14px;color:var(--text);margin-bottom:12px">🖨️ إعدادات الطباعة</div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px"> <label style="display:flex;align-items:center;gap:8px;padding:12px;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25);border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:#fbbf24"> <input type="checkbox" id="admin-print-hide-charts" style="width:16px;height:16px;cursor:pointer" onchange="syncPrintSettings()"> <span>إخفاء الرسوم</span> </label> <label style="display:flex;align-items:center;gap:8px;padding:12px;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25);border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:#fbbf24"> <input type="checkbox" id="admin-print-hide-buttons" style="width:16px;height:16px;cursor:pointer" onchange="syncPrintSettings()"> <span>إخفاء الأزرار</span> </label> <label style="display:flex;align-items:center;gap:8px;padding:12px;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25);border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:#fbbf24"> <input type="checkbox" id="admin-print-bw" style="width:16px;height:16px;cursor:pointer" onchange="syncPrintSettings()"> <span>أبيض وأسود</span> </label> </div> <button onclick="if(CU?.role!=='admin'){notif('❌ للأدمن فقط','err');return;}printReport()" class="btn" style="margin-top:10px;width:100%;padding:10px;background:rgba(234,179,8,.15);color:#fbbf24;border:1px solid rgba(234,179,8,.3);font-size:13px;font-weight:700;border-radius:10px">
           🖨️ طباعة التقرير الكامل
         </button> </div>  <div style="background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(220,38,38,.06));border:2px solid rgba(239,68,68,.3);border-radius:14px;padding:16px"> <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"> <span style="font-size:18px">⚠️</span> <div style="font-weight:800;font-size:14px;color:#f87171">منطقة الخطر</div> <span style="font-size:10px;background:rgba(239,68,68,.2);color:#f87171;padding:2px 8px;border-radius:99px;font-weight:700">تحذير: لا يمكن التراجع</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"> <button onclick="if(CU?.role!=='admin'){notif('❌ للأدمن فقط','err');return;}confirmResetAllData()" class="btn" style="padding:12px 16px;background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.4);font-size:13px;font-weight:700;border-radius:10px;text-align:right">
             🗑️ تفريغ جميع البيانات<br><span style="font-size:11px;opacity:.7;font-weight:400">حذف المهام والملاحظات والموظفين</span> </button> <button onclick="if(CU?.role!=='admin'){notif('❌ للأدمن فقط','err');return;}adminRestartSystem()" class="btn" style="padding:12px 16px;background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.4);font-size:13px;font-weight:700;border-radius:10px;text-align:right">
@@ -2839,6 +2876,7 @@ el.innerHTML=tasks.slice(-5).reverse().map(x=>`
 function _(key){ return t(key); }
 async function hashPW(pw){
 const enc=new TextEncoder();
+/* ملاحظة: salt ثابت متوافق مع الإصدارات السابقة */
 const buf=await crypto.subtle.digest('SHA-256',enc.encode(pw+'tania_salt_2026'));
 return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
@@ -3268,7 +3306,7 @@ function printProdScore(){
     setTimeout(function(){w.print();},500);
   }catch(e){ console.error('printProdScore:',e); }
 }
-function getPW(uid){return PW[uid]||(DB.users.find(u=>u.id===uid)?.password||USERS.find(u=>u.id===uid)?.password||'')}
+function getPW(uid){ /* إرجاع hash فقط — لا نص صريح */ return PW[uid]||''; }
 function $(id){return document.getElementById(id)}
 function notif(msg,type){
 type=type||'ok';
@@ -3639,7 +3677,7 @@ try{ if(typeof secCheckForceOnLogin==='function') secCheckForceOnLogin(candidate
 /* FIX-SEC: ترحيل تدريجي - مسح كلمة المرور النصية عند الدخول */
 try{ if(candidate.password){ delete candidate.password; if(typeof saveDB==='function') saveDB(); } }catch(_e){}
 localStorage.setItem('lastUID',String(candidate.id));
-sessionStorage.setItem('cu',JSON.stringify({id:candidate.id}));
+sessionStorage.setItem('cu',JSON.stringify({id:candidate.id,t:Date.now(),r:candidate.role}));
 try{
 const loginLog=JSON.parse(localStorage.getItem('loginLog')||'[]');
 loginLog.push({userId:candidate.id,email:candidate.email,role:candidate.role,time:new Date().toISOString()});
@@ -6297,7 +6335,7 @@ function saveEmployee(){
 const name=$('ne-name').value.trim(),email=$('ne-email').value.trim(),pass=$('ne-pass').value.trim();
 if(!name||!email||!pass){notif('يرجى ملء الحقول المطلوبة *','err');return;}
 if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){notif('البريد الإلكتروني غير صحيح','err');return;}
-if(pass.length < 4){notif('كلمة المرور يجب أن تكون 4 أحرف على الأقل','err');return;}
+if(pass.length < 8){notif('كلمة المرور يجب أن تكون 8 أحرف على الأقل','err');return;}
 if(DB.users.find(u=>u.email.toLowerCase()===email.toLowerCase())){notif('البريد الإلكتروني مسجّل مسبقاً','err');return;}
 const newId=Math.max(...DB.users.map(u=>u.id),0)+1;
 const _np=name.trim().split(/\s+/).filter(Boolean);
@@ -8475,7 +8513,7 @@ if(el) el.classList.add('show');
 function chpwUserChange(){const u=getUser(parseInt($('chpw-uid').value));$('chpw-who').textContent=(u?.name||'—')+' — '+(u?.email||'');}
 function chkPwStr(){
 const pw=$('cpw-new').value,bar=$('pw-str-bar'),lbl=$('pw-str-lbl');
-let s=0;if(pw.length>=6)s++;if(pw.length>=10)s++;if(/[A-Za-z]/.test(pw))s++;if(/[0-9]/.test(pw))s++;if(/[^A-Za-z0-9]/.test(pw))s++;
+let s=0;if(pw.length>=8)s++;if(pw.length>=12)s++;if(/[A-Za-z]/.test(pw))s++;if(/[0-9]/.test(pw))s++;if(/[^A-Za-z0-9]/.test(pw))s++;
 const ls=[{w:'0%',c:'transparent',t:''},{w:'25%',c:'#ef4444',t:'ضعيفة جداً'},{w:'50%',c:'#f97316',t:'ضعيفة'},{w:'75%',c:'#eab308',t:'متوسطة'},{w:'90%',c:'#10b981',t:'قوية'},{w:'100%',c:'#059669',t:'قوية جداً ✅'}];
 const l=ls[Math.min(s,5)];bar.style.width=l.w;bar.style.background=l.c;lbl.textContent=l.t;lbl.style.color=l.c;chkPwMatch();
 }
@@ -8500,7 +8538,7 @@ if(!curOk)try{curOk=await verifyPW(CU.id,cur);}catch(e){}
 if(!curOk){const dp=_DEFAULT_PASSWORDS[CU.id];if(dp&&dp===cur)curOk=true;}
 if(!curOk){err.textContent='❌ كلمة المرور الحالية غير صحيحة';err.style.display='block';return;}
 }
-if(nw.length<4){err.textContent='❌ كلمة المرور قصيرة جداً (4 أحرف على الأقل)';err.style.display='block';return;}
+if(nw.length<8){err.textContent='❌ كلمة المرور قصيرة جداً (8 أحرف على الأقل)';err.style.display='block';return;}
 if(nw!==cfm){err.textContent='❌ كلمتا المرور غير متطابقتين';err.style.display='block';return;}
 hashPW(nw).then(function(h){PW[uid]=h;var _pu=DB.users.findIndex(function(u){return u.id===uid;});if(_pu>=0){DB.users[_pu]._ph=h;delete DB.users[_pu].password;}savePW();if(typeof saveDB==='function')saveDB();});/* FIX-SEC */
 if(uid===CU?.id){CU={...CU};sessionStorage.setItem('cu',JSON.stringify({id:CU.id}));}
@@ -10335,6 +10373,39 @@ function syncDeptDropdowns(){
   /* قائمة مستخدم جديد */
   var nud=el('new-user-dept');
   if(nud){ var curn=nud.value; nud.innerHTML='<option value="" disabled selected hidden>اختر الإدارة</option>'+list.map(function(d){return '<option value="'+escHtml(d.name)+'">'+escHtml(d.name)+'</option>';}).join(''); if(curn) nud.value=curn; }
+}
+function adminShowSecLog(){
+  if(!CU || CU.role!=='admin') return;
+  var el = document.getElementById('admin-sec-log');
+  if(!el) return;
+  try {
+    var loginLog = JSON.parse(localStorage.getItem('loginLog')||'[]').reverse();
+    var lockInfo = JSON.parse(localStorage.getItem('loginAttempts')||'{}');
+    var rows = loginLog.slice(0,20).map(function(e){
+      var t = new Date(e.time).toLocaleString('ar-EG',{hour:'2-digit',minute:'2-digit',day:'numeric',month:'short'});
+      var icon = e.role==='admin'?'🛡️':e.role==='manager'?'👨‍💼':'👤';
+      return '<div style="padding:4px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center"><span>'+icon+'</span><span style="flex:1;color:var(--text)">'+escHtml(e.email)+'</span><span style="color:var(--tx3);font-size:10.5px">'+t+'</span></div>';
+    });
+    var lockTxt = '';
+    if(lockInfo.lockUntil > Date.now()){
+      var rem = Math.ceil((lockInfo.lockUntil-Date.now())/60000);
+      lockTxt = '<div style="padding:6px 10px;margin-bottom:8px;background:rgba(239,68,68,.12);border-radius:8px;color:#f87171;font-weight:700">🔒 حساب مقفل — يرفع بعد '+rem+' دقيقة ('+lockInfo.cycles+' دورات)</div>';
+    }
+    el.innerHTML = lockTxt + (rows.length ? rows.join('') : '<div style="color:var(--tx3)">لا توجد سجلات</div>');
+  } catch(e){ el.innerHTML = '<div style="color:#f87171">خطأ في قراءة السجل</div>'; }
+}
+function adminClearLoginLog(){
+  if(!CU || CU.role!=='admin'){ notif('❌ للأدمن فقط','err'); return; }
+  if(!confirm('هل تريد مسح سجل تسجيلات الدخول كاملاً؟')) return;
+  localStorage.removeItem('loginLog');
+  notif('✅ تم مسح سجل الدخول','ok');
+  adminShowSecLog();
+}
+function adminClearLockout(){
+  if(!CU || CU.role!=='admin'){ notif('❌ للأدمن فقط','err'); return; }
+  localStorage.removeItem('loginAttempts');
+  notif('✅ تم رفع القفل عن جميع الحسابات','ok');
+  adminShowSecLog();
 }
 function updateAdminStats(){
 const statsGrid = document.getElementById('admin-stats-grid');
@@ -17101,7 +17172,7 @@ window.adminOrgExportSVG = function(){
       var name = mgrName || ((typeof CU!=='undefined' && CU && (''+(CU.name||'')).trim()) ? (''+CU.name).trim() : '');
       var h=new Date().getHours();
       var g = h<12 ? 'صباح الخير' : 'مساء الخير';
-      var hiTxt = (name ? g+'، '+name : g) + ' 👋🏼';
+      var hiTxt = g + ' 👋🏼' + (name ? '، ' + name : '');
       var d=new Date(), dateTxt='';
       try{ dateTxt=d.toLocaleDateString('ar-EG',{weekday:'long',day:'numeric',month:'long',year:'numeric'}); }catch(e){ dateTxt=d.toLocaleDateString(); }
       document.querySelectorAll('.hdr-greet-hi').forEach(function(el){ if(el.textContent!==hiTxt) el.textContent=hiTxt; });
@@ -18625,7 +18696,6 @@ window.renderKPI = function(){
   renderUpcomingTable(tasks);
   renderRecentTable(tasks);
   renderDetailsTable(tasks);
-  renderMatrixTable(tasks);
 };
 window.kpiRenderRecent  = function(){ renderRecentTable(_lastTasks); };
 window.kpiRenderDetails = function(){ renderDetailsTable(_lastTasks); };
@@ -19097,6 +19167,98 @@ function renderMatrixTable(tasks){
 }
 
 /* ══ وظائف مساعدة للجداول ══════════════════════════════════ */
+/* ══ جدول توزيع المهام للمدراء ══════════════════════════ */
+function renderMgrDistTable(tasks){
+  var c=el('kpi-mgr-dist-table'); if(!c) return;
+  var mgrs=DB.users.filter(function(u){ return u.role==='manager' && u.id!==CU.id; });
+  if(!mgrs.length){ c.innerHTML='<p style="text-align:center;color:var(--tx3);padding:20px;font-size:12px">لا يوجد مدراء</p>'; return; }
+  var thStyle='padding:7px 10px;font-size:10px;font-weight:700;color:var(--tx2);border-bottom:2px solid var(--border);background:var(--stat);text-align:center;white-space:nowrap;';
+  var h='<table style="width:100%;border-collapse:collapse;font-size:12px">';
+  h+='<thead><tr>';
+  h+='<th style="'+thStyle+';text-align:right">المدير</th>';
+  h+='<th style="'+thStyle+'">الإدارة</th>';
+  h+='<th style="'+thStyle+'">الكل</th>';
+  h+='<th style="'+thStyle+'">✅ مكتملة</th>';
+  h+='<th style="'+thStyle+'">🔄 جارية</th>';
+  h+='<th style="'+thStyle+'">⏳ انتظار</th>';
+  h+='<th style="'+thStyle+'">🔴 متأخرة</th>';
+  h+='<th style="'+thStyle+'">% إنجاز</th>';
+  h+='</tr></thead><tbody>';
+  var todStr=today();
+  mgrs.forEach(function(m, i){
+    var mt=tasks.filter(function(t){ var a=Array.isArray(t.assignedTo)?t.assignedTo:[t.assignedTo]; return a.indexOf(m.id)!==-1; });
+    var tot=mt.length, done=mt.filter(function(t){return t.status==='completed';}).length;
+    var inp=mt.filter(function(t){return t.status==='in_progress';}).length;
+    var pend=mt.filter(function(t){return t.status==='pending';}).length;
+    var late=mt.filter(function(t){return t.deadline&&t.deadline<todStr&&t.status!=='completed'&&t.status!=='cancelled';}).length;
+    var pct=tot?Math.round(done/tot*100):0;
+    var bg=i%2===0?'var(--card)':'var(--stat)';
+    var deptShort=(m.department||'').replace('ادارة ','').replace('إدارة ','');
+    h+='<tr style="background:'+bg+';border-bottom:1px solid var(--border)">';
+    h+='<td style="padding:8px 10px;font-weight:700;white-space:nowrap">'+esc((m.prefix?m.prefix+' ':'')+m.name.split(' ').slice(0,2).join(' '))+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center;font-size:10.5px;color:var(--tx2)">'+esc(deptShort)+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center;font-weight:800;color:#3b82f6">'+tot+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center;font-weight:700;color:#10b981">'+done+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center;font-weight:700;color:#f97316">'+inp+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center;font-weight:700;color:#eab308">'+pend+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center;font-weight:700;color:'+(late>0?'#ef4444':'var(--tx3)')+'">'+late+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center"><div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:6px;background:var(--prog);border-radius:3px;min-width:40px"><div style="height:100%;width:'+pct+'%;background:'+(pct>=80?'#10b981':pct>=50?'#f97316':'#ef4444')+';border-radius:3px"></div></div><span style="font-size:11px;font-weight:700;color:'+(pct>=80?'#10b981':pct>=50?'#f97316':'#ef4444')+'">'+pct+'%</span></div></td>';
+    h+='</tr>';
+  });
+  h+='</tbody></table>';
+  c.innerHTML=h;
+}
+
+/* ══ جدول أداء الموظفين ══════════════════════════════════ */
+function renderEmpPerfTable(tasks){
+  var c=el('kpi-emp-perf-table'); if(!c) return;
+  var emps=DB.users.filter(function(u){ return u.role==='employee'; });
+  if(!emps.length){ c.innerHTML='<p style="text-align:center;color:var(--tx3);padding:20px;font-size:12px">لا يوجد موظفون</p>'; return; }
+  var thStyle='padding:7px 10px;font-size:10px;font-weight:700;color:var(--tx2);border-bottom:2px solid var(--border);background:var(--stat);text-align:center;white-space:nowrap;';
+  var h='<table style="width:100%;border-collapse:collapse;font-size:12px">';
+  h+='<thead><tr>';
+  h+='<th style="'+thStyle+';text-align:right">الموظف</th>';
+  h+='<th style="'+thStyle+'">الإدارة</th>';
+  h+='<th style="'+thStyle+'">الكل</th>';
+  h+='<th style="'+thStyle+'">✅ مكتملة</th>';
+  h+='<th style="'+thStyle+'">🔄 جارية</th>';
+  h+='<th style="'+thStyle+'">⏳ انتظار</th>';
+  h+='<th style="'+thStyle+'">🔴 متأخرة</th>';
+  h+='<th style="'+thStyle+'">⏱ متوسط (يوم)</th>';
+  h+='<th style="'+thStyle+'">% إنجاز</th>';
+  h+='</tr></thead><tbody>';
+  var todStr=today();
+  emps.sort(function(a,b){ return (a.department||'').localeCompare(b.department||''); });
+  emps.forEach(function(e, i){
+    var et=tasks.filter(function(t){ var a=Array.isArray(t.assignedTo)?t.assignedTo:[t.assignedTo]; return a.indexOf(e.id)!==-1; });
+    var tot=et.length, done=et.filter(function(t){return t.status==='completed';}).length;
+    var inp=et.filter(function(t){return t.status==='in_progress';}).length;
+    var pend=et.filter(function(t){return t.status==='pending';}).length;
+    var late=et.filter(function(t){return t.deadline&&t.deadline<todStr&&t.status!=='completed'&&t.status!=='cancelled';}).length;
+    var pct=tot?Math.round(done/tot*100):0;
+    /* متوسط أيام الإنجاز */
+    var durs=et.filter(function(t){return t.status==='completed'&&t.startDate&&t.completionDate;})
+      .map(function(t){return kDiff(t.startDate,t.completionDate);}).filter(function(d){return d!==null&&d>=0;});
+    var avgDays=durs.length?Math.round(durs.reduce(function(a,b){return a+b;},0)/durs.length):null;
+    var bg=i%2===0?'var(--card)':'var(--stat)';
+    var deptShort=(e.department||'').replace('ادارة ','').replace('إدارة ','');
+    h+='<tr style="background:'+bg+';border-bottom:1px solid var(--border)">';
+    h+='<td style="padding:8px 10px;font-weight:700;white-space:nowrap">'+esc((e.title?e.title+' / ':'')+e.name.split(' ').slice(0,2).join(' '))+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center;font-size:10.5px;color:var(--tx2)">'+esc(deptShort)+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center;font-weight:800;color:#3b82f6">'+tot+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center;font-weight:700;color:#10b981">'+done+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center;font-weight:700;color:#f97316">'+inp+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center;font-weight:700;color:#eab308">'+pend+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center;font-weight:700;color:'+(late>0?'#ef4444':'var(--tx3)')+'">'+late+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center;color:var(--tx2)">'+(avgDays!==null?avgDays+' يوم':'—')+'</td>';
+    h+='<td style="padding:8px 10px;text-align:center"><div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:6px;background:var(--prog);border-radius:3px;min-width:50px"><div style="height:100%;width:'+pct+'%;background:'+(pct>=80?'#10b981':pct>=50?'#f97316':'#ef4444')+';border-radius:3px"></div></div><span style="font-size:11px;font-weight:700;color:'+(pct>=80?'#10b981':pct>=50?'#f97316':'#ef4444')+'">'+pct+'%</span></div></td>';
+    h+='</tr>';
+  });
+  h+='</tbody></table>';
+  c.innerHTML=h;
+}
+
+
 function tHead(cols){
   return '<thead><tr style="background:var(--stat)">'+cols.map(function(col){
     return '<th style="padding:7px 10px;text-align:right;font-size:10px;font-weight:700;color:var(--tx2);border-bottom:1px solid var(--border);white-space:nowrap">'+col+'</th>';
@@ -19664,6 +19826,15 @@ window.secQuickForce=secQuickForce;
   #main-hdr-mgr .hdr-right > *, #main-hdr-emp .hdr-right > *{
     display:none !important;
   }
+  /* 0. زر إضافة مهمة سريعة */
+  #main-hdr-mgr .hdr-right > button[onclick*="openTaskModal"],
+  #main-hdr-emp .hdr-right > button[onclick*="openTaskModal"]{
+    display:inline-flex !important;
+    height:30px !important; padding:0 10px !important;
+    font-size:11px !important; border-radius:8px !important;
+    align-items:center !important; justify-content:center !important;
+    flex-shrink:0 !important;
+  }
   /* 1. جرس الإشعارات */
   #main-hdr-mgr #notif-bell-mgr, #main-hdr-emp #notif-bell-emp{
     display:inline-flex !important; align-items:center !important; justify-content:center !important;
@@ -19704,17 +19875,22 @@ window.secQuickForce=secQuickForce;
   /* إخفاء زر العودة وشارة الدور */
   #main-hdr-mgr .hdr-left > button:first-child{ display:none !important; }
   #main-hdr-mgr .badge-role, #main-hdr-emp .badge-role{ display:none !important; }
-  /* الترحيب */
+  /* الترحيب — يظهر السطرين كاملين بخط أصغر */
   #main-hdr-mgr .hdr-greet, #main-hdr-emp .hdr-greet{
-    min-width:0 !important; flex:1 !important;
+    min-width:0 !important; flex:1 !important; gap:1px !important;
   }
   #main-hdr-mgr .hdr-greet-hi, #main-hdr-emp .hdr-greet-hi{
-    font-size:15px !important; font-weight:700 !important; line-height:1.3 !important;
-    white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important;
+    font-size:13px !important; font-weight:700 !important; line-height:1.3 !important;
+    white-space:normal !important; overflow:visible !important;
+    display:-webkit-box !important; -webkit-line-clamp:2 !important;
+    -webkit-box-orient:vertical !important; overflow:hidden !important;
+    word-break:break-word !important;
   }
   #main-hdr-mgr .hdr-greet-sub, #main-hdr-emp .hdr-greet-sub{
-    font-size:12px !important; white-space:nowrap !important;
-    overflow:hidden !important; text-overflow:ellipsis !important;
+    font-size:11px !important; display:block !important;
+    white-space:nowrap !important; overflow:hidden !important;
+    text-overflow:ellipsis !important; color:var(--tx3) !important;
+    margin-top:1px !important;
   }
 
   /* زر القائمة ☰ */
@@ -19729,7 +19905,12 @@ window.secQuickForce=secQuickForce;
     padding:5px 10px 5px 58px !important;
     min-height:78px !important;
   }
-  #main-hdr-mgr .hdr-greet-hi, #main-hdr-emp .hdr-greet-hi{ font-size:14px !important; }
+  #main-hdr-mgr .hdr-greet-hi, #main-hdr-emp .hdr-greet-hi{
+    font-size:12.5px !important;
+  }
+  #main-hdr-mgr .hdr-greet-sub, #main-hdr-emp .hdr-greet-sub{
+    font-size:10.5px !important;
+  }
   #main-hdr-mgr #notif-bell-mgr, #main-hdr-emp #notif-bell-emp{ width:34px !important; height:34px !important; }
   #main-hdr-mgr .tgl, #main-hdr-emp .tgl{ width:34px !important; height:34px !important; }
 }
@@ -20030,4 +20211,454 @@ window.secQuickForce=secQuickForce;
   }
 })();
 </script>
-</body></html>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     وحدة ربط بريد Outlook بالمهام (نمط Microsoft To Do)
+     - ربط حقيقي عبر Microsoft Graph + MSAL.js  (يتطلب Client ID من Azure)
+     - وضع تجريبي/محاكاة يعمل تلقائياً عند عدم توفّر الإعدادات
+     - سحب الإيميلات المعلّمة (Flagged) وتحويلها إلى مهام للموظف
+     وحدة مستقلة بالكامل — لا تعدّل أي كود قائم.
+     ════════════════════════════════════════════════════════════════════ -->
+<style>
+#ov-outlook .ol-wrap{display:flex;flex-direction:column;gap:14px}
+#ov-outlook .ol-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--stat)}
+#ov-outlook .ol-acct{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;color:var(--text)}
+#ov-outlook .ol-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 3px rgba(0,0,0,.04)}
+#ov-outlook .ol-dot.on{background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.25)}
+#ov-outlook .ol-dot.off{background:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.2)}
+#ov-outlook .ol-dot.demo{background:#f59e0b;box-shadow:0 0 0 3px rgba(245,158,11,.25)}
+#ov-outlook .ol-btn{padding:9px 15px;font-size:13px;font-weight:800;border-radius:10px;border:1px solid var(--border);cursor:pointer;background:var(--stat);color:var(--text);transition:all .18s;white-space:nowrap}
+#ov-outlook .ol-btn:hover{transform:translateY(-1px)}
+#ov-outlook .ol-btn-ms{background:linear-gradient(135deg,#0078d4,#005a9e);color:#fff;border:none}
+#ov-outlook .ol-btn-demo{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none}
+#ov-outlook .ol-btn-sync{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:none}
+#ov-outlook .ol-btn-sm{padding:6px 11px;font-size:12px}
+#ov-outlook .ol-list{display:flex;flex-direction:column;gap:9px;max-height:46vh;overflow:auto;padding:2px}
+#ov-outlook .ol-mail{display:flex;align-items:flex-start;gap:11px;padding:12px 13px;border:1px solid var(--border);border-radius:12px;background:var(--card,#fff);transition:all .18s;position:relative}
+#ov-outlook .ol-mail:hover{border-color:#3b82f6;box-shadow:0 4px 16px rgba(59,130,246,.1)}
+#ov-outlook .ol-mail.done{opacity:.55}
+#ov-outlook .ol-flag{font-size:18px;flex-shrink:0;margin-top:1px}
+#ov-outlook .ol-mc{flex:1;min-width:0}
+#ov-outlook .ol-subj{font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px;line-height:1.35}
+#ov-outlook .ol-from{font-size:12px;color:var(--tx2);font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+#ov-outlook .ol-prev{font-size:12px;color:var(--tx3);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#ov-outlook .ol-meta{font-size:11px;color:var(--tx3);font-weight:700}
+#ov-outlook .ol-mact{display:flex;flex-direction:column;gap:6px;flex-shrink:0;align-items:stretch}
+#ov-outlook .ol-badge-done{font-size:10px;font-weight:900;color:#16a34a;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);border-radius:99px;padding:2px 8px;text-align:center}
+#ov-outlook .ol-empty{text-align:center;padding:34px 16px;color:var(--tx3)}
+#ov-outlook .ol-empty .ic{font-size:42px;margin-bottom:8px}
+#ov-outlook .ol-cfg{border:1px dashed var(--border);border-radius:12px;padding:13px 14px;background:var(--stat);display:none}
+#ov-outlook .ol-cfg.show{display:block}
+#ov-outlook .ol-cfg label{display:block;font-size:12px;font-weight:800;color:var(--text);margin:8px 0 4px}
+#ov-outlook .ol-cfg input{width:100%;padding:9px 11px;font-size:13px;border:1px solid var(--border);border-radius:9px;background:var(--card,#fff);color:var(--text)}
+#ov-outlook .ol-hint{font-size:11px;color:var(--tx3);line-height:1.6;margin-top:7px;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.18);border-radius:9px;padding:9px 11px}
+#ov-outlook .ol-asgn{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;font-weight:700;color:var(--tx2)}
+#ov-outlook .ol-asgn select{padding:7px 10px;font-size:12px;border:1px solid var(--border);border-radius:9px;background:var(--card,#fff);color:var(--text)}
+</style>
+
+<div class="ov" id="ov-outlook" onclick="if(event.target===this)closeModal('ov-outlook')">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-hdr">
+      <div>
+        <h2 style="font-family:'Almarai',sans-serif;font-size:clamp(18px,2.4vw,26px);font-weight:900;line-height:1.2">📧 بريد Outlook → مهام</h2>
+        <p style="font-size:12px;color:var(--tx3);margin-top:3px">علّم (Flag) أي إيميل في Outlook ثم استورده هنا كمهمة — تماماً مثل Microsoft To&nbsp;Do</p>
+      </div>
+      <button class="x-btn" onclick="closeModal('ov-outlook')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="ol-wrap">
+
+        <div class="ol-bar">
+          <span class="ol-acct"><span class="ol-dot off" id="ol-dot"></span><span id="ol-acct-txt">غير متصل</span></span>
+          <span style="flex:1"></span>
+          <button class="ol-btn ol-btn-ms" id="ol-connect" onclick="OutlookSync.connect()">🔗 ربط حساب Outlook</button>
+          <button class="ol-btn ol-btn-sync" id="ol-sync" onclick="OutlookSync.sync()" style="display:none">🔄 تحديث</button>
+          <button class="ol-btn ol-btn-demo" id="ol-demo" onclick="OutlookSync.demo()">🧪 وضع تجريبي</button>
+          <button class="ol-btn ol-btn-sm" onclick="OutlookSync.toggleCfg()" title="الإعدادات">⚙️</button>
+        </div>
+
+        <div class="ol-cfg" id="ol-cfg">
+          <label>Azure Application (client) ID</label>
+          <input id="ol-clientid" placeholder="مثال: 11111111-2222-3333-4444-555555555555" autocomplete="off">
+          <label>Directory (tenant) ID — اختياري</label>
+          <input id="ol-tenantid" placeholder="common (افتراضي) أو معرّف المؤسسة" autocomplete="off">
+          <div style="display:flex;gap:8px;margin-top:11px">
+            <button class="ol-btn ol-btn-sync ol-btn-sm" onclick="OutlookSync.saveCfg()">💾 حفظ الإعدادات</button>
+            <button class="ol-btn ol-btn-sm" onclick="OutlookSync.toggleCfg()">إغلاق</button>
+          </div>
+          <div class="ol-hint">
+            <b>كيفية الحصول على Client ID:</b> ادخل إلى <b>portal.azure.com</b> → <b>App registrations</b> → <b>New registration</b> →
+            اختر «<b>Single-page application (SPA)</b>» وأضف عنوان هذه الصفحة كـ Redirect URI →
+            من <b>API permissions</b> أضف صلاحيات <b>Mail.Read</b> و <b>User.Read</b> (Delegated) →
+            انسخ <b>Application (client) ID</b> والصقه أعلاه. بدون هذه الإعدادات يعمل «الوضع التجريبي» تلقائياً.
+            <br><span id="ol-origin-hint" style="color:#2563eb;font-weight:800"></span>
+          </div>
+        </div>
+
+        <div class="ol-asgn" id="ol-asgn-row" style="display:none">
+          <span>👤 إسناد المهام المستوردة إلى:</span>
+          <select id="ol-assignee"></select>
+        </div>
+
+        <div class="ol-list" id="ol-list">
+          <div class="ol-empty">
+            <div class="ic">📭</div>
+            <div style="font-size:14px;font-weight:800;color:var(--tx2)">لا توجد إيميلات بعد</div>
+            <div style="font-size:12px;margin-top:5px">اربط حساب Outlook لسحب الإيميلات المعلّمة، أو جرّب الوضع التجريبي.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn btn-danger" onclick="closeModal('ov-outlook')" style="padding:9px 18px;font-size:14px">🚪 إغلاق</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span id="ol-count" style="font-size:12px;color:var(--tx3);font-weight:700"></span>
+        <button class="btn btn-primary" id="ol-import-all" onclick="OutlookSync.importAll()" style="display:none">⬇️ استيراد الكل كمهام</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════ OutlookSync — ربط Outlook بالمهام ═══════════════ */
+window.OutlookSync = (function(){
+  var CFG_KEY = 'TANIA_OUTLOOK_CFG';
+  var MSAL_SRC = 'https://alcdn.msauth.net/browser/2.38.3/js/msal-browser.min.js';
+  var GRAPH = 'https://graph.microsoft.com/v1.0';
+  var _msal = null;       // instance MSAL
+  var _account = null;    // الحساب المتصل
+  var _mails = [];        // الإيميلات المعروضة
+  var _mode = 'off';      // off | live | demo
+
+  function cfg(){ try{ return JSON.parse(localStorage.getItem(CFG_KEY)||'{}')||{}; }catch(e){ return {}; } }
+  function saveCfgObj(o){ try{ localStorage.setItem(CFG_KEY, JSON.stringify(o)); }catch(e){} }
+  function curUser(){ return (typeof CU!=='undefined' && CU) ? CU : null; }
+  function esc(s){ s=String(s==null?'':s); return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function doneKey(){ var u=curUser(); return 'TANIA_OUTLOOK_DONE_'+(u?u.id:'0'); }
+  function doneSet(){ try{ return new Set(JSON.parse(localStorage.getItem(doneKey())||'[]')); }catch(e){ return new Set(); } }
+  function markDone(id){ var s=doneSet(); s.add(id); try{ localStorage.setItem(doneKey(), JSON.stringify(Array.from(s))); }catch(e){} }
+  function isImported(emailId){
+    if(doneSet().has(emailId)) return true;
+    try{ if(typeof DB!=='undefined' && DB.tasks) return DB.tasks.some(function(t){ return t && t.email && t.email.id===emailId; }); }catch(e){}
+    return false;
+  }
+
+  /* ── الواجهة ── */
+  function open(){
+    if(typeof openModal==='function') openModal('ov-outlook');
+    else { var el=document.getElementById('ov-outlook'); if(el) el.classList.add('show'); }
+    // تعبئة الإعدادات
+    var c=cfg();
+    var ci=document.getElementById('ol-clientid'); if(ci) ci.value=c.clientId||'';
+    var ti=document.getElementById('ol-tenantid'); if(ti) ti.value=c.tenantId||'';
+    var oh=document.getElementById('ol-origin-hint');
+    if(oh) oh.textContent='Redirect URI لهذه الصفحة: '+(location.origin+location.pathname);
+    buildAssignee();
+    refreshBar();
+    if(_mails.length) render();
+  }
+  function toggleCfg(){ var c=document.getElementById('ol-cfg'); if(c) c.classList.toggle('show'); }
+  function saveCfg(){
+    var clientId=(document.getElementById('ol-clientid').value||'').trim();
+    var tenantId=(document.getElementById('ol-tenantid').value||'').trim();
+    saveCfgObj({clientId:clientId, tenantId:tenantId});
+    _msal=null; // إعادة التهيئة عند الربط القادم
+    if(typeof notif==='function') notif('💾 تم حفظ إعدادات Outlook');
+    toggleCfg(); refreshBar();
+  }
+  function buildAssignee(){
+    var u=curUser(); if(!u) return;
+    var row=document.getElementById('ol-asgn-row');
+    var sel=document.getElementById('ol-assignee');
+    if(!row||!sel) return;
+    var isMgr=(u.role==='manager'||u.role==='admin');
+    if(isMgr && typeof DB!=='undefined' && DB.users){
+      row.style.display='flex'; sel.innerHTML='';
+      DB.users.filter(function(x){return x.role!=='admin';}).forEach(function(x){
+        var o=document.createElement('option'); o.value=x.id; o.textContent=(x.prefix? x.prefix+' ':'')+x.name; sel.appendChild(o);
+      });
+      sel.value=u.id;
+    } else { row.style.display='none'; }
+  }
+  function assigneeId(){
+    var sel=document.getElementById('ol-assignee');
+    var u=curUser();
+    if(sel && sel.value && sel.style.display!=='none') return parseInt(sel.value,10);
+    return u?u.id:1;
+  }
+  function refreshBar(){
+    var dot=document.getElementById('ol-dot');
+    var txt=document.getElementById('ol-acct-txt');
+    var connectBtn=document.getElementById('ol-connect');
+    var syncBtn=document.getElementById('ol-sync');
+    if(!dot||!txt) return;
+    if(_mode==='live' && _account){
+      dot.className='ol-dot on'; txt.textContent='متصل: '+(_account.username||_account.name||'Outlook');
+      if(connectBtn) connectBtn.textContent='🔁 إعادة الربط';
+      if(syncBtn) syncBtn.style.display='';
+    } else if(_mode==='demo'){
+      dot.className='ol-dot demo'; txt.textContent='وضع تجريبي (بيانات وهمية)';
+      if(syncBtn) syncBtn.style.display='';
+    } else {
+      dot.className='ol-dot off'; txt.textContent='غير متصل';
+      if(connectBtn) connectBtn.textContent='🔗 ربط حساب Outlook';
+      if(syncBtn) syncBtn.style.display='none';
+    }
+  }
+
+  /* ── MSAL / Graph ── */
+  function loadMsal(){
+    return new Promise(function(res,rej){
+      if(window.msal && window.msal.PublicClientApplication) return res();
+      var s=document.createElement('script'); s.src=MSAL_SRC;
+      s.onload=function(){ res(); };
+      s.onerror=function(){ rej(new Error('تعذّر تحميل مكتبة MSAL — تحقق من الاتصال بالإنترنت')); };
+      document.head.appendChild(s);
+    });
+  }
+  function ensureMsal(){
+    var c=cfg();
+    if(!c.clientId) return Promise.reject({_nocfg:true});
+    if(location.protocol==='file:') return Promise.reject(new Error('الربط الحقيقي يتطلب فتح الصفحة عبر خادم (http/https) وليس كملف محلي. استخدم الوضع التجريبي أو ارفع الصفحة على استضافة.'));
+    return loadMsal().then(function(){
+      if(_msal) return _msal;
+      _msal=new msal.PublicClientApplication({
+        auth:{ clientId:c.clientId, authority:'https://login.microsoftonline.com/'+(c.tenantId||'common'), redirectUri:location.origin+location.pathname },
+        cache:{ cacheLocation:'localStorage', storeAuthStateInCookie:false }
+      });
+      return _msal.initialize ? _msal.initialize().then(function(){return _msal;}) : _msal;
+    });
+  }
+  function connect(){
+    var btn=document.getElementById('ol-connect');
+    if(btn){ btn.disabled=true; btn.textContent='⏳ جارٍ الربط...'; }
+    ensureMsal().then(function(app){
+      return app.loginPopup({ scopes:['User.Read','Mail.Read'], prompt:'select_account' });
+    }).then(function(resp){
+      _account=resp.account; _mode='live';
+      if(typeof notif==='function') notif('✅ تم ربط حساب Outlook بنجاح');
+      refreshBar(); return sync();
+    }).catch(function(err){
+      if(err && err._nocfg){
+        if(typeof notif==='function') notif('⚠️ لم تُضبط إعدادات Azure — سيُفعّل الوضع التجريبي','err');
+        toggleCfg(); demo();
+      } else {
+        if(typeof notif==='function') notif('❌ '+(err && err.message ? err.message : 'فشل الربط'),'err');
+      }
+    }).then(function(){ if(btn){ btn.disabled=false; } refreshBar(); });
+  }
+  function token(){
+    var c=cfg();
+    return _msal.acquireTokenSilent({ scopes:['Mail.Read'], account:_account })
+      .then(function(r){ return r.accessToken; })
+      .catch(function(){ return _msal.acquireTokenPopup({ scopes:['Mail.Read'] }).then(function(r){ _account=r.account; return r.accessToken; }); });
+  }
+  function sync(){
+    if(_mode==='demo'){ return Promise.resolve(demoData()).then(function(d){ _mails=d; render(); }); }
+    if(!_account){ if(typeof notif==='function') notif('اربط حساب Outlook أولاً','err'); return Promise.resolve(); }
+    var sb=document.getElementById('ol-sync'); if(sb){ sb.disabled=true; sb.textContent='⏳ تحديث...'; }
+    return token().then(function(tok){
+      var url=GRAPH+"/me/messages?$filter="+encodeURIComponent("flag/flagStatus eq 'flagged'")+
+              "&$select="+encodeURIComponent('id,subject,bodyPreview,receivedDateTime,from,webLink,flag')+"&$top=50";
+      return fetch(url,{ headers:{ Authorization:'Bearer '+tok } });
+    }).then(function(r){ if(!r.ok) throw new Error('Graph '+r.status); return r.json(); })
+      .then(function(j){
+        _mails=(j.value||[]).map(function(m){
+          return {
+            id:m.id, subject:m.subject||'(بدون موضوع)', preview:m.bodyPreview||'',
+            from:(m.from&&m.from.emailAddress&&m.from.emailAddress.name)||'',
+            fromEmail:(m.from&&m.from.emailAddress&&m.from.emailAddress.address)||'',
+            received:m.receivedDateTime||'', webLink:m.webLink||'',
+            due:(m.flag&&m.flag.dueDateTime&&m.flag.dueDateTime.dateTime)||''
+          };
+        }).sort(function(a,b){ return (b.received||'').localeCompare(a.received||''); });
+        if(typeof notif==='function') notif('🔄 تم سحب '+_mails.length+' إيميل معلّم');
+        render();
+      }).catch(function(err){
+        if(typeof notif==='function') notif('❌ فشل سحب الإيميلات: '+(err.message||err),'err');
+      }).then(function(){ var b=document.getElementById('ol-sync'); if(b){ b.disabled=false; b.textContent='🔄 تحديث'; } });
+  }
+
+  /* ── الوضع التجريبي ── */
+  function demo(){ _mode='demo'; _account=null; refreshBar(); _mails=demoData(); render(); if(typeof notif==='function') notif('🧪 الوضع التجريبي مُفعّل'); }
+  function demoData(){
+    var now=Date.now();
+    return [
+      {id:'demo-1',subject:'طلب اعتماد فاتورة المورد — شركة الإمداد الموحّد',from:'قسم المشتريات',fromEmail:'purchasing@tania.sa',preview:'مرفق طيه فاتورة المورد رقم INV-2026-0451 بقيمة 84,500 ريال، يرجى الاعتماد قبل نهاية الأسبوع لإتمام الصرف.',received:new Date(now-3600e3).toISOString(),webLink:'#',due:''},
+      {id:'demo-2',subject:'متابعة شحنة المستودع الرئيسي رقم WH-7782',from:'إدارة المستودعات',fromEmail:'warehouse@tania.sa',preview:'الشحنة وصلت لميناء جدة وتحتاج إلى تخليص جمركي وتحديث بيانات الاستلام في النظام.',received:new Date(now-2*3600e3).toISOString(),webLink:'#',due:new Date(now+2*86400e3).toISOString()},
+      {id:'demo-3',subject:'تقرير أداء أسطول النقل — مايو 2026',from:'إدارة الحركة والنقل',fromEmail:'fleet@tania.sa',preview:'يرجى مراجعة مؤشرات استهلاك الوقود وأوقات التسليم وإرسال الملاحظات قبل اجتماع يوم الأحد.',received:new Date(now-5*3600e3).toISOString(),webLink:'#',due:''},
+      {id:'demo-4',subject:'تحديث خطة الـ Last Mile للمنطقة الشرقية',from:'إدارة Last Mile',fromEmail:'lastmile@tania.sa',preview:'نحتاج إعادة توزيع نقاط التسليم وإضافة مندوبين جدد لتغطية الطلبات المتزايدة.',received:new Date(now-26*3600e3).toISOString(),webLink:'#',due:''}
+    ];
+  }
+
+  /* ── العرض ── */
+  function fmtDate(iso){ if(!iso) return ''; try{ var d=new Date(iso); return d.toLocaleDateString('ar-SA')+' '+d.toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'}); }catch(e){ return iso; } }
+  function render(){
+    var list=document.getElementById('ol-list');
+    var cnt=document.getElementById('ol-count');
+    var importAll=document.getElementById('ol-import-all');
+    if(!list) return;
+    if(!_mails.length){
+      list.innerHTML='<div class="ol-empty"><div class="ic">📭</div><div style="font-size:14px;font-weight:800;color:var(--tx2)">لا توجد إيميلات معلّمة</div><div style="font-size:12px;margin-top:5px">علّم (Flag) إيميلات في Outlook ثم اضغط «تحديث».</div></div>';
+      if(cnt) cnt.textContent=''; if(importAll) importAll.style.display='none'; return;
+    }
+    var remaining=0;
+    list.innerHTML=_mails.map(function(m){
+      var done=isImported(m.id);
+      if(!done) remaining++;
+      return '<div class="ol-mail'+(done?' done':'')+'" data-id="'+esc(m.id)+'">'
+        +'<span class="ol-flag">🚩</span>'
+        +'<div class="ol-mc">'
+          +'<div class="ol-subj">'+esc(m.subject)+'</div>'
+          +'<div class="ol-from">✉️ '+esc(m.from||m.fromEmail||'مرسِل غير معروف')+(m.fromEmail?' <span class="ol-meta">&lt;'+esc(m.fromEmail)+'&gt;</span>':'')+'</div>'
+          +(m.preview?'<div class="ol-prev">'+esc(m.preview)+'</div>':'')
+          +'<div class="ol-meta" style="margin-top:5px">🕒 '+esc(fmtDate(m.received))+(m.due?' • ⏰ استحقاق: '+esc(fmtDate(m.due)):'')+'</div>'
+        +'</div>'
+        +'<div class="ol-mact">'
+          +(done?'<span class="ol-badge-done">✓ مستوردة</span>'
+                :'<button class="ol-btn ol-btn-sync ol-btn-sm" onclick="OutlookSync.toTask(\''+esc(m.id).replace(/'/g,"\\'")+'\')">➕ مهمة</button>')
+          +(m.webLink&&m.webLink!=='#'?'<button class="ol-btn ol-btn-sm" onclick="OutlookSync.openMail(\''+esc(m.webLink).replace(/'/g,"\\'")+'\')">↗ فتح</button>':'')
+        +'</div>'
+      +'</div>';
+    }).join('');
+    if(cnt) cnt.textContent=_mails.length+' إيميل • '+remaining+' غير مستوردة';
+    if(importAll) importAll.style.display=remaining>0?'':'none';
+  }
+  function openMail(url){ if(url && url!=='#') window.open(url,'_blank','noopener'); }
+
+  /* ── التحويل إلى مهمة ── */
+  function buildTask(m){
+    var u=curUser();
+    var creator=u||{id:1,name:'النظام'};
+    var aid=assigneeId();
+    var serial=(typeof getUserCode==='function')?getUserCode(creator):'OL';
+    var td=(typeof today==='function')?today():new Date().toISOString().split('T')[0];
+    var deadline=td;
+    if(m.due){ try{ deadline=new Date(m.due).toISOString().split('T')[0]; }catch(e){} }
+    var desc='📧 مهمة من بريد Outlook\n'
+      +'المرسِل: '+(m.from||'')+(m.fromEmail?' <'+m.fromEmail+'>':'')+'\n'
+      +'التاريخ: '+fmtDate(m.received)+'\n'
+      +(m.webLink&&m.webLink!=='#'?'رابط الإيميل: '+m.webLink+'\n':'')
+      +'\n'+(m.preview||'');
+    return {
+      id:Date.now()+Math.floor(Math.random()*1000),
+      serial:serial,
+      title:m.subject||'(بدون موضوع)',
+      description:desc,
+      priority:'medium',
+      status:'pending',
+      assignedTo:[aid],
+      createdBy:creator.id,
+      deadline:deadline,
+      progress:0,
+      startDate:td,
+      notes:'',
+      attachments:[],
+      completionDate:null,
+      createdAt:td,
+      source:'outlook',
+      email:{ id:m.id, subject:m.subject, from:m.from, fromEmail:m.fromEmail, received:m.received, webLink:m.webLink }
+    };
+  }
+  function toTask(emailId){
+    if(typeof DB==='undefined' || !DB.tasks){ if(typeof notif==='function') notif('قاعدة البيانات غير جاهزة','err'); return; }
+    if(isImported(emailId)){ if(typeof notif==='function') notif('هذا الإيميل مستورد مسبقاً','err'); return; }
+    var m=_mails.filter(function(x){return x.id===emailId;})[0];
+    if(!m){ return; }
+    var t=buildTask(m);
+    DB.tasks.push(t);
+    markDone(emailId);
+    if(typeof saveDB==='function') saveDB();
+    if(typeof notif==='function') notif('✅ تم تحويل الإيميل إلى مهمة: '+t.title);
+    render();
+    if(typeof refreshCurrentView==='function'){ try{ refreshCurrentView(); }catch(e){} }
+  }
+  function importAll(){
+    if(typeof DB==='undefined' || !DB.tasks){ return; }
+    var n=0;
+    _mails.forEach(function(m){
+      if(isImported(m.id)) return;
+      DB.tasks.push(buildTask(m)); markDone(m.id); n++;
+    });
+    if(n>0){
+      if(typeof saveDB==='function') saveDB();
+      if(typeof notif==='function') notif('⬇️ تم استيراد '+n+' إيميل كمهام');
+      render();
+      if(typeof refreshCurrentView==='function'){ try{ refreshCurrentView(); }catch(e){} }
+    } else if(typeof notif==='function'){ notif('لا توجد إيميلات جديدة للاستيراد','err'); }
+  }
+
+  /* ── حقن عنصر القائمة في كل القوائم ── */
+  function injectMenuItem(){
+    var ITEM={ id:'outlook', icon:'📧', label:'بريد Outlook', action:function(){ OutlookSync.open(); } };
+    function addTo(arr){
+      if(!Array.isArray(arr)) return;
+      if(arr.some(function(x){return x&&x.id==='outlook';})) return;
+      var li=-1;
+      for(var i=0;i<arr.length;i++){ if(arr[i]&&arr[i].id==='logout'){ li=i; break; } }
+      if(li>=0) arr.splice(li,0,ITEM); else arr.push(ITEM);
+    }
+    try{ if(typeof MENU_MANAGER!=='undefined') addTo(MENU_MANAGER); }catch(e){}
+    try{ if(typeof MENU_TEAM!=='undefined') addTo(MENU_TEAM); }catch(e){}
+    try{ if(typeof MENU_EMPLOYEE!=='undefined') addTo(MENU_EMPLOYEE); }catch(e){}
+    try{ if(typeof MENU_ADMIN!=='undefined') addTo(MENU_ADMIN); }catch(e){}
+    try{ if(typeof sbBuildMenu==='function' && typeof CU!=='undefined' && CU) sbBuildMenu(); }catch(e){}
+  }
+  function init(){
+    var tries=0;
+    var iv=setInterval(function(){
+      tries++;
+      var ready=(typeof MENU_MANAGER!=='undefined')||(typeof MENU_EMPLOYEE!=='undefined');
+      if(ready){ injectMenuItem(); clearInterval(iv); }
+      if(tries>120) clearInterval(iv);
+    },120);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+
+  return { open:open, toggleCfg:toggleCfg, saveCfg:saveCfg, connect:connect, sync:sync, demo:demo, toTask:toTask, importAll:importAll, openMail:openMail, _state:function(){return {mode:_mode,mails:_mails,account:_account};} };
+})();
+</script>
+<!-- ════════════ نهاية وحدة ربط Outlook ════════════ -->
+
+<style>
+/* ════ ضبط نافذة إضافة/تفاصيل المهمة على الجوال — حجم متوسط متمركز ════
+   تُطبَّق فقط على شاشات الجوال (≤ 768px) وعلى نافذة المهمة ov-task فقط،
+   فتظهر كبطاقة متوسطة في منتصف الشاشة بدل ملء الشاشة. ════ */
+@media (max-width:768px){
+  #ov-task{ align-items:center !important; justify-content:center !important; padding:12px !important; }
+  #ov-task .modal{
+    width:min(90vw,440px) !important;
+    max-width:440px !important;
+    max-height:80vh !important;
+    margin:auto !important;
+    border-radius:18px !important;
+    box-shadow:0 18px 60px rgba(0,0,0,.45) !important;
+  }
+}
+@media (max-width:420px){
+  #ov-task .modal{
+    width:min(92vw,400px) !important;
+    max-width:400px !important;
+    max-height:82vh !important;
+  }
+}
+@media (max-width:768px) and (orientation:landscape){
+  #ov-task .modal{ max-height:90vh !important; width:min(70vw,460px) !important; }
+}
+</style>
+
+<style>
+/* ════ تكبير جدول «📋 مؤشرات الأداء التفصيلية» — خط أكبر وخلايا أوسع ════ */
+#kpi-details-table table{ font-size:15px !important; }
+#kpi-details-table th{ font-size:13px !important; padding:11px 12px !important; }
+#kpi-details-table td{ padding:11px 12px !important; }
+#kpi-details-table table tr td[style*="font-size:11px"],
+#kpi-details-table table tr td[style*="font-size:10px"]{ font-size:13px !important; }
+@media (max-width:768px){
+  #kpi-details-table table{ font-size:14px !important; }
+  #kpi-details-table th, #kpi-details-table td{ padding:9px 9px !important; }
+}
+</style>
+
+</body></html>    
