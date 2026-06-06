@@ -26,51 +26,78 @@
    الزمني عن آخر مرة (أي تم تعديل الملف وإعادة نشره) نزيد رقم النسخة
    الفرعي تلقائياً ونخزّنه. هكذا يرتفع الرقم تلقائياً بلا تدخّل يدوي.
    ============================================================ */
-const APP_BUILD='2026-06-07T10:00:00Z'; /* AUTO-BUMP: يتغيّر مع كل إعادة بناء للملف */
+/* بصمة البناء = تاريخ آخر تعديل فعلي للملف (تلقائي 100% بلا تدخّل يدوي).
+   كلما عُدِّل الملف وأُعيد فتحه/نشره يتغيّر document.lastModified فيرتفع رقم النسخة. */
+const APP_BUILD=(function(){
+  try{
+    var lm=document.lastModified;                 /* مثل: 06/07/2026 10:00:00 */
+    var d=lm?new Date(lm):null;
+    if(d && !isNaN(d.getTime())) return d.toISOString().slice(0,16); /* دقّة الدقيقة */
+  }catch(e){}
+  return '2026-06-07T10:00';                       /* احتياطي */
+})();
+const APP_BUILD_DATE=String(APP_BUILD).slice(0,10);
 const APP_VERSION=(function(){
   var BASE_MAJOR=13;            /* الرقم الرئيسي الثابت */
-  var FALLBACK='v13.39';         /* قيمة احتياطية إن تعذّر التخزين */
+  var START_MINOR=47;           /* يُكمل تلقائياً من أحدث نسخة معروفة */
+  var FALLBACK='v'+BASE_MAJOR+'.'+(START_MINOR+1);
   try{
     var KEY='tania_app_version_state';
     var raw=localStorage.getItem(KEY);
     var st = raw ? JSON.parse(raw) : null;
-    /* مسح بيانات النسخة القديمة إن تغيّر APP_BUILD */
-    if(st && st.build!==APP_BUILD){ localStorage.removeItem(KEY); st=null; raw=null; }
     if(st && st.build===APP_BUILD && typeof st.version==='string'){
-      /* نفس البناء — نفس النسخة (لا نزيد عند كل تحميل، فقط عند بناء جديد) */
+      /* نفس البناء (لم يُعدّل الملف) — نفس النسخة، لا نزيد عند كل تحميل */
       return st.version;
     }
-    /* بناء جديد (الملف عُدّل/أُعيد حفظه) → زِد الرقم الفرعي تلقائياً */
-    var lastMinor = (st && typeof st.minor==='number') ? st.minor : 4; /* آخر نسخة كانت 13.4 */
+    /* بناء جديد (الملف عُدِّل) → زِد الرقم الفرعي تلقائياً */
+    var lastMinor = (st && typeof st.minor==='number') ? st.minor : START_MINOR;
     var newMinor  = lastMinor + 1;
     var version   = 'v'+BASE_MAJOR+'.'+newMinor;
-    localStorage.setItem(KEY, JSON.stringify({build:APP_BUILD, version:version, minor:newMinor}));
+    try{ localStorage.setItem(KEY, JSON.stringify({build:APP_BUILD, version:version, minor:newMinor})); }catch(_e){}
     return version;
   }catch(e){ return FALLBACK; }
 })();
-/* شارة النسخة العائمة على يمين المنصة (خارج المحتوى) — تُملأ تلقائياً من APP_VERSION */
+try{ window.APP_VERSION=APP_VERSION; window.APP_BUILD=APP_BUILD; window.APP_BUILD_DATE=APP_BUILD_DATE; }catch(e){}
+/* شارة النسخة الموحّدة — تظهر داخل وخارج المنصة وتُحدَّث تلقائياً من APP_VERSION */
 (function(){
+  function buildTitle(){
+    var bd=APP_BUILD.replace('T',' ');
+    return 'نسخة المنصة '+APP_VERSION+'\nآخر تعديل للملف: '+bd+'\n(التحديث التلقائي للنسخة فعّال — انقر للتفاصيل)';
+  }
+  function dotSpan(){
+    return '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#34d399;margin-inline-end:6px;box-shadow:0 0 0 2px rgba(52,211,153,.4);vertical-align:middle"></span>';
+  }
+  function syncInternal(){
+    /* مزامنة كل أماكن عرض النسخة داخل/خارج المنصة */
+    var inner=document.getElementById('app-version-badge'); if(inner) inner.textContent=APP_VERSION;
+    var sp=document.getElementById('splash-version'); if(sp) sp.textContent=APP_VERSION;
+    var lv=document.getElementById('app-ver-badge'); if(lv) lv.innerHTML=APP_VERSION+' &nbsp;·&nbsp; '+APP_BUILD_DATE;
+  }
   function injectVersionBadge(){
     try{
-      if(document.getElementById('floating-version-badge')) {
-        document.getElementById('floating-version-badge').innerHTML = '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#34d399;margin-inline-end:5px;box-shadow:0 0 0 2px rgba(52,211,153,.35);vertical-align:middle"></span>'+APP_VERSION;
-        return;
+      var b=document.getElementById('floating-version-badge');
+      if(!b){
+        b=document.createElement('div');
+        b.id='floating-version-badge';
+        b.style.cssText='position:fixed;bottom:10px;right:10px;z-index:2147483646;font-family:Tajawal,monospace,sans-serif;font-size:11px;font-weight:800;letter-spacing:.05em;color:#fff;background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:5px 11px;border-radius:10px;box-shadow:0 3px 14px rgba(99,102,241,.45);cursor:pointer;user-select:none;opacity:.9;pointer-events:auto;transition:opacity .2s,transform .2s';
+        b.onmouseenter=function(){ b.style.opacity='1'; b.style.transform='translateY(-1px)'; };
+        b.onmouseleave=function(){ b.style.opacity='.9'; b.style.transform='none'; };
+        b.onclick=function(){
+          var msg='🟢 '+APP_VERSION+' • آخر تعديل: '+APP_BUILD.replace('T',' ');
+          if(typeof notif==='function') notif(msg); else alert(msg);
+        };
+        (document.body||document.documentElement).appendChild(b);
       }
-      var b=document.createElement('div');
-      b.id='floating-version-badge';
-      b.innerHTML='<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#34d399;margin-inline-end:5px;box-shadow:0 0 0 2px rgba(52,211,153,.35);vertical-align:middle"></span>'+APP_VERSION;
-      b.title='نسخة المنصة '+APP_VERSION+' ('+APP_BUILD+') — المزامنة التلقائية فعّالة';
-      b.style.cssText='position:fixed;bottom:10px;right:10px;z-index:2147483646;font-family:monospace,sans-serif;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#fff;background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:4px 10px;border-radius:8px;box-shadow:0 2px 10px rgba(99,102,241,.4);cursor:default;user-select:none;opacity:.82;pointer-events:auto';
-      (document.body||document.documentElement).appendChild(b);
-      /* مزامنة أي عنصر داخلي مخفي إن وُجد */
-      var inner=document.getElementById('app-version-badge'); if(inner) inner.textContent=APP_VERSION;
-      var sp=document.getElementById('splash-version'); if(sp) sp.textContent=APP_VERSION;
+      b.innerHTML=dotSpan()+APP_VERSION;
+      b.title=buildTitle();
+      syncInternal();
     }catch(e){}
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', injectVersionBadge);
   else injectVersionBadge();
   window.addEventListener('load', injectVersionBadge);
 })();
+
 function openUserManagementModal(){
 if(CU?.role !== 'admin'){
 notif('❌ هذه الميزة متاحة فقط للأدمن','err');
@@ -1518,7 +1545,7 @@ html.dark .hub3-ring-pct{ color:#fff; filter:drop-shadow(0 0 7px color-mix(in sr
     <div style="display:none"><span id="app-version-badge"></span></div>
   </div>
 </div> </div>  <div class="sb-user-card" id="sb-user-card"> <div class="sb-user-avatar" id="sb-user-avatar">?</div> <div class="sb-user-info"> <div class="sb-user-name" id="sb-user-name">جارٍ التحميل...</div> <div class="sb-user-role" id="sb-user-role">—</div> </div> </div>  <div class="sb-section-label">القائمة الرئيسية</div>  <div class="sb-menu" id="sb-menu" role="menu">  </div>  <div class="sb-badges-row" id="sb-badges-row" style="display:none"> <div class="sb-badge-item" id="sb-badge-pending" title="مهام معلقة"> <span class="sb-badge-icon">⏳</span> <span class="sb-badge-count" id="sb-badge-pending-count">0</span> </div> <div class="sb-badge-item" id="sb-badge-inprogress" title="مهام جارية"> <span class="sb-badge-icon">🔄</span> <span class="sb-badge-count" id="sb-badge-inprogress-count">0</span> </div> <div class="sb-badge-item" id="sb-badge-overdue" title="مهام متأخرة"> <span class="sb-badge-icon">🔴</span> <span class="sb-badge-count" id="sb-badge-overdue-count">0</span> </div> </div>  <div class="sb-footer">  <button class="sb-footer-btn" onclick="openModal('ov-chpw')" title="تغيير كلمة المرور" style="flex-shrink:0"> <span class="sb-footer-icon">🔑</span> </button> <button class="sb-footer-btn" onclick="openModal('ov-settings')" title="الإعدادات"> <span class="sb-footer-icon">⚙️</span> <span class="sb-footer-label">الإعدادات</span> </button> <button class="sb-footer-btn" onclick="doLogout()" title="تسجيل الخروج"> <span class="sb-footer-icon">🚪</span> <span class="sb-footer-label">خروج</span> </button> <button id="cs-badge" class="sb-footer-btn cs-st-init" onclick="openSyncMenu()" title="حالة المزامنة"> <span class="sb-footer-icon"><span class="cs-dot"></span></span> <span class="sb-footer-label" id="cs-badge-text">يتم المزامنة التلقائية</span> </button> </div> </nav> <div id="notif" role="alert" aria-live="assertive" aria-atomic="true"></div> 
-<div id="pg-splash" style="position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a0f2e 0%,#0d1b4b 30%,#0f2460 60%,#1a3a7c 100%);overflow:hidden">  <canvas id="splash-stars" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.6"></canvas>  <div style="position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(180,195,240,0.13) 0%,transparent 70%);animation:splashPulse 3s ease-in-out infinite;top:50%;left:50%;transform:translate(-50%,-50%)"></div> <div style="position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(160,175,225,0.1) 0%,transparent 70%);animation:splashPulse 3s ease-in-out infinite 1s;top:50%;left:50%;transform:translate(-50%,-50%)"></div>  <div id="splash-content" style="position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;gap:0;opacity:0;animation:splashFadeIn 0.8s ease forwards 0.3s">  <div style="position:relative;width:180px;height:180px;margin-bottom:20px">  <div style="position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:rgba(210,215,235,0.9);border-right-color:rgba(170,180,210,0.45);animation:splashRotate 3s linear infinite"></div> <div style="position:absolute;inset:8px;border-radius:50%;border:1.5px solid transparent;border-bottom-color:rgba(200,210,230,0.55);border-left-color:rgba(160,175,205,0.35);animation:splashRotate 4s linear infinite reverse"></div>  <div style="position:absolute;inset:16px;border-radius:50%;background:rgba(15,30,65,0.6);backdrop-filter:blur(12px);border:1px solid rgba(200,210,240,0.18);box-shadow:0 0 45px rgba(180,190,230,0.25),inset 0 0 22px rgba(180,190,230,0.06)"> </div>  <div style="position:absolute;inset:12px;display:flex;align-items:center;justify-content:center"> <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;gap:3px">  <div style="width:72%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,216,238,0.6),transparent);margin-bottom:2px"></div>  <span style="font-family:'Noto Naskh Arabic','Scheherazade New','Cairo',serif;font-size:clamp(28px,6vw,38px);font-weight:700;color:#eaf0fb;text-shadow:0 0 14px rgba(144,184,224,0.85),0 0 4px rgba(160,200,240,0.5);direction:rtl;display:block;line-height:1.15;letter-spacing:0">تانيا</span>  <span style="font-family:'Lobster Two','Lobster',cursive;font-size:clamp(16px,3.5vw,21px);font-style:italic;font-weight:700;color:#c8d8ee;opacity:0.95;display:block;line-height:1.1">Tania</span>  <div style="width:52%;height:1.5px;background:#e05060;opacity:0.85;border-radius:1px;margin-top:1px"></div>  <div style="width:72%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,216,238,0.45),transparent);margin-top:3px"></div> </div> </div>  <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at center,rgba(180,195,240,0.1) 0%,transparent 60%);animation:splashGlow 2s ease-in-out infinite alternate"></div> </div>  <div style="margin-bottom:16px;filter:drop-shadow(0 4px 20px rgba(160,185,230,0.45));animation:splashBounce 2s ease-in-out infinite;display:flex;flex-direction:column;align-items:center;gap:1px"> <span style="font-family:'Noto Naskh Arabic','Scheherazade New','Cairo',serif;font-size:28px;font-weight:700;color:#eaf0fb;text-shadow:0 0 10px rgba(144,184,224,0.8);direction:rtl;display:block;line-height:1.15;letter-spacing:0">تانيا</span> <span style="font-family:'Lobster Two','Lobster',cursive;font-size:14px;font-style:italic;font-weight:700;color:#c8d8ee;opacity:0.9;display:block;line-height:1.1">Tania</span> <div style="width:42px;height:1px;background:#e05060;opacity:0.75;border-radius:1px"></div> </div>  <div style="text-align:center;margin-bottom:8px"> <h1 style="font-family:'Almarai','Cairo',sans-serif;font-size:clamp(26px,5vw,36px);font-weight:900;color:#ffffff;margin:0;letter-spacing:1px;text-shadow:0 2px 20px rgba(180,195,240,0.5)">مهام وأعمال</h1> <p style="font-family:'Cairo','Tajawal',sans-serif;font-size:14px;font-weight:600;color:#ffffff;margin:6px 0 0;letter-spacing:0.5px">إدارة الإمداد</p> </div>  <div style="width:200px;height:3px;background:rgba(255,255,255,0.1);border-radius:99px;overflow:hidden;margin-top:32px"> <div id="splash-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#9baacf,#c8d0e8,#9baacf);background-size:200%;border-radius:99px;animation:splashBarMove 2s linear forwards,splashBarGradient 1s linear infinite"></div> </div> <p style="font-size:11px;color:rgba(148,163,184,0.6);margin-top:10px;font-family:'Tajawal',sans-serif;letter-spacing:1px">جاري التحميل...</p><p style="font-size:10px;color:rgba(99,102,241,0.7);margin-top:4px;font-family:'Lobster',cursive;letter-spacing:1.5px"><span id="splash-version">v13.3</span></p> </div>   <div id="splash-hint" style="position:absolute;bottom:40px;left:50%;transform:translateX(-50%);opacity:0;display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none;white-space:nowrap"> <div style="font-family:'Tajawal',sans-serif;font-size:13px;color:rgba(180,200,240,0.9);letter-spacing:1.5px">انقر أو حرّك الماوس للمتابعة</div> <div style="display:flex;gap:7px;align-items:center"> <div style="width:7px;height:7px;border-radius:50%;background:rgba(160,185,230,0.8);animation:splashDot 1.4s ease-in-out infinite"></div> <div style="width:7px;height:7px;border-radius:50%;background:rgba(160,185,230,0.8);animation:splashDot 1.4s ease-in-out 0.22s infinite"></div> <div style="width:7px;height:7px;border-radius:50%;background:rgba(160,185,230,0.8);animation:splashDot 1.4s ease-in-out 0.44s infinite"></div> </div> </div> <div id="splash-particles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
+<div id="pg-splash" style="position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a0f2e 0%,#0d1b4b 30%,#0f2460 60%,#1a3a7c 100%);overflow:hidden">  <canvas id="splash-stars" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.6"></canvas>  <div style="position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(180,195,240,0.13) 0%,transparent 70%);animation:splashPulse 3s ease-in-out infinite;top:50%;left:50%;transform:translate(-50%,-50%)"></div> <div style="position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(160,175,225,0.1) 0%,transparent 70%);animation:splashPulse 3s ease-in-out infinite 1s;top:50%;left:50%;transform:translate(-50%,-50%)"></div>  <div id="splash-content" style="position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;gap:0;opacity:0;animation:splashFadeIn 0.8s ease forwards 0.3s">  <div style="position:relative;width:180px;height:180px;margin-bottom:20px">  <div style="position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:rgba(210,215,235,0.9);border-right-color:rgba(170,180,210,0.45);animation:splashRotate 3s linear infinite"></div> <div style="position:absolute;inset:8px;border-radius:50%;border:1.5px solid transparent;border-bottom-color:rgba(200,210,230,0.55);border-left-color:rgba(160,175,205,0.35);animation:splashRotate 4s linear infinite reverse"></div>  <div style="position:absolute;inset:16px;border-radius:50%;background:rgba(15,30,65,0.6);backdrop-filter:blur(12px);border:1px solid rgba(200,210,240,0.18);box-shadow:0 0 45px rgba(180,190,230,0.25),inset 0 0 22px rgba(180,190,230,0.06)"> </div>  <div style="position:absolute;inset:12px;display:flex;align-items:center;justify-content:center"> <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;gap:3px">  <div style="width:72%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,216,238,0.6),transparent);margin-bottom:2px"></div>  <span style="font-family:'Noto Naskh Arabic','Scheherazade New','Cairo',serif;font-size:clamp(28px,6vw,38px);font-weight:700;color:#eaf0fb;text-shadow:0 0 14px rgba(144,184,224,0.85),0 0 4px rgba(160,200,240,0.5);direction:rtl;display:block;line-height:1.15;letter-spacing:0">تانيا</span>  <span style="font-family:'Lobster Two','Lobster',cursive;font-size:clamp(16px,3.5vw,21px);font-style:italic;font-weight:700;color:#c8d8ee;opacity:0.95;display:block;line-height:1.1">Tania</span>  <div style="width:52%;height:1.5px;background:#e05060;opacity:0.85;border-radius:1px;margin-top:1px"></div>  <div style="width:72%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,216,238,0.45),transparent);margin-top:3px"></div> </div> </div>  <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at center,rgba(180,195,240,0.1) 0%,transparent 60%);animation:splashGlow 2s ease-in-out infinite alternate"></div> </div>  <div style="margin-bottom:16px;filter:drop-shadow(0 4px 20px rgba(160,185,230,0.45));animation:splashBounce 2s ease-in-out infinite;display:flex;flex-direction:column;align-items:center;gap:1px"> <span style="font-family:'Noto Naskh Arabic','Scheherazade New','Cairo',serif;font-size:28px;font-weight:700;color:#eaf0fb;text-shadow:0 0 10px rgba(144,184,224,0.8);direction:rtl;display:block;line-height:1.15;letter-spacing:0">تانيا</span> <span style="font-family:'Lobster Two','Lobster',cursive;font-size:14px;font-style:italic;font-weight:700;color:#c8d8ee;opacity:0.9;display:block;line-height:1.1">Tania</span> <div style="width:42px;height:1px;background:#e05060;opacity:0.75;border-radius:1px"></div> </div>  <div style="text-align:center;margin-bottom:8px"> <h1 style="font-family:'Almarai','Cairo',sans-serif;font-size:clamp(26px,5vw,36px);font-weight:900;color:#ffffff;margin:0;letter-spacing:1px;text-shadow:0 2px 20px rgba(180,195,240,0.5)">مهام وأعمال</h1> <p style="font-family:'Cairo','Tajawal',sans-serif;font-size:14px;font-weight:600;color:#ffffff;margin:6px 0 0;letter-spacing:0.5px">إدارة الإمداد</p> </div>  <div style="width:200px;height:3px;background:rgba(255,255,255,0.1);border-radius:99px;overflow:hidden;margin-top:32px"> <div id="splash-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#9baacf,#c8d0e8,#9baacf);background-size:200%;border-radius:99px;animation:splashBarMove 2s linear forwards,splashBarGradient 1s linear infinite"></div> </div> <p style="font-size:11px;color:rgba(148,163,184,0.6);margin-top:10px;font-family:'Tajawal',sans-serif;letter-spacing:1px">جاري التحميل...</p><p style="font-size:10px;color:rgba(99,102,241,0.7);margin-top:4px;font-family:'Lobster',cursive;letter-spacing:1.5px"><span id="splash-version"></span></p> </div>   <div id="splash-hint" style="position:absolute;bottom:40px;left:50%;transform:translateX(-50%);opacity:0;display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none;white-space:nowrap"> <div style="font-family:'Tajawal',sans-serif;font-size:13px;color:rgba(180,200,240,0.9);letter-spacing:1.5px">انقر أو حرّك الماوس للمتابعة</div> <div style="display:flex;gap:7px;align-items:center"> <div style="width:7px;height:7px;border-radius:50%;background:rgba(160,185,230,0.8);animation:splashDot 1.4s ease-in-out infinite"></div> <div style="width:7px;height:7px;border-radius:50%;background:rgba(160,185,230,0.8);animation:splashDot 1.4s ease-in-out 0.22s infinite"></div> <div style="width:7px;height:7px;border-radius:50%;background:rgba(160,185,230,0.8);animation:splashDot 1.4s ease-in-out 0.44s infinite"></div> </div> </div> <div id="splash-particles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
 </div> <style>@keyframes splashFadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes splashFadeOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.05)}}@keyframes splashPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.6}50%{transform:translate(-50%,-50%) scale(1.15);opacity:1}}@keyframes splashRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes splashGlow{from{opacity:0.3}to{opacity:0.8}}@keyframes splashBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@keyframes splashBarMove{0%{width:0%}100%{width:100%}}@keyframes splashBarGradient{0%{background-position:0% 50%}100%{background-position:200% 50%}}@keyframes particleFloat{0%{transform:translateY(0) translateX(0) scale(1);opacity:0.8}100%{transform:translateY(-100vh) translateX(var(--dx)) scale(0);opacity:0}}@keyframes splashDot{0%,80%,100%{transform:scale(0.5);opacity:0.3}40%{transform:scale(1.3);opacity:1}}</style> <script>(function(){
 var canvas=document.getElementById('splash-stars');
 var ctx=canvas.getContext('2d');
@@ -1941,7 +1968,7 @@ if(hint){ hint.style.transition='opacity 0.8s'; hint.style.opacity='1'; }
 <div id="mgr-kpi" style="display:none">
 
 <!-- ══ عنوان احترافي لشاشة مؤشرات الأداء ══ -->
-<div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap">
+<div class="kpi-hero" style="display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap">
   <div class="kpi-title-icon" style="width:52px;height:52px;border-radius:15px;background:linear-gradient(135deg,#4f46e5,#7c3aed,#db2777);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 8px 22px rgba(124,58,237,.35);flex-shrink:0">📈</div>
   <div style="flex:1;min-width:0">
     <div style="font-family:'Reem Kufi','Almarai',sans-serif;font-size:clamp(22px,3vw,34px);font-weight:700;background:linear-gradient(135deg,#4338ca,#7c3aed,#db2777);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;letter-spacing:-0.01em">مؤشرات الأداء الرئيسية</div>
@@ -18364,7 +18391,7 @@ else boot();
 })();
 </script>
 <script>/* FIX-SEC: بيان النسخة تلقائي - غيّر APP_VERSION/APP_BUILD_DATE فقط */
-window.APP_VERSION=(typeof APP_VERSION!=='undefined'?APP_VERSION:"v13.3");window.APP_BUILD_DATE=(typeof APP_BUILD!=='undefined'?APP_BUILD:"2026-06-04");
+window.APP_VERSION=(typeof APP_VERSION!=='undefined'?APP_VERSION:"v13.48");window.APP_BUILD_DATE=(typeof APP_BUILD_DATE!=='undefined'?APP_BUILD_DATE:(typeof APP_BUILD!=='undefined'?String(APP_BUILD).slice(0,10):"2026-06-07"));
 (function(){function mk(){try{var lp=document.getElementById('pg-login');if(!lp||document.getElementById('app-ver-badge'))return;var d=document.createElement('div');d.id='app-ver-badge';d.style.cssText='position:absolute;bottom:14px;left:0;right:0;text-align:center;color:rgba(100,116,139,.55);font-size:10px;letter-spacing:.08em;font-family:monospace;user-select:none;pointer-events:none;z-index:5';d.innerHTML=window.APP_VERSION+' &nbsp;\u00b7&nbsp; '+window.APP_BUILD_DATE;if(getComputedStyle(lp).position==='static')lp.style.position='relative';lp.appendChild(d);}catch(x){}}if(document.readyState!=='loading')mk();else document.addEventListener('DOMContentLoaded',mk);})();</script>
 
 <script>
@@ -20620,7 +20647,6 @@ window.OutlookSync = (function(){
 })();
 </script>
 <!-- ════════════ نهاية وحدة ربط Outlook ════════════ -->
-
 <style>
 /* ════ ضبط نافذة إضافة/تفاصيل المهمة على الجوال — حجم متوسط متمركز ════
    تُطبَّق فقط على شاشات الجوال (≤ 768px) وعلى نافذة المهمة ov-task فقط،
@@ -20661,4 +20687,45 @@ window.OutlookSync = (function(){
 }
 </style>
 
-</body></html>    
+<style>
+/* ════ تحسين شاشة مؤشرات الأداء — هيدر احترافي + ترحيب بعرض الجوال + بطاقات متوسطة ════ */
+
+/* الهيدر كبانر احترافي في مقدمة الشاشة */
+#mgr-kpi .kpi-hero{
+  background:linear-gradient(135deg,rgba(79,70,229,.10),rgba(124,58,237,.07) 45%,rgba(219,39,119,.06));
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px 20px;
+  box-shadow:0 6px 22px rgba(124,58,237,.10);
+}
+html.dark #mgr-kpi .kpi-hero{
+  background:linear-gradient(135deg,rgba(99,102,241,.16),rgba(124,58,237,.10) 45%,rgba(219,39,119,.08));
+  border-color:rgba(255,255,255,.10);
+}
+
+/* ══ الجوال (≤600px): هيدر متمركز ورسالة الترحيب بعرض الجوال الكامل ══ */
+@media (max-width:600px){
+  #mgr-kpi .kpi-hero{
+    flex-direction:column !important;
+    align-items:center !important;
+    text-align:center !important;
+    gap:9px !important;
+    padding:15px 14px !important;
+  }
+  #mgr-kpi .kpi-hero > div{ width:100% !important; min-width:0 !important; }
+  /* رسالة الترحيب/الوصف بعرض الجوال */
+  #mgr-kpi .kpi-hero > div > div:last-child{ font-size:12.5px !important; line-height:1.6 !important; }
+
+  /* بطاقات الإدارات: حجم متوسط — عمودان دائماً بدل العرض الكامل */
+  #kpi-dept-cards > div{ grid-template-columns:1fr 1fr !important; gap:9px !important; }
+  #kpi-dept-cards [onclick*="kpiOpenDeptTasks"]{ padding:11px 12px !important; border-radius:12px !important; }
+}
+
+/* ══ الجوال الصغير (≤400px): تبقى البطاقات عمودين (متوسطة) لا عموداً واحداً ══ */
+@media (max-width:400px){
+  #kpi-dept-cards > div{ grid-template-columns:1fr 1fr !important; gap:8px !important; }
+  #kpi-dept-cards [onclick*="kpiOpenDeptTasks"]{ padding:10px 10px !important; }
+}
+</style>
+
+</body></html>
