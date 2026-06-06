@@ -19003,11 +19003,11 @@ function renderLineChart(tasks){
     series:[{name:'مكتملة',data:compArr},{name:'متبقية',data:remArr}],
     colors:['#10b981','#f59e0b'],
     responsive:[{breakpoint:768,options:{
-      chart:{height:330},
+      chart:{height:430},
       plotOptions:{bar:{columnWidth:'70%'}},
       dataLabels:{offsetY:-14,style:{fontSize:'12px'}},
-      xaxis:{labels:{rotate:-50,rotateAlways:true,trim:true,style:{fontSize:'9px'}}},
-      grid:{padding:{top:22,bottom:28,left:4,right:4}}
+      xaxis:{labels:{rotate:-50,rotateAlways:true,trim:false,offsetY:34,style:{fontSize:'9px'}}},
+      grid:{padding:{top:22,bottom:110,left:4,right:4}}
     }}],
     plotOptions:{bar:{horizontal:false,columnWidth:'62%',borderRadius:6,borderRadiusApplication:'end',dataLabels:{position:'top'}}},
     dataLabels:{enabled:true,offsetY:-28,style:{fontSize:'15px',fontWeight:900,colors:['#10b981','#f59e0b']},background:{enabled:false},formatter:function(v){return v>0?v:'';}},
@@ -19034,11 +19034,11 @@ function renderColChart(tasks){
     chart:{type:'bar',height:260,background:'transparent',fontFamily:"'Cairo','Tajawal',sans-serif",toolbar:{show:false}},
     series:[{name:'مهام',data:data}],
     responsive:[{breakpoint:768,options:{
-      chart:{height:340},
+      chart:{height:470},
       plotOptions:{bar:{columnWidth:'66%'}},
       dataLabels:{offsetY:-12,style:{fontSize:'11px'}},
-      xaxis:{labels:{rotate:-50,rotateAlways:true,hideOverlappingLabels:false,trim:false,offsetY:9,style:{colors:K_PALETTE,fontSize:'10px',fontWeight:800}}},
-      grid:{padding:{top:18,bottom:62,left:4,right:4}}
+      xaxis:{title:{text:'الإدارة',offsetY:40,style:{color:kSub(),fontSize:'12.5px',fontWeight:800,fontFamily:"'Cairo','Tajawal',sans-serif"}},labels:{rotate:-50,rotateAlways:true,hideOverlappingLabels:false,trim:false,offsetY:34,style:{colors:K_PALETTE,fontSize:'10px',fontWeight:800}}},
+      grid:{padding:{top:18,bottom:125,left:4,right:4}}
     }}],
     xaxis:{categories:cats,
       title:{text:'الإدارة',offsetY:18,style:{color:kSub(),fontSize:'12.5px',fontWeight:800,fontFamily:"'Cairo','Tajawal',sans-serif"}},
