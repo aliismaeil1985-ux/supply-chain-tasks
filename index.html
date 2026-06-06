@@ -18866,6 +18866,13 @@ function renderLineChart(tasks){
     chart:{type:'bar',height:400,background:'transparent',fontFamily:"'Cairo','Tajawal',sans-serif",toolbar:{show:false},stacked:false},
     series:[{name:'مكتملة',data:compArr},{name:'متبقية',data:remArr}],
     colors:['#10b981','#f59e0b'],
+    responsive:[{breakpoint:768,options:{
+      chart:{height:330},
+      plotOptions:{bar:{columnWidth:'70%'}},
+      dataLabels:{offsetY:-14,style:{fontSize:'12px'}},
+      xaxis:{labels:{rotate:-50,rotateAlways:true,trim:true,style:{fontSize:'9px'}}},
+      grid:{padding:{top:22,bottom:28,left:4,right:4}}
+    }}],
     plotOptions:{bar:{horizontal:false,columnWidth:'62%',borderRadius:6,borderRadiusApplication:'end',dataLabels:{position:'top'}}},
     dataLabels:{enabled:true,offsetY:-28,style:{fontSize:'15px',fontWeight:900,colors:['#10b981','#f59e0b']},background:{enabled:false},formatter:function(v){return v>0?v:'';}},
     xaxis:{categories:cats,
@@ -18890,6 +18897,13 @@ function renderColChart(tasks){
   _charts.col=new ApexCharts(d,{
     chart:{type:'bar',height:260,background:'transparent',fontFamily:"'Cairo','Tajawal',sans-serif",toolbar:{show:false}},
     series:[{name:'مهام',data:data}],
+    responsive:[{breakpoint:768,options:{
+      chart:{height:320},
+      plotOptions:{bar:{columnWidth:'68%'}},
+      dataLabels:{offsetY:-12,style:{fontSize:'11px'}},
+      xaxis:{labels:{rotate:-55,rotateAlways:true,hideOverlappingLabels:false,trim:true,style:{fontSize:'9px'}}},
+      grid:{padding:{top:22,bottom:40,left:4,right:4}}
+    }}],
     xaxis:{categories:cats,
       title:{text:'الإدارة',offsetY:18,style:{color:kSub(),fontSize:'12.5px',fontWeight:800,fontFamily:"'Cairo','Tajawal',sans-serif"}},
       labels:{rotate:-30,rotateAlways:false,hideOverlappingLabels:true,trim:true,style:{colors:kSub(),fontSize:'11px',fontWeight:700}},axisBorder:{show:true,color:kGrid()},axisTicks:{show:true,color:kGrid()}},
