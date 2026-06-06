@@ -1521,6 +1521,59 @@ html.dark .hub3-ring-pct{ color:#fff; filter:drop-shadow(0 0 7px color-mix(in sr
   setTimeout(wire,1500); setTimeout(wire,3500);
 })();
 </script>
+<style id="task-modal-font-enhance">
+/* ===== تحسين خط بيانات المهمة في نافذة العرض والتعديل ===== */
+#ov-task .modal-body,
+#ov-task .stab-panel{ font-family:'Cairo','Tajawal',sans-serif; }
+
+/* العناوين (Labels): أكبر + أوضح + أغمق */
+#ov-task label{
+  font-size:14.5px !important;
+  font-weight:800 !important;
+  color:var(--text) !important;
+  letter-spacing:.1px !important;
+  line-height:1.5 !important;
+}
+
+/* قيم الحقول: خط أوضح + أكبر + تباين أعلى */
+#ov-task input,
+#ov-task select,
+#ov-task textarea{
+  font-family:'Cairo','Tajawal',sans-serif !important;
+  font-size:15.5px !important;
+  font-weight:600 !important;
+  color:var(--text) !important;
+  line-height:1.6 !important;
+}
+#ov-task input::placeholder,
+#ov-task textarea::placeholder{ color:var(--tx3) !important; font-weight:500 !important; }
+
+/* حقول الشبكة الثلاثية (الأولوية/الحالة/الإدارة) — رفع الوضوح */
+#ov-task .grid3-form label{ font-size:13px !important; font-weight:800 !important; color:var(--text) !important; }
+#ov-task .grid3-form select{ font-size:13.5px !important; font-weight:700 !important; }
+
+/* حقول التواريخ */
+#ov-task .task-date-field label{ font-size:12.5px !important; font-weight:800 !important; color:var(--text) !important; }
+#ov-task .task-dates-grid input{ font-size:14px !important; font-weight:700 !important; }
+
+/* عنوان النافذة */
+#ov-task .modal-hdr h2{ font-weight:900 !important; color:var(--text) !important; }
+
+/* تبويبات النافذة */
+#ov-task .sec-tabs .stab{ font-size:13.5px !important; font-weight:800 !important; }
+
+/* على الجوال: إبقاء قيم الإدخال 16px لمنع تكبير iOS مع الحفاظ على الوضوح */
+@media (max-width:768px){
+  #ov-task label{ font-size:13.5px !important; font-weight:800 !important; }
+  #ov-task input,
+  #ov-task select,
+  #ov-task textarea{ font-size:16px !important; font-weight:600 !important; }
+  #ov-task .grid3-form label{ font-size:12px !important; }
+  #ov-task .grid3-form select{ font-size:13px !important; }
+  #ov-task .task-date-field label{ font-size:12px !important; }
+  #ov-task .task-dates-grid input{ font-size:14px !important; }
+}
+</style>
 </head>
 <body> 
 <template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#2c2468"/><rect x="30" y="30" width="40" height="40" rx="11" fill="url(#g)"/><text x="50" y="58" font-family="Arial" font-size="22" font-weight="900" fill="#fff" text-anchor="middle">إ</text><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c6ef2"/><stop offset="1" stop-color="#4f46e5"/></linearGradient></defs></svg></template>
@@ -11562,16 +11615,25 @@ localStorage.setItem(storageKey(uid), JSON.stringify(_history));
 } catch(e){}
 }
 function nowIso(){ return new Date().toISOString(); }
+function _arUnit(n,one,two,few,many){
+if(n===1) return one;
+if(n===2) return two;
+if(n>=3 && n<=10) return n+' '+few;
+return n+' '+many;
+}
 function relativeTime(s){
 if(!s) return '';
-var d=Math.floor((Date.now()-new Date(s).getTime())/1000);
-if(d<60) return 'الآن';
-if(d<3600) return Math.floor(d/60)+' دقيقة';
-if(d<86400) return Math.floor(d/3600)+' ساعة';
-if(d<172800) return 'أمس';
+var diff=Math.floor((Date.now()-new Date(s).getTime())/1000);
+if(diff<0) diff=0; /* تجاهل فروق الساعة/الخادم */
+if(diff<60) return 'الآن';
+if(diff<3600){ var m=Math.floor(diff/60); return 'منذ '+_arUnit(m,'دقيقة','دقيقتين','دقائق','دقيقة'); }
+if(diff<86400){ var h=Math.floor(diff/3600); return 'منذ '+_arUnit(h,'ساعة','ساعتين','ساعات','ساعة'); }
+if(diff<172800) return 'أمس';
+if(diff<604800){ var dd=Math.floor(diff/86400); return 'منذ '+_arUnit(dd,'يوم','يومين','أيام','يوماً'); }
 return new Date(s).toLocaleDateString('ar-SA',{month:'short',day:'numeric'});
 }
-function todayStr(){ return new Date().toISOString().split('T')[0]; }
+function _localDateStr(d){ d=(d instanceof Date)?d:new Date(d); if(isNaN(d.getTime())) return 'unknown'; var y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),da=String(d.getDate()).padStart(2,'0'); return y+'-'+m+'-'+da; }
+function todayStr(){ return _localDateStr(new Date()); }
 function isUnread(n){ return n.state==='unread'; }
 function isRead(n){ return n.state==='read'; }
 function isArchived(n){ return n.state==='archived'; }
@@ -11612,7 +11674,7 @@ if(badge){ badge.style.display = 'none'; badge.textContent = '0'; }
 });
 var pill = document.getElementById('ntf-panel-unread-pill');
 if(pill){
-pill.textContent = String(unread);
+pill.textContent = unread > 99 ? '99+' : String(unread);
 pill.style.display = unread > 0 ? 'inline-block' : 'none';
 }
 var allCount = 0;
@@ -11783,7 +11845,7 @@ return { icon:'🔔', title:'لا توجد إشعارات بعد', sub:'ستظه
 function renderPanel(){
 var body = document.getElementById('ntf-panel-body');
 if(!body) return;
-var items = _filterByTab(_history);
+var items = _filterByTab(_history).slice().sort(function(a,b){ return new Date(b.ts).getTime() - new Date(a.ts).getTime(); });
 if(!items.length){
 var em = _emptyMessage(_activeTab);
 body.innerHTML =
@@ -11799,13 +11861,13 @@ return;
 }
 var rows = [];
 var today = todayStr();
-var yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+var yesterday = _localDateStr(new Date(Date.now() - 86400000));
 // Group separator rows
 var lastGroup = null;
 items.forEach(function(n){
-var d = n.ts ? n.ts.split('T')[0] : 'unknown';
+var d = n.ts ? _localDateStr(new Date(n.ts)) : 'unknown';
 var label = d === today ? 'اليوم' : (d === yesterday ? 'أمس' :
-new Date(d).toLocaleDateString('ar-SA', {weekday:'long', month:'short', day:'numeric'}));
+(d === 'unknown' ? '—' : new Date(n.ts).toLocaleDateString('ar-SA', {weekday:'long', month:'short', day:'numeric'})));
 if(label !== lastGroup){
 lastGroup = label;
 rows.push('<tr class="ntf-group-sep-row"><td colspan="6"><span class="ntf-date-group">'+label+'</span></td></tr>');
@@ -11917,7 +11979,7 @@ return '<tr class="ntf-tr'+stateClass+'" data-ntf-id="'+n.id+'" data-task-id="'+
 (truncBody?'<div class="ntf-tr-sub">'+_esc(truncBody)+'</div>':'')+
 '</td>'+
 '<td class="ntf-td-type"><span class="ntf-item-type-chip">'+cfg.label+'</span></td>'+
-'<td class="ntf-td-time"><span class="ntf-tr-time">'+relativeTime(n.ts)+'</span></td>'+
+'<td class="ntf-td-time"><span class="ntf-tr-time" data-ntf-ts="'+(n.ts||'')+'">'+relativeTime(n.ts)+'</span></td>'+
 '<td class="ntf-td-acts">'+actMark+actArch+actRes+actDel+openLink+'</td>'+
 '</tr>';
 }
@@ -12360,6 +12422,8 @@ if(curId&&!_initialized) initForUser();
 if(curId){patchSaveDB();patchDBArrays();}
 },600);
 setInterval(function(){if(window.CU){updateBadges();checkForTaskChanges();}},8000);
+/* تحديث الأوقات النسبية ووقت آخر تحديث أثناء فتح اللوحة */
+setInterval(function(){ if(!_panelOpen) return; try{ var nodes=document.querySelectorAll('#ntf-panel-body [data-ntf-ts]'); nodes.forEach(function(el){ var ts=el.getAttribute('data-ntf-ts'); if(ts) el.textContent=relativeTime(ts); }); if(typeof _updatePanelFooterTime==='function') _updatePanelFooterTime(); }catch(e){} },30000);
 window.addEventListener('ntf:login',function(){_initialized=false;_history=[];_taskSnapshot={};try{Object.keys(sessionStorage).filter(function(k){return k.indexOf('ntf_shown_')===0;}).forEach(function(k){sessionStorage.removeItem(k);});}catch(e){};setTimeout(initForUser,200);});
 })();</script>
 <script>
