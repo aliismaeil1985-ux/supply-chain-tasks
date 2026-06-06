@@ -19677,6 +19677,41 @@ window.secQuickForce=secQuickForce;
 }
 
 /* ════════════════════════════════════════════════════════════
+   تنظيم فلاتر الرسوم + دوائر الحالة على الجوال — v13.46
+   • فلتر الرسوم: صفوف منظّمة (العنوان / من+إلى بصف / الأزرار السريعة
+     بصف / الموظف بصف) بدل التكدّس العشوائي.
+   • دوائر الحالة (جارية/مكتملة/انتظار): الثلاثة على صف واحد.
+   ════════════════════════════════════════════════════════════ */
+@media (max-width:600px){
+  /* ── دوائر الحالة الثلاث على صف واحد ── */
+  .status-circles-container{ grid-template-columns:repeat(3,1fr) !important; gap:6px !important; padding:11px 8px !important; }
+  .circle-box{ width:82px !important; height:82px !important; margin-bottom:6px !important; }
+  .circle-pct{ font-size:16px !important; }
+  .circle-lbl{ font-size:10px !important; padding:2px 7px !important; }
+  .circle-count{ font-size:9px !important; }
+
+  /* ── فلتر الرسوم البيانية: صفوف منظّمة ── */
+  #chart-filter-bar{ padding:12px !important; gap:8px !important; row-gap:9px !important; }
+  /* العنوان: صف كامل */
+  #chart-filter-bar > div:nth-child(1){ flex:1 1 100% !important; }
+  /* من + إلى: جنباً إلى جنب على صف واحد */
+  #chart-filter-bar > div:nth-child(2), #chart-filter-bar > div:nth-child(3){ flex:1 1 calc(50% - 4px) !important; min-width:0 !important; }
+  #chart-filter-bar > div:nth-child(2) input, #chart-filter-bar > div:nth-child(3) input{ flex:1 1 auto !important; min-width:0 !important; width:100% !important; }
+  /* الأزرار السريعة: صف واحد موزّع بالتساوي */
+  #chart-filter-bar > div:nth-child(4){ flex:1 1 100% !important; flex-wrap:nowrap !important; gap:5px !important; overflow-x:auto !important; }
+  #chart-filter-bar > div:nth-child(4)::-webkit-scrollbar{ display:none; }
+  #chart-filter-bar > div:nth-child(4) button{ flex:1 1 0 !important; min-width:0 !important; white-space:nowrap !important; padding-inline:6px !important; }
+  /* الموظف: صف كامل */
+  #chart-filter-bar > div:nth-child(5){ flex:1 1 100% !important; min-width:0 !important; }
+  #chart-filter-bar > div:nth-child(5) select{ flex:1 1 auto !important; width:100% !important; min-width:0 !important; }
+}
+@media (max-width:380px){
+  .circle-box{ width:74px !important; height:74px !important; }
+  .circle-pct{ font-size:15px !important; }
+  .circle-lbl{ font-size:9px !important; padding:1px 6px !important; }
+}
+
+/* ════════════════════════════════════════════════════════════
    أزرار الهيدر على الجوال — مجموعة متناسقة أنيقة — v13.45
    كانت الأزرار غير متجانسة (قائمة 44px زرقاء / جرس 40px أبيض /
    صورة 36px خضراء). نوحّدها: نفس الحجم (40px) ونصف القطر (12px)
