@@ -21166,318 +21166,85 @@ html.dark #mgr-kpi .kpi-hero{
 })();
 </script>
 
-<style id="mobile-header-redesign-v3">
-/* ════════════════════════════════════════════════════════════
-   إعادة تنظيم هيدر الجوال — v3
-   • صفّان: الصف الأول أزرار كأيقونات (من اليسار إلى اليمين)،
-     الصف الثاني رسالة الترحيب بشكل أنيق.
-   • الأزرار النصية تتحوّل إلى رموز حتى لا تُقتطع أو تختفي.
-   (يوضع في نهاية المستند ليكسب الأولوية على القواعد السابقة)
-   ════════════════════════════════════════════════════════════ */
+
+
+
+
+<style id="mobile-header-css-only-v5">
+/* ═══════════ توسيط الهيدر — CSS فقط (آمن للتمرير 100%) ═══════════
+   لا يلمس html/body/overflow/overscroll/touch-action إطلاقاً،
+   لذا لا يمكن أن يؤثّر على تمرير الصفحة. تنسيق الهيدر فقط. */
 @media (max-width:768px){
-  :root{ --hdr-h:98px !important; }
+  :root{ --hdr-h:100px !important; }
 
   #main-hdr-mgr, #main-hdr-emp{
-    display:flex !important;
-    flex-direction:column !important;
-    align-items:stretch !important;
-    height:auto !important;
-    min-height:0 !important;
-    padding:9px 12px 9px 58px !important; /* مساحة لزر القائمة ☰ على اليسار */
-    gap:8px !important;
+    display:flex !important; flex-direction:column !important;
+    align-items:center !important; justify-content:center !important;
+    height:auto !important; min-height:0 !important;
+    padding:8px 8px !important; gap:7px !important; text-align:center !important;
   }
-
-  /* ── الصف الأول: شريط الأزرار (أيقونات) ── */
+  /* الصف الأول: الأزرار في منتصف الشاشة */
   #main-hdr-mgr .hdr-right, #main-hdr-emp .hdr-right{
-    order:-1 !important;
-    display:flex !important;
-    flex-direction:row !important;
-    direction:ltr !important;              /* الترتيب من اليسار إلى اليمين */
-    align-items:center !important;
-    justify-content:flex-start !important; /* تبدأ من جهة اليسار */
-    gap:8px !important;
-    flex-wrap:nowrap !important;
-    width:100% !important;
-    padding:0 0 8px 0 !important;
-    margin:0 !important;
+    order:-1 !important; display:flex !important; flex-direction:row !important;
+    flex-wrap:wrap !important; align-items:center !important; justify-content:center !important;
+    gap:8px !important; width:100% !important; padding:0 0 7px 0 !important; margin:0 !important;
     border-bottom:1px solid var(--border) !important;
   }
-
-  /* إخفاء العناصر غير اللازمة فقط (دون إخفاء زر الأدمن المُدار بالـJS) */
   #main-hdr-mgr .hdr-user-info, #main-hdr-emp .hdr-user-info{ display:none !important; }
   #back-nav-btn-mgr, #back-nav-btn-emp{ display:none !important; }
+  #main-hdr-mgr .hdr-left > button:first-child{ display:none !important; }
 
-  /* مقاس أيقونة موحّد لكل أزرار الشريط (عدا مفتاح المظهر) */
+  /* مقاس موحّد للأزرار (بدون font-size عام لتفادي تعارض الأولوية) */
   #main-hdr-mgr .hdr-right > button, #main-hdr-emp .hdr-right > button{
     width:38px !important; height:38px !important; padding:0 !important;
-    border-radius:11px !important; flex:0 0 auto !important;
+    border-radius:11px !important; flex:0 0 auto !important; line-height:1 !important;
     display:inline-flex !important; align-items:center !important; justify-content:center !important;
-    font-size:17px !important; line-height:1 !important; white-space:nowrap !important;
   }
+  /* تحويل الأزرار النصية إلى رموز — أولوية أعلى عبر > button.class/#id */
+  #main-hdr-mgr .hdr-right > button.hdr-logout-btn, #main-hdr-emp .hdr-right > button.hdr-logout-btn{ font-size:0 !important; }
+  #main-hdr-mgr .hdr-right > button.hdr-logout-btn::before, #main-hdr-emp .hdr-right > button.hdr-logout-btn::before{ content:"🚪"; font-size:18px !important; }
+  #main-hdr-mgr .hdr-right > button[onclick*="openTaskModal"], #main-hdr-emp .hdr-right > button[onclick*="openTaskModal"]{ font-size:0 !important; }
+  #main-hdr-mgr .hdr-right > button[onclick*="openTaskModal"]::before, #main-hdr-emp .hdr-right > button[onclick*="openTaskModal"]::before{ content:"＋"; font-size:23px !important; font-weight:900 !important; color:#fff !important; }
+  #main-hdr-mgr .hdr-right > button#admin-panel-btn{ font-size:0 !important; }
+  #main-hdr-mgr .hdr-right > button#admin-panel-btn::before{ content:"🛡️"; font-size:18px !important; }
+  #main-hdr-mgr .hdr-right > button#notif-bell-mgr, #main-hdr-emp .hdr-right > button#notif-bell-emp{ font-size:18px !important; position:relative !important; }
+  #main-hdr-mgr .hdr-right > button#lang-btn, #main-hdr-emp .hdr-right > button#lang-btn-emp{ font-size:12.5px !important; font-weight:800 !important; }
+  /* مفتاح المظهر يبقى بشكل مفتاح */
+  #main-hdr-mgr .tgl, #main-hdr-emp .tgl{ display:inline-flex !important; width:44px !important; height:24px !important; flex:0 0 auto !important; padding:0 !important; }
 
-  /* زر إضافة مهمة → رمز ＋ */
-  #main-hdr-mgr .hdr-right > button[onclick*="openTaskModal"],
-  #main-hdr-emp .hdr-right > button[onclick*="openTaskModal"]{ font-size:0 !important; }
-  #main-hdr-mgr .hdr-right > button[onclick*="openTaskModal"]::before,
-  #main-hdr-emp .hdr-right > button[onclick*="openTaskModal"]::before{
-    content:"＋"; font-size:23px !important; font-weight:900 !important; color:#fff !important;
-  }
-
-  /* جرس الإشعارات */
-  #main-hdr-mgr #notif-bell-mgr, #main-hdr-emp #notif-bell-emp{ position:relative !important; font-size:18px !important; }
-
-  /* زر اللغة EN (رمز نصي مدمج) */
-  #main-hdr-mgr #lang-btn, #main-hdr-emp #lang-btn-emp{ font-size:12.5px !important; font-weight:800 !important; }
-
-  /* زر الخروج → رمز باب */
-  #main-hdr-mgr .hdr-logout-btn, #main-hdr-emp .hdr-logout-btn{ font-size:0 !important; }
-  #main-hdr-mgr .hdr-logout-btn::before, #main-hdr-emp .hdr-logout-btn::before{
-    content:"🚪"; font-size:18px !important;
-  }
-
-  /* زر لوحة الأدمن (يظهر للأدمن فقط) → رمز درع */
-  #main-hdr-mgr #admin-panel-btn{ font-size:0 !important; }
-  #main-hdr-mgr #admin-panel-btn::before{ content:"🛡️"; font-size:18px !important; }
-
-  /* مفتاح تبديل المظهر — يبقى على شكل مفتاح صغير */
-  #main-hdr-mgr .tgl, #main-hdr-emp .tgl{
-    display:inline-flex !important; width:42px !important; height:24px !important;
-    flex:0 0 auto !important; padding:0 !important; align-self:center !important;
-  }
-
-  /* ── الصف الثاني: رسالة الترحيب ── */
+  /* الصف الثاني: الترحيب في المنتصف */
   #main-hdr-mgr .hdr-left, #main-hdr-emp .hdr-left{
-    order:1 !important;
-    display:flex !important; align-items:center !important;
-    gap:9px !important; min-width:0 !important; width:100% !important; padding:0 !important;
-  }
-  #main-hdr-mgr .hdr-left > button:first-child{ display:none !important; } /* زر الرجوع */
-  #main-hdr-mgr .badge-role, #main-hdr-emp .badge-role{
-    display:inline-flex !important; align-items:center !important;
-    font-size:10.5px !important; padding:3px 9px !important; border-radius:99px !important;
-    flex:0 0 auto !important; font-weight:800 !important;
+    order:1 !important; display:flex !important; flex-direction:row !important;
+    align-items:center !important; justify-content:center !important;
+    gap:8px !important; width:100% !important; padding:0 !important; text-align:center !important;
   }
   #main-hdr-mgr .hdr-greet, #main-hdr-emp .hdr-greet{
-    display:flex !important; flex-direction:column !important; justify-content:center !important;
-    min-width:0 !important; flex:1 !important; gap:2px !important;
+    display:flex !important; flex-direction:column !important;
+    align-items:center !important; justify-content:center !important; text-align:center !important;
+    min-width:0 !important; gap:1px !important; flex:0 1 auto !important;
   }
   #main-hdr-mgr .hdr-greet-hi, #main-hdr-emp .hdr-greet-hi{
-    font-size:15.5px !important; font-weight:800 !important; line-height:1.25 !important;
-    color:var(--text) !important;
-    white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important;
-    display:block !important; -webkit-line-clamp:unset !important;
+    font-size:15px !important; font-weight:800 !important; line-height:1.25 !important; color:var(--text) !important;
+    white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; max-width:78vw !important; display:block !important;
   }
   #main-hdr-mgr .hdr-greet-sub, #main-hdr-emp .hdr-greet-sub{
     font-size:11.5px !important; font-weight:600 !important; color:var(--tx3) !important;
-    display:block !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important;
-    margin-top:1px !important;
+    white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; max-width:78vw !important; display:block !important;
+  }
+  #main-hdr-mgr .badge-role, #main-hdr-emp .badge-role{
+    display:inline-flex !important; align-items:center !important; font-size:10.5px !important;
+    padding:3px 9px !important; border-radius:99px !important; flex:0 0 auto !important; font-weight:800 !important;
   }
 
-  /* مباعدة المحتوى أسفل الهيدر الثابت */
-  .content{ padding-top:calc(var(--hdr-h) + 8px) !important; }
+  /* مباعدة المحتوى أسفل الهيدر الثابت (آمن — لا يمسّ التمرير) */
+  .content{ padding-top:calc(var(--hdr-h) + 10px) !important; }
 }
-
-/* ── شاشات الجوال الصغيرة جداً (≤420px) ── */
-@media (max-width:420px){
-  #main-hdr-mgr, #main-hdr-emp{ padding:8px 10px 8px 54px !important; }
-  #main-hdr-mgr .hdr-right > button, #main-hdr-emp .hdr-right > button{ width:35px !important; height:35px !important; }
-  #main-hdr-mgr .hdr-right, #main-hdr-emp .hdr-right{ gap:7px !important; }
-  #main-hdr-mgr .hdr-greet-hi, #main-hdr-emp .hdr-greet-hi{ font-size:14px !important; }
-  #main-hdr-mgr .hdr-greet-sub, #main-hdr-emp .hdr-greet-sub{ font-size:11px !important; }
-}
-/* ── أصغر الهواتف (≤360px) ── */
 @media (max-width:360px){
-  #main-hdr-mgr .hdr-right > button, #main-hdr-emp .hdr-right > button{ width:33px !important; height:33px !important; font-size:16px !important; }
+  #main-hdr-mgr .hdr-right > button, #main-hdr-emp .hdr-right > button{ width:34px !important; height:34px !important; }
   #main-hdr-mgr .hdr-right, #main-hdr-emp .hdr-right{ gap:6px !important; }
   #main-hdr-mgr .badge-role, #main-hdr-emp .badge-role{ display:none !important; }
-  #main-hdr-mgr .hdr-greet-hi, #main-hdr-emp .hdr-greet-hi{ font-size:13.5px !important; }
+  #main-hdr-mgr .hdr-greet-hi, #main-hdr-emp .hdr-greet-hi{ font-size:14px !important; }
 }
 </style>
-
-<style id="mobile-modal-antijitter-v1">
-/* ════════════════════════════════════════════════════════════
-   تثبيت النوافذ العائمة ومنع الرعشة على الجوال — v1
-   الأسباب المُعالَجة:
-   1) أنميشن backdrop-filter على .ov يُعيد رسم الخلفية مع كل تمرير
-      (خصوصاً عند تمرير قائمة المُكلَّفين داخل المهمة) → اهتزاز.
-   2) دخول المودال بـ transform:scale فوق خلفية ضبابية → ارتعاش بكسلي.
-   3) خلط وحدات vh/dvh وارتفاعات متعددة → تغيّر حجم النافذة مع
-      ظهور/اختفاء شريط المتصفح → "رجفة" رأسية.
-   4) تمرير القوائم الداخلية يُحرّك الصفحة خلفها (scroll-chaining).
-   ════════════════════════════════════════════════════════════ */
-
-/* دخول ثابت بالشفافية فقط + ترقية لطبقة GPU مستقلة (يمنع الارتعاش) */
-@keyframes modalFadeStable{ from{opacity:0} to{opacity:1} }
-.ov:not(.side) .modal{
-  animation:modalFadeStable .2s ease both !important;
-  transform:translateZ(0) !important;
-  -webkit-backface-visibility:hidden !important;
-  backface-visibility:hidden !important;
-  will-change:opacity;
-}
-
-@media (max-width:768px){
-  /* (1) إزالة فلتر الخلفية المتحرك — أهم سبب للرعشة */
-  .ov{
-    backdrop-filter:none !important;
-    -webkit-backdrop-filter:none !important;
-    background:rgba(10,15,30,.66) !important;
-    transition:opacity .2s ease !important;
-    align-items:center !important;
-    justify-content:center !important;
-  }
-  /* (3) ارتفاع ثابت بوحدة dvh لمنع تغيّر الحجم مع شريط المتصفح */
-  .ov:not(.side) .modal{
-    height:auto !important;
-    max-height:90dvh !important;
-    overflow-y:auto !important;
-    overflow-x:hidden !important;
-    -webkit-overflow-scrolling:touch !important;
-    overscroll-behavior:contain !important;
-    margin:auto !important;
-  }
-  /* (4) القوائم القابلة للتمرير داخل النافذة: منع تحريك الصفحة خلفها */
-  #t-assign-list, #file-list, #t-points-list,
-  .modal .stab-panel, .modal-body{
-    overscroll-behavior:contain !important;
-    -webkit-overflow-scrolling:touch !important;
-  }
-}
-
-/* احتياط لأجهزة لا تدعم dvh */
-@supports not (height: 100dvh){
-  @media (max-width:768px){ .ov:not(.side) .modal{ max-height:90vh !important; } }
-}
-</style>
-
-<style id="mobile-gesture-fix-style">
-/* منع إيماءات المتصفح: السحب-للتحديث (رأسي) والرجوع بالسحب (أفقي) */
-html, body{
-  overscroll-behavior:none !important;
-  overscroll-behavior-y:contain !important;
-  overscroll-behavior-x:none !important;
-}
-/* مؤشر السحب للتحديث المخصص */
-#ptr-ind{
-  position:fixed; top:0; left:50%; z-index:99999;
-  transform:translateX(-50%) translateY(-64px);
-  background:var(--card,#1e293b); color:var(--text,#0f172a);
-  border:1px solid var(--border,rgba(0,0,0,.12)); border-top:none;
-  border-radius:0 0 16px 16px; padding:9px 18px;
-  font-size:13px; font-weight:800; font-family:inherit;
-  box-shadow:0 8px 22px rgba(0,0,0,.18);
-  display:flex; align-items:center; gap:8px; pointer-events:none;
-  transition:transform .18s ease, opacity .18s ease; opacity:0;
-}
-#ptr-ind.show{ transform:translateX(-50%) translateY(0); opacity:1; }
-#ptr-ind .ptr-spin{ width:15px; height:15px; border:2px solid currentColor; border-top-color:transparent; border-radius:50%; }
-#ptr-ind.loading .ptr-spin{ animation:ptrspin .7s linear infinite; }
-@keyframes ptrspin{ to{ transform:rotate(360deg); } }
-</style>
-<script id="mobile-gesture-fix-js">
-(function(){
-  'use strict';
-
-  /* ═══ (أ) منع الرجوع/الخروج عند السحب من الحافة أو زر الرجوع ═══
-     نُبقي المستخدم داخل التطبيق بإعادة دفع حالة التاريخ.
-     أزرار الرجوع الداخلية (goBack) تعمل بمنطقها الخاص ولا تتأثر. */
-  try{
-    history.pushState(null, document.title, location.href);
-    window.addEventListener('popstate', function(){
-      history.pushState(null, document.title, location.href);
-    });
-  }catch(e){}
-
-  /* ═══ (ب) سحب للتحديث مخصّص: يبقى على نفس الصفحة ويحدّث البيانات فقط ═══ */
-  var ind=null;
-  function getInd(){
-    if(!ind && document.body){
-      ind=document.createElement('div');
-      ind.id='ptr-ind';
-      ind.innerHTML='<span class="ptr-spin"></span><span class="ptr-txt">اسحب للتحديث</span>';
-      document.body.appendChild(ind);
-    }
-    return ind;
-  }
-  function setTxt(t){ var el=getInd(); if(el){ var x=el.querySelector('.ptr-txt'); if(x) x.textContent=t; } }
-
-  var startY=0, startX=0, pulling=false, dist=0;
-  var THRESH=72, MAX=120;
-
-  function windowAtTop(){ return (window.scrollY||document.documentElement.scrollTop||document.body.scrollTop||0) <= 0; }
-  function inModal(t){ return !!(t && t.closest && t.closest('.ov, .modal, #tania-sidebar')); }
-  /* أقرب عنصر قابل للتمرير يجب أن يكون في أعلاه أيضاً */
-  function ancestorsAtTop(t){
-    var el=t;
-    while(el && el.nodeType===1 && el!==document.body && el!==document.documentElement){
-      try{
-        var cs=getComputedStyle(el), oy=cs.overflowY;
-        if((oy==='auto'||oy==='scroll') && el.scrollHeight>el.clientHeight+1){
-          return el.scrollTop<=0;
-        }
-      }catch(e){}
-      el=el.parentElement;
-    }
-    return true;
-  }
-
-  function doRefresh(done){
-    var finished=false;
-    function fin(){ if(finished) return; finished=true; try{ if(typeof window.refreshCurrentView==='function') window.refreshCurrentView(); }catch(e){} done(); }
-    try{
-      if(typeof window.forcePull==='function'){
-        Promise.resolve(window.forcePull()).then(fin, fin);
-        setTimeout(fin, 4000); /* أمان: لا تعلّق المؤشر */
-      } else {
-        fin();
-      }
-    }catch(e){ fin(); }
-  }
-
-  document.addEventListener('touchstart', function(e){
-    if(!e.touches || e.touches.length!==1){ pulling=false; return; }
-    var t=e.target;
-    if(inModal(t)){ pulling=false; return; }
-    if(!windowAtTop() || !ancestorsAtTop(t)){ pulling=false; return; }
-    startY=e.touches[0].clientY; startX=e.touches[0].clientX; pulling=true; dist=0;
-  }, {passive:true});
-
-  document.addEventListener('touchmove', function(e){
-    if(!pulling || !e.touches || e.touches.length!==1) return;
-    var y=e.touches[0].clientY, x=e.touches[0].clientX;
-    var dy=y-startY, dx=x-startX;
-    if(Math.abs(dx) > Math.abs(dy)){ pulling=false; var el0=getInd(); if(el0) el0.classList.remove('show'); return; } /* أفقي → تجاهل */
-    dist=dy;
-    var el=getInd(); if(!el) return;
-    if(dist<=0){ el.classList.remove('show'); el.style.transform=''; return; }
-    if(!windowAtTop()){ pulling=false; el.classList.remove('show'); return; }
-    var shown=Math.min(dist, MAX);
-    var ty=Math.min(shown*0.5, 60);
-    el.classList.add('show');
-    el.style.transform='translateX(-50%) translateY('+(ty-64+64)+'px)';
-    el.style.opacity='1';
-    setTxt(dist>=THRESH ? 'حرّر للتحديث ⟳' : 'اسحب للتحديث');
-  }, {passive:true});
-
-  document.addEventListener('touchend', function(){
-    if(!pulling) return;
-    pulling=false;
-    var el=getInd(); if(!el) return;
-    if(dist>=THRESH){
-      el.classList.add('loading','show');
-      el.style.transform='translateX(-50%) translateY(0)';
-      el.style.opacity='1';
-      setTxt('جارٍ التحديث…');
-      doRefresh(function(){
-        el.classList.remove('loading');
-        setTxt('تم التحديث ✓');
-        setTimeout(function(){ el.classList.remove('show'); el.style.transform=''; el.style.opacity='0'; }, 700);
-      });
-    } else {
-      el.classList.remove('show'); el.style.transform=''; el.style.opacity='0';
-    }
-  }, {passive:true});
-})();
-</script>
 
 </body></html>
