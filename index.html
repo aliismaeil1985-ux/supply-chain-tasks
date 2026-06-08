@@ -1522,56 +1522,98 @@ html.dark .hub3-ring-pct{ color:#fff; filter:drop-shadow(0 0 7px color-mix(in sr
 })();
 </script>
 <style id="task-modal-font-enhance">
-/* ===== تحسين خط بيانات المهمة في نافذة العرض والتعديل ===== */
+/* ===== تحسين تنسيق شاشة المهمة — خط أصغر ومظهر بصري متناسق ===== */
 #ov-task .modal-body,
 #ov-task .stab-panel{ font-family:'Cairo','Tajawal',sans-serif; }
 
-/* العناوين (Labels): أكبر + أوضح + أغمق */
+/* مسافات داخلية أكثر تناسقاً */
+#ov-task .gap12{ gap:10px !important; }
+#ov-task .stab-panel{ line-height:1.5; }
+
+/* العناوين (Labels): أصغر وأنظف */
 #ov-task label{
-  font-size:14.5px !important;
-  font-weight:800 !important;
+  font-size:12.5px !important;
+  font-weight:700 !important;
   color:var(--text) !important;
   letter-spacing:.1px !important;
-  line-height:1.5 !important;
+  line-height:1.45 !important;
+  margin-bottom:4px !important;
 }
 
-/* قيم الحقول: خط أوضح + أكبر + تباين أعلى */
+/* قيم الحقول: خط متناسق وأصغر */
 #ov-task input,
 #ov-task select,
 #ov-task textarea{
   font-family:'Cairo','Tajawal',sans-serif !important;
-  font-size:15.5px !important;
-  font-weight:600 !important;
+  font-size:13.5px !important;
+  font-weight:500 !important;
   color:var(--text) !important;
-  line-height:1.6 !important;
+  line-height:1.5 !important;
+  padding:9px 11px !important;
+  border-radius:9px !important;
 }
 #ov-task input::placeholder,
-#ov-task textarea::placeholder{ color:var(--tx3) !important; font-weight:500 !important; }
+#ov-task textarea::placeholder{ color:var(--tx3) !important; font-weight:400 !important; font-size:13px !important; }
 
-/* حقول الشبكة الثلاثية (الأولوية/الحالة/الإدارة) — رفع الوضوح */
-#ov-task .grid3-form label{ font-size:13px !important; font-weight:800 !important; color:var(--text) !important; }
-#ov-task .grid3-form select{ font-size:13.5px !important; font-weight:700 !important; }
+/* حقول الشبكة الثلاثية (الأولوية/الحالة/الإدارة) */
+#ov-task .grid3-form{ gap:8px !important; }
+#ov-task .grid3-form label{ font-size:11.5px !important; font-weight:700 !important; color:var(--text) !important; }
+#ov-task .grid3-form select{ font-size:12.5px !important; font-weight:500 !important; padding:8px 8px !important; }
 
 /* حقول التواريخ */
-#ov-task .task-date-field label{ font-size:12.5px !important; font-weight:800 !important; color:var(--text) !important; }
-#ov-task .task-dates-grid input{ font-size:14px !important; font-weight:700 !important; }
+#ov-task .task-dates-grid{ gap:8px !important; }
+#ov-task .task-date-field label{ font-size:11.5px !important; font-weight:700 !important; color:var(--text) !important; }
+#ov-task .task-dates-grid input{ font-size:12.5px !important; font-weight:500 !important; padding:8px 8px !important; height:auto !important; }
 
-/* عنوان النافذة */
-#ov-task .modal-hdr h2{ font-weight:900 !important; color:var(--text) !important; }
+/* عنوان النافذة — أصغر وأكثر اتزاناً */
+#ov-task .modal-hdr h2{ font-size:clamp(16px,2vw,20px) !important; font-weight:800 !important; color:var(--text) !important; }
 
 /* تبويبات النافذة */
-#ov-task .sec-tabs .stab{ font-size:13.5px !important; font-weight:800 !important; }
+#ov-task .sec-tabs{ gap:6px !important; }
+#ov-task .sec-tabs .stab{ font-size:12.5px !important; font-weight:700 !important; padding:8px 12px !important; }
 
-/* على الجوال: إبقاء قيم الإدخال 16px لمنع تكبير iOS مع الحفاظ على الوضوح */
+/* أزرار التذييل */
+#ov-task .modal-ftr .btn{ font-size:13px !important; }
+
+/* ===== الجوال (≤768px): إبقاء قيم الإدخال 16px لمنع تكبير iOS ===== */
 @media (max-width:768px){
-  #ov-task label{ font-size:13.5px !important; font-weight:800 !important; }
+  #ov-task label{ font-size:12px !important; font-weight:700 !important; }
   #ov-task input,
   #ov-task select,
-  #ov-task textarea{ font-size:16px !important; font-weight:600 !important; }
-  #ov-task .grid3-form label{ font-size:12px !important; }
+  #ov-task textarea{ font-size:16px !important; font-weight:500 !important; padding:9px 11px !important; }
+  #ov-task .grid3-form label{ font-size:11px !important; }
   #ov-task .grid3-form select{ font-size:13px !important; }
-  #ov-task .task-date-field label{ font-size:12px !important; }
-  #ov-task .task-dates-grid input{ font-size:14px !important; }
+  #ov-task .task-date-field label{ font-size:11px !important; }
+  #ov-task .task-dates-grid input{ font-size:13px !important; }
+  #ov-task .sec-tabs .stab{ font-size:12px !important; padding:7px 10px !important; }
+}
+
+/* ===== شاشات الجوال الصغيرة جداً (≤420px) ===== */
+@media (max-width:420px){
+  #ov-task .modal-hdr{ padding:12px 13px !important; }
+  #ov-task .modal-hdr h2{ font-size:15px !important; }
+  #ov-task .modal-body{ padding:12px !important; }
+  #ov-task .gap12{ gap:9px !important; }
+  #ov-task .sec-tabs{ gap:4px !important; flex-wrap:wrap !important; }
+  #ov-task .sec-tabs .stab{ font-size:11.5px !important; padding:7px 9px !important; flex:1 1 auto !important; }
+  #ov-task .grid3-form{ gap:6px !important; }
+  #ov-task .grid3-form select{ font-size:12px !important; padding:7px 5px !important; }
+  #ov-task .grid3-form label{ font-size:10.5px !important; }
+  #ov-task .task-dates-grid{ gap:6px !important; }
+  #ov-task .task-dates-grid input{ font-size:12px !important; padding:7px 5px !important; }
+  #ov-task .task-date-field label{ font-size:10.5px !important; }
+  #ov-task .modal-ftr{ padding:10px !important; gap:6px !important; flex-wrap:wrap !important; }
+  #ov-task .modal-ftr .btn{ font-size:12px !important; padding:8px 10px !important; }
+}
+
+/* ===== أصغر الهواتف (≤360px) ===== */
+@media (max-width:360px){
+  #ov-task .modal-body{ padding:10px !important; }
+  #ov-task label{ font-size:11.5px !important; }
+  #ov-task .grid3-form{ grid-template-columns:1fr 1fr 1fr !important; gap:5px !important; }
+  #ov-task .grid3-form select{ font-size:11px !important; padding:6px 3px !important; }
+  #ov-task .task-dates-grid input{ font-size:11px !important; padding:6px 3px !important; }
+  #ov-task .sec-tabs .stab{ font-size:11px !important; padding:6px 7px !important; }
 }
 </style>
 </head>
@@ -2014,7 +2056,7 @@ if(hint){ hint.style.transition='opacity 0.8s'; hint.style.opacity='1'; }
       <div style="font-size:13px;color:var(--tx3);margin-top:4px">سجل إنجاز المهام اليومي</div>
     </div>
   </div>
-  <h3 id="mgr-daily-date" style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:14px"></h3>
+  <div style="display:flex;flex-wrap:wrap;gap:9px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:14px"><div style="font-size:13px;font-weight:800;color:var(--text)">🔍 بحث بالفترة</div><div style="display:flex;align-items:center;gap:6px"><label style="font-size:12px;color:var(--tx3);font-weight:600">من</label><input type="date" id="mgr-daily-from" onchange="renderMgrDailyLog()" style="padding:7px 10px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:var(--inp);color:var(--text)"></div><div style="display:flex;align-items:center;gap:6px"><label style="font-size:12px;color:var(--tx3);font-weight:600">إلى</label><input type="date" id="mgr-daily-to" onchange="renderMgrDailyLog()" style="padding:7px 10px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:var(--inp);color:var(--text)"></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button onclick="dailyQuickRange('mgr','today')" style="padding:6px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2);font-family:inherit">اليوم</button><button onclick="dailyQuickRange('mgr','week')" style="padding:6px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2);font-family:inherit">آخر 7 أيام</button><button onclick="dailyQuickRange('mgr','month')" style="padding:6px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2);font-family:inherit">هذا الشهر</button><button onclick="dailyClear('mgr')" style="padding:6px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2);font-family:inherit">الكل</button></div></div> <h3 id="mgr-daily-date" style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:14px"></h3>
   <div id="mgr-daily-list" class="gap12"></div>
 </div>
 
@@ -2165,14 +2207,14 @@ if(hint){ hint.style.transition='opacity 0.8s'; hint.style.opacity='1'; }
 
 </div>
 
-<div id="pg-emp" class="page"> <div class="hdr" id="main-hdr-emp"> <div class="hdr-left"> <div class="hdr-greet"> <div class="hdr-greet-hi">مرحباً 👋🏼</div> <div class="hdr-greet-sub"></div> </div> <span class="badge-role">موظف</span> </div> <div class="hdr-right"> <div class="hdr-user-info"> <div id="emp-name" class="hdr-user-name"></div> <div id="emp-dept" class="hdr-user-email"></div> </div>  <button class="tgl" onclick="toggleTheme()" title="تبديل المظهر"><div class="tgl-dot"></div></button> <button onclick="toggleLang()" id="lang-btn-emp" title="تبديل اللغة">EN</button> <button id="back-nav-btn-emp" style="display:none" onclick="goBack()" title="العودة للصفحة السابقة">&#8592;</button> <button onclick="openTaskModal(null)" title="إضافة مهمة جديدة" style="display:inline-flex;align-items:center;justify-content:center;gap:5px;height:34px;padding:0 12px;border-radius:9px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border:none;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;flex-shrink:0;letter-spacing:.01em;white-space:nowrap">＋ مهمة</button> <button id="notif-bell-emp" class="btn notif-bell-btn" onclick="toggleNotifPanel('emp')" title="الإشعارات اليومية"> <span class="notif-bell-icon">🔔</span> <span id="notif-badge-emp" class="notif-badge" style="display:none">0</span> </button> <button class="btn hdr-logout-btn" onclick="doLogout()" data-t="logout">خروج</button> </div> </div> <div class="content"> <div class="stats-grid" id="emp-stats"></div> <div class="tabs"> <button class="tab on" onclick="empTab('dashboard',this)">🏠 لوحة البيانات</button> <button class="tab" onclick="empTab('my',this)">✅ مهامي</button> <button class="tab" onclick="empTab('arch',this)">🗃️ الأرشيف</button> <button class="tab" onclick="empTab('notes',this)">🗒️ ملاحظاتي</button> <button class="tab" onclick="empTab('daily',this)">📅 السجل اليومي</button> </div>  <div id="emp-dashboard" style="display:none">  <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap"> <div style="font-size:13px;font-weight:800;color:var(--text)">🔍 فلتر الرسوم البيانية</div> <div style="display:flex;align-items:center;gap:6px"> <label style="font-size:12px;color:var(--tx3);font-weight:600">من</label> <input type="date" id="emp-chart-from" onchange="renderEmpDashboard()" style="padding:5px 10px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:var(--inp);color:var(--text)"> </div> <div style="display:flex;align-items:center;gap:6px"> <label style="font-size:12px;color:var(--tx3);font-weight:600">إلى</label> <input type="date" id="emp-chart-to" onchange="renderEmpDashboard()" style="padding:5px 10px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:var(--inp);color:var(--text)"> </div> <div style="display:flex;gap:6px;flex-wrap:wrap"> <button onclick="setEmpChartRange('week')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">أسبوع</button> <button onclick="setEmpChartRange('month')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">شهر</button> <button onclick="setEmpChartRange('quarter')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">3 شهور</button> <button onclick="setEmpChartRange('year')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">سنة</button> <button onclick="setEmpChartRange('all')" class="emp-chart-rbtn emp-chart-rbtn-active" style="padding:5px 11px;font-size:11px;font-weight:700;background:linear-gradient(135deg,#3b82f6,#2563eb);border:none;border-radius:7px;cursor:pointer;color:#fff">الكل</button> </div> <div id="emp-chart-filter-lbl" style="font-size:11px;color:var(--tx3)"></div> </div>  <div class="status-circles-container" id="emp-circles-container">  <div class="circle-item" data-id="done"> <div class="circle-box"> <svg viewBox="0 0 100 100"> <circle class="circle-bg" cx="50" cy="50" r="45"></circle> <circle id="emp-circle-done-fill" class="circle-val" cx="50" cy="50" r="45" stroke="#10b981"></circle> </svg> <div class="circle-text"> <div id="emp-circle-done-pct" class="circle-pct">0%</div> <div id="emp-circle-done-count" class="circle-count">0 مهام</div> </div> </div> <div class="circle-lbl">مكتملة</div> </div>  <div class="circle-item" data-id="inp"> <div class="circle-box"> <svg viewBox="0 0 100 100"> <circle class="circle-bg" cx="50" cy="50" r="45"></circle> <circle id="emp-circle-inp-fill" class="circle-val" cx="50" cy="50" r="45" stroke="#3b82f6"></circle> </svg> <div class="circle-text"> <div id="emp-circle-inp-pct" class="circle-pct">0%</div> <div id="emp-circle-inp-count" class="circle-count">0 مهام</div> </div> </div> <div class="circle-lbl">جارية</div> </div>  <div class="circle-item" data-id="pend"> <div class="circle-box"> <svg viewBox="0 0 100 100"> <circle class="circle-bg" cx="50" cy="50" r="45"></circle> <circle id="emp-circle-pend-fill" class="circle-val" cx="50" cy="50" r="45" stroke="#eab308"></circle> </svg> <div class="circle-text"> <div id="emp-circle-pend-pct" class="circle-pct">0%</div> <div id="emp-circle-pend-count" class="circle-count">0 مهام</div> </div> </div> <div class="circle-lbl">انتظار</div> </div> </div>  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px" id="emp-chart-row">  <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;box-shadow:0 4px 20px rgba(0,0,0,.04);position:relative;overflow:hidden"> <div style="position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(180deg,#ef4444,#f97316,#eab308,#22c55e);border-radius:0 20px 20px 0"></div> <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px"> <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#f97316,#ea580c);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 10px rgba(249,115,22,.3)">🎯</div> <div> <div style="font-family:'Almarai',sans-serif;font-size:15px;font-weight:800;color:var(--text)">توزيع مهامي حسب الأولوية</div> <div style="font-size:11px;color:var(--tx3);font-weight:600;margin-top:1px">تصنيف مهامك بحسب مستوى الأهمية</div> </div> </div> <div style="height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:18px"></div> <div style="display:flex;align-items:stretch;gap:4px"> <div style="display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:800;color:var(--tx3);padding:0 2px;white-space:nowrap">عدد المهام</div> <div id="emp-priority-chart" style="min-height:280px;flex:1;min-width:0"></div> </div> </div>  <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;box-shadow:0 4px 20px rgba(0,0,0,.04);position:relative;overflow:hidden"> <div style="position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(180deg,#10b981,#3b82f6,#f59e0b,#ef4444);border-radius:0 20px 20px 0"></div> <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px"> <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 10px rgba(16,185,129,.3)">📈</div> <div> <div style="font-family:'Almarai',sans-serif;font-size:15px;font-weight:800;color:var(--text)">توزيع مهامي حسب الحالة</div> <div style="font-size:11px;color:var(--tx3);font-weight:600;margin-top:1px">نظرة شاملة على تقدم مهامك</div> </div> </div> <div style="height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:18px"></div> <div style="display:flex;align-items:stretch;gap:4px"> <div style="display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:800;color:var(--tx3);padding:0 2px;white-space:nowrap">عدد المهام</div> <div id="emp-status-chart" style="min-height:280px;flex:1;min-width:0"></div> </div> </div> </div>  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px"> <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px"> <div style="font-family:'Almarai',sans-serif;font-size:16px;font-weight:800;color:var(--tx2);margin-bottom:12px;letter-spacing:0.01em">⏰ مواعيدي القادمة</div> <div id="emp-deadline-list"></div> </div> <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px"> <div style="font-family:'Almarai',sans-serif;font-size:16px;font-weight:800;color:var(--tx2);margin-bottom:12px;letter-spacing:0.01em">📋 آخر مهامي</div> <div id="emp-recent-list"></div> </div> </div>  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px"> <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px"> <div style="font-size:15px;font-weight:800;color:var(--text)">📈 تقدم الإنجاز حسب الأولوية</div> </div> <div id="emp-progress-bars"></div> </div> </div>  <div id="emp-my" style="display:none"> <div style="display:flex;gap:9px;margin-bottom:14px;flex-wrap:wrap;align-items:center"> <input id="ef-search" type="text" placeholder="🔍 ابحث برقم أو عنوان..." style="width:200px;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px" onkeyup="renderEmpTasks()"> <select id="ef-sta" style="width:140px" onchange="renderEmpTasks()"> <option value="">كل الحالات</option> <option value="pending">⏳ انتظار</option> <option value="in_progress">🔄 جارية</option> <option value="completed">✅ مكتملة</option> <option value="cancelled">❌ ملغاة</option> </select> <select id="ef-pri" style="width:140px" onchange="renderEmpTasks()"> <option value="">كل الأولويات</option> <option value="urgent">🔴 عاجل</option> <option value="high">🟠 عالية</option> <option value="medium">🟡 متوسطة</option> <option value="low">🟢 منخفضة</option> </select> <div style="display:flex;gap:7px;margin-right:auto"> <button class="btn" style="background:rgba(16,185,129,.15);color:#4ade80;border:1px solid rgba(16,185,129,.25);font-size:13px" onclick="exportExcel()">📊 Excel</button> <button class="btn" style="background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.25);font-size:13px" onclick="printReport()">🖨️ طباعة</button> <button class="btn btn-primary" onclick="openTaskModal(null)">＋ إضافة مهمة</button> </div> </div> <div id="emp-task-list"></div> </div>  <div id="emp-notes-tab" style="display:none"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px"> <div style="font-size:13px;color:var(--tx3)">الملاحظات الموجّهة إليك من المدير</div> <div style="display:flex;gap:7px"> <button class="btn" style="background:rgba(16,185,129,.15);color:#4ade80;border:1px solid rgba(16,185,129,.25);font-size:13px" onclick="exportEmpNotesExcel()">📊 Excel</button> <button class="btn" style="background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.25);font-size:13px" onclick="printEmpNotes()">🖨️ طباعة</button> </div> </div> <div id="emp-notes-list"></div> </div>  <div id="emp-daily" style="display:none"> <h3 id="daily-date" style="font-size:22px;font-weight:800;margin-bottom:18px"></h3> <div id="daily-list" class="gap12"></div> </div>  <div id="emp-arch" style="display:none; margin-top:20px; padding-top:20px; border-top:2px dashed var(--border)"> <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px"> <div> <div style="font-family:'Reem Kufi','Almarai',sans-serif;font-size:clamp(26px,3.5vw,42px);font-weight:700;background:linear-gradient(135deg,#1e40af,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;letter-spacing:-0.01em">🗃️ أرشيفي</div> <div style="font-size:13px;color:var(--tx3);margin-top:4px;font-family:'Noto Naskh Arabic',serif">مهامك المؤرشفة — المكتملة منذ أكثر من 7 أيام أو المؤرشفة يدوياً</div> </div> <div style="display:flex;gap:8px"> <button class="btn" style="background:rgba(16,185,129,.12);color:#4ade80;border:1px solid rgba(16,185,129,.25);font-size:13px" onclick="exportEmpArchiveExcel()">📊 تصدير</button> </div> </div>  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:0 2px 10px rgba(0,0,0,.04)"> <div style="position:relative;flex:1;min-width:180px"> <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none">🔍</span> <input id="emp-arch-search" type="text" placeholder="ابحث في أرشيفك..." oninput="renderEmpArchive()"
+<div id="pg-emp" class="page"> <div class="hdr" id="main-hdr-emp"> <div class="hdr-left"> <div class="hdr-greet"> <div class="hdr-greet-hi">مرحباً 👋🏼</div> <div class="hdr-greet-sub"></div> </div> <span class="badge-role">موظف</span> </div> <div class="hdr-right"> <div class="hdr-user-info"> <div id="emp-name" class="hdr-user-name"></div> <div id="emp-dept" class="hdr-user-email"></div> </div>  <button class="tgl" onclick="toggleTheme()" title="تبديل المظهر"><div class="tgl-dot"></div></button> <button onclick="toggleLang()" id="lang-btn-emp" title="تبديل اللغة">EN</button> <button id="back-nav-btn-emp" style="display:none" onclick="goBack()" title="العودة للصفحة السابقة">&#8592;</button> <button onclick="openTaskModal(null)" title="إضافة مهمة جديدة" style="display:inline-flex;align-items:center;justify-content:center;gap:5px;height:34px;padding:0 12px;border-radius:9px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border:none;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;flex-shrink:0;letter-spacing:.01em;white-space:nowrap">＋ مهمة</button> <button id="notif-bell-emp" class="btn notif-bell-btn" onclick="toggleNotifPanel('emp')" title="الإشعارات اليومية"> <span class="notif-bell-icon">🔔</span> <span id="notif-badge-emp" class="notif-badge" style="display:none">0</span> </button> <button class="btn hdr-logout-btn" onclick="doLogout()" data-t="logout">خروج</button> </div> </div> <div class="content"> <div class="stats-grid" id="emp-stats"></div> <div class="tabs"> <button class="tab on" onclick="empTab('dashboard',this)">🏠 لوحة البيانات</button> <button class="tab" onclick="empTab('my',this)">✅ مهامي</button> <button class="tab" onclick="empTab('arch',this)">🗃️ الأرشيف</button> <button class="tab" onclick="empTab('notes',this)">🗒️ ملاحظاتي</button> <button class="tab" onclick="empTab('daily',this)">📅 السجل اليومي</button> </div>  <div id="emp-dashboard" style="display:none">  <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap"> <div style="font-size:13px;font-weight:800;color:var(--text)">🔍 فلتر الرسوم البيانية</div> <div style="display:flex;align-items:center;gap:6px"> <label style="font-size:12px;color:var(--tx3);font-weight:600">من</label> <input type="date" id="emp-chart-from" onchange="renderEmpDashboard()" style="padding:5px 10px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:var(--inp);color:var(--text)"> </div> <div style="display:flex;align-items:center;gap:6px"> <label style="font-size:12px;color:var(--tx3);font-weight:600">إلى</label> <input type="date" id="emp-chart-to" onchange="renderEmpDashboard()" style="padding:5px 10px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:var(--inp);color:var(--text)"> </div> <div style="display:flex;gap:6px;flex-wrap:wrap"> <button onclick="setEmpChartRange('week')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">أسبوع</button> <button onclick="setEmpChartRange('month')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">شهر</button> <button onclick="setEmpChartRange('quarter')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">3 شهور</button> <button onclick="setEmpChartRange('year')" class="emp-chart-rbtn" style="padding:5px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2)">سنة</button> <button onclick="setEmpChartRange('all')" class="emp-chart-rbtn emp-chart-rbtn-active" style="padding:5px 11px;font-size:11px;font-weight:700;background:linear-gradient(135deg,#3b82f6,#2563eb);border:none;border-radius:7px;cursor:pointer;color:#fff">الكل</button> </div> <div id="emp-chart-filter-lbl" style="font-size:11px;color:var(--tx3)"></div> </div>  <div class="status-circles-container" id="emp-circles-container">  <div class="circle-item" data-id="done"> <div class="circle-box"> <svg viewBox="0 0 100 100"> <circle class="circle-bg" cx="50" cy="50" r="45"></circle> <circle id="emp-circle-done-fill" class="circle-val" cx="50" cy="50" r="45" stroke="#10b981"></circle> </svg> <div class="circle-text"> <div id="emp-circle-done-pct" class="circle-pct">0%</div> <div id="emp-circle-done-count" class="circle-count">0 مهام</div> </div> </div> <div class="circle-lbl">مكتملة</div> </div>  <div class="circle-item" data-id="inp"> <div class="circle-box"> <svg viewBox="0 0 100 100"> <circle class="circle-bg" cx="50" cy="50" r="45"></circle> <circle id="emp-circle-inp-fill" class="circle-val" cx="50" cy="50" r="45" stroke="#3b82f6"></circle> </svg> <div class="circle-text"> <div id="emp-circle-inp-pct" class="circle-pct">0%</div> <div id="emp-circle-inp-count" class="circle-count">0 مهام</div> </div> </div> <div class="circle-lbl">جارية</div> </div>  <div class="circle-item" data-id="pend"> <div class="circle-box"> <svg viewBox="0 0 100 100"> <circle class="circle-bg" cx="50" cy="50" r="45"></circle> <circle id="emp-circle-pend-fill" class="circle-val" cx="50" cy="50" r="45" stroke="#eab308"></circle> </svg> <div class="circle-text"> <div id="emp-circle-pend-pct" class="circle-pct">0%</div> <div id="emp-circle-pend-count" class="circle-count">0 مهام</div> </div> </div> <div class="circle-lbl">انتظار</div> </div> </div>  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px" id="emp-chart-row">  <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;box-shadow:0 4px 20px rgba(0,0,0,.04);position:relative;overflow:hidden"> <div style="position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(180deg,#ef4444,#f97316,#eab308,#22c55e);border-radius:0 20px 20px 0"></div> <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px"> <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#f97316,#ea580c);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 10px rgba(249,115,22,.3)">🎯</div> <div> <div style="font-family:'Almarai',sans-serif;font-size:15px;font-weight:800;color:var(--text)">توزيع مهامي حسب الأولوية</div> <div style="font-size:11px;color:var(--tx3);font-weight:600;margin-top:1px">تصنيف مهامك بحسب مستوى الأهمية</div> </div> </div> <div style="height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:18px"></div> <div style="display:flex;align-items:stretch;gap:4px"> <div style="display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:800;color:var(--tx3);padding:0 2px;white-space:nowrap">عدد المهام</div> <div id="emp-priority-chart" style="min-height:280px;flex:1;min-width:0"></div> </div> </div>  <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;box-shadow:0 4px 20px rgba(0,0,0,.04);position:relative;overflow:hidden"> <div style="position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(180deg,#10b981,#3b82f6,#f59e0b,#ef4444);border-radius:0 20px 20px 0"></div> <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px"> <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 10px rgba(16,185,129,.3)">📈</div> <div> <div style="font-family:'Almarai',sans-serif;font-size:15px;font-weight:800;color:var(--text)">توزيع مهامي حسب الحالة</div> <div style="font-size:11px;color:var(--tx3);font-weight:600;margin-top:1px">نظرة شاملة على تقدم مهامك</div> </div> </div> <div style="height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:18px"></div> <div style="display:flex;align-items:stretch;gap:4px"> <div style="display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:800;color:var(--tx3);padding:0 2px;white-space:nowrap">عدد المهام</div> <div id="emp-status-chart" style="min-height:280px;flex:1;min-width:0"></div> </div> </div> </div>  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px"> <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px"> <div style="font-family:'Almarai',sans-serif;font-size:16px;font-weight:800;color:var(--tx2);margin-bottom:12px;letter-spacing:0.01em">⏰ مواعيدي القادمة</div> <div id="emp-deadline-list"></div> </div> <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px"> <div style="font-family:'Almarai',sans-serif;font-size:16px;font-weight:800;color:var(--tx2);margin-bottom:12px;letter-spacing:0.01em">📋 آخر مهامي</div> <div id="emp-recent-list"></div> </div> </div>  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px"> <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px"> <div style="font-size:15px;font-weight:800;color:var(--text)">📈 تقدم الإنجاز حسب الأولوية</div> </div> <div id="emp-progress-bars"></div> </div> </div>  <div id="emp-my" style="display:none"> <div style="display:flex;gap:9px;margin-bottom:14px;flex-wrap:wrap;align-items:center"> <input id="ef-search" type="text" placeholder="🔍 ابحث برقم أو عنوان..." style="width:200px;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px" onkeyup="renderEmpTasks()"> <select id="ef-sta" style="width:140px" onchange="renderEmpTasks()"> <option value="">كل الحالات</option> <option value="pending">⏳ انتظار</option> <option value="in_progress">🔄 جارية</option> <option value="completed">✅ مكتملة</option> <option value="cancelled">❌ ملغاة</option> </select> <select id="ef-pri" style="width:140px" onchange="renderEmpTasks()"> <option value="">كل الأولويات</option> <option value="urgent">🔴 عاجل</option> <option value="high">🟠 عالية</option> <option value="medium">🟡 متوسطة</option> <option value="low">🟢 منخفضة</option> </select> <div style="display:flex;gap:7px;margin-right:auto"> <button class="btn" style="background:rgba(16,185,129,.15);color:#4ade80;border:1px solid rgba(16,185,129,.25);font-size:13px" onclick="exportExcel()">📊 Excel</button> <button class="btn" style="background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.25);font-size:13px" onclick="printReport()">🖨️ طباعة</button> <button class="btn btn-primary" onclick="openTaskModal(null)">＋ إضافة مهمة</button> </div> </div> <div id="emp-task-list"></div> </div>  <div id="emp-notes-tab" style="display:none"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px"> <div style="font-size:13px;color:var(--tx3)">الملاحظات الموجّهة إليك من المدير</div> <div style="display:flex;gap:7px"> <button class="btn" style="background:rgba(16,185,129,.15);color:#4ade80;border:1px solid rgba(16,185,129,.25);font-size:13px" onclick="exportEmpNotesExcel()">📊 Excel</button> <button class="btn" style="background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.25);font-size:13px" onclick="printEmpNotes()">🖨️ طباعة</button> </div> </div> <div id="emp-notes-list"></div> </div>  <div id="emp-daily" style="display:none"> <h3 id="daily-date" style="font-size:22px;font-weight:800;margin-bottom:18px"></h3> <div style="display:flex;flex-wrap:wrap;gap:9px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:14px"><div style="font-size:13px;font-weight:800;color:var(--text)">🔍 بحث بالفترة</div><div style="display:flex;align-items:center;gap:6px"><label style="font-size:12px;color:var(--tx3);font-weight:600">من</label><input type="date" id="daily-from" onchange="renderDailyLog()" style="padding:7px 10px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:var(--inp);color:var(--text)"></div><div style="display:flex;align-items:center;gap:6px"><label style="font-size:12px;color:var(--tx3);font-weight:600">إلى</label><input type="date" id="daily-to" onchange="renderDailyLog()" style="padding:7px 10px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:var(--inp);color:var(--text)"></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button onclick="dailyQuickRange('emp','today')" style="padding:6px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2);font-family:inherit">اليوم</button><button onclick="dailyQuickRange('emp','week')" style="padding:6px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2);font-family:inherit">آخر 7 أيام</button><button onclick="dailyQuickRange('emp','month')" style="padding:6px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2);font-family:inherit">هذا الشهر</button><button onclick="dailyClear('emp')" style="padding:6px 11px;font-size:11px;font-weight:700;background:var(--stat);border:1px solid var(--border);border-radius:7px;cursor:pointer;color:var(--tx2);font-family:inherit">الكل</button></div></div> <div id="daily-list" class="gap12"></div> </div>  <div id="emp-arch" style="display:none; margin-top:20px; padding-top:20px; border-top:2px dashed var(--border)"> <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px"> <div> <div style="font-family:'Reem Kufi','Almarai',sans-serif;font-size:clamp(26px,3.5vw,42px);font-weight:700;background:linear-gradient(135deg,#1e40af,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;letter-spacing:-0.01em">🗃️ أرشيفي</div> <div style="font-size:13px;color:var(--tx3);margin-top:4px;font-family:'Noto Naskh Arabic',serif">مهامك المؤرشفة — المكتملة منذ أكثر من 7 أيام أو المؤرشفة يدوياً</div> </div> <div style="display:flex;gap:8px"> <button class="btn" style="background:rgba(16,185,129,.12);color:#4ade80;border:1px solid rgba(16,185,129,.25);font-size:13px" onclick="exportEmpArchiveExcel()">📊 تصدير</button> </div> </div>  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:0 2px 10px rgba(0,0,0,.04)"> <div style="position:relative;flex:1;min-width:180px"> <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none">🔍</span> <input id="emp-arch-search" type="text" placeholder="ابحث في أرشيفك..." oninput="renderEmpArchive()"
             style="padding:9px 36px 9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;background:var(--inp);color:var(--text);width:100%;direction:rtl;font-family:var(--font-ui)"> </div> <select id="emp-arch-filter-type" onchange="renderEmpArchive()" style="flex:1;min-width:130px;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;background:var(--inp);color:var(--text);font-family:var(--font-ui)"> <option value="">🗂️ كل الأنواع</option> <option value="manual">🖐️ يدوي</option> <option value="auto">🤖 تلقائي</option> </select> <input id="emp-arch-filter-from" type="date" onchange="renderEmpArchive()" title="من تاريخ أرشفة"
           style="flex:1;min-width:130px;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;background:var(--inp);color:var(--text);font-family:var(--font-ui)"> <input id="emp-arch-filter-to" type="date" onchange="renderEmpArchive()" title="إلى تاريخ أرشفة"
           style="flex:1;min-width:130px;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;background:var(--inp);color:var(--text);font-family:var(--font-ui)"> <button onclick="clearEmpArchiveFilters()" class="btn" style="background:rgba(100,116,139,.12);color:var(--tx2);border:1px solid var(--border);font-size:12px;padding:9px 14px;white-space:nowrap">✕ مسح الفلاتر</button> <span id="emp-arch-results-count" style="font-size:12px;color:var(--tx3);font-weight:700;white-space:nowrap;margin-right:4px"></span> </div> <div id="emp-arch-list"></div> </div> </div>
 </div> </div>
 <div id="lock-screen" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9998;flex-direction:column;align-items:center;justify-content:center;padding:20px"> <div style="text-align:center;margin-bottom:28px"> <div style="font-size:48px;margin-bottom:10px">🔒</div> <div style="font-size:20px;font-weight:900;color:var(--text)">الشاشة مقفلة</div> <div id="lock-user-name" style="font-size:14px;color:var(--tx3);margin-top:5px"></div> </div> <div style="width:100%;max-width:340px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px"> <label>كلمة المرور لفتح الشاشة</label> <div style="position:relative;margin-top:6px"> <input id="lock-pw" type="password" placeholder="••••••••" style="padding-left:38px" onkeydown="if(event.key==='Enter')doUnlock()"> <button onclick="toggleLockPw()" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--tx3);font-size:15px;cursor:pointer;padding:0" id="lock-eye">👁</button> </div> <div id="lock-err" style="display:none;color:#dc2626;font-size:12px;margin-top:8px;font-weight:600">❌ كلمة المرور غير صحيحة</div> <button onclick="doUnlock()" class="btn btn-primary" style="width:100%;margin-top:14px;padding:12px;font-size:15px">🔓 فتح الشاشة</button> <button onclick="doLogout()" style="width:100%;margin-top:8px;padding:9px;background:transparent;border:1px solid var(--border);border-radius:10px;color:var(--tx3);font-size:12px;cursor:pointer;font-family:Tajawal,sans-serif">تسجيل خروج كامل</button> </div>
 </div> 
-<div class="ov" id="ov-task" onclick="if(event.target===this)tryCloseTaskModal()"> <div class="modal"> <div class="modal-hdr"> <h2 id="task-title" style="font-family:'Almarai',sans-serif;font-size:clamp(20px,2.5vw,28px);font-weight:900;letter-spacing:-0.01em;line-height:1.2">المهمة</h2> <button class="x-btn" onclick="tryCloseTaskModal()" title="إغلاق">×</button> </div> <div class="sec-tabs"> <button class="stab on" onclick="secTab('tp-det',this)">التفاصيل</button> <button class="stab" onclick="secTab('tp-prog',this)">التقدم</button> <button class="stab" onclick="secTab('tp-files',this)">الملفات <span id="att-count">(0)</span></button> <button class="stab" onclick="secTab('tp-send',this)">الإرسال</button> </div>  <div class="stab-panel on" id="tp-det"> <div class="gap12"> <div><label>عنوان المهمة *</label><input id="t-title" placeholder="اكتب عنوان المهمة..."></div> <div><label>الوصف</label><textarea id="t-desc" rows="3" placeholder="وصف تفصيلي..."></textarea></div> <div class="grid3-form"> <div> <label>الأولوية</label> <select id="t-priority"> <option value="urgent">🔴 عاجل</option> <option value="high">🟠 عالية</option> <option value="medium" selected>🟡 متوسطة</option> <option value="low">🟢 منخفضة</option> </select> </div> <div> <label>الحالة</label> <select id="t-status" onchange="onStatusChange()"> <option value="pending">⏳ قيد الانتظار</option> <option value="in_progress">🔄 جارية</option> <option value="completed">✅ مكتملة</option> <option value="cancelled">❌ ملغاة</option> </select> </div> <div><label>🏢 الإدارة المعنية *</label><select id="t-dept"><option value="">— اختر الإدارة —</option><option value="إدارة الإمداد">📦 إدارة الإمداد</option><option value="إدارة المستودعات">🏭 إدارة المستودعات</option><option value="إدارة المشتريات">🛒 إدارة المشتريات</option><option value="إدارة التخطيط">📊 إدارة التخطيط</option><option value="إدارة الحركة والنقل">🚚 إدارة الحركة والنقل</option><option value="إدارة Last Mile">🚐 إدارة Last Mile</option></select></div> </div> <div class="task-dates-grid"> <div class="task-date-field"> <label>📅 تاريخ البدء</label> <input id="t-start" type="date" onchange="calcDeadline()" style="font-size:14px;padding:10px 12px;height:42px"> </div> <div class="task-date-field"> <label>⏱️ مدة العمل (بالأيام)</label> <input id="t-duration" type="number" min="0" placeholder="0" oninput="calcDeadline()" style="font-size:14px;padding:10px 12px;height:42px;text-align:center"> </div> <div class="task-date-field"> <label>🏁 الموعد النهائي</label> <input id="t-deadline" type="date" onchange="calcDuration()" style="font-size:14px;padding:10px 12px;height:42px"> </div> </div> <div id="t-assign-row"> <label id="t-assign-label">المُكلَّف</label> <div id="t-assign-list" style="max-height:200px; overflow-y:auto; background:var(--inp); border:1px solid var(--border); border-radius:10px; padding:8px;"></div> <div id="t-assign-hint" style="display:none;margin-top:6px;padding:8px 11px;background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.15);border-radius:8px;font-size:11px;color:var(--tx3);line-height:1.6">
+<div class="ov" id="ov-task" onclick="if(event.target===this)tryCloseTaskModal()"> <div class="modal"> <div class="modal-hdr"> <h2 id="task-title" style="font-family:'Almarai',sans-serif;font-size:clamp(20px,2.5vw,28px);font-weight:900;letter-spacing:-0.01em;line-height:1.2">المهمة</h2> <button class="x-btn" onclick="tryCloseTaskModal()" title="إغلاق">×</button> </div> <div class="sec-tabs"> <button class="stab on" onclick="secTab('tp-det',this)">التفاصيل</button> <button class="stab" onclick="secTab('tp-prog',this)">التقدم</button> <button class="stab" onclick="secTab('tp-files',this)">الملفات <span id="att-count">(0)</span></button> <button class="stab" onclick="secTab('tp-send',this)">الإرسال</button> </div>  <div class="stab-panel on" id="tp-det"> <div class="gap12"> <div><label>عنوان المهمة *</label><input id="t-title" placeholder="اكتب عنوان المهمة..."></div> <div><label>الوصف</label><textarea id="t-desc" rows="3" placeholder="وصف تفصيلي..."></textarea></div> <div class="grid3-form"> <div> <label>الأولوية</label> <select id="t-priority"> <option value="urgent">🔴 عاجل</option> <option value="high">🟠 عالية</option> <option value="medium" selected>🟡 متوسطة</option> <option value="low">🟢 منخفضة</option> </select> </div> <div> <label>الحالة</label> <select id="t-status" onchange="onStatusChange()"> <option value="pending">⏳ قيد الانتظار</option> <option value="in_progress">🔄 جارية</option> <option value="completed">✅ مكتملة</option> <option value="cancelled">❌ ملغاة</option> </select> </div> <div><label>🏢 الإدارة المعنية</label><select id="t-dept"><option value="">— بدون إدارة —</option><option value="إدارة الإمداد">📦 إدارة الإمداد</option><option value="إدارة المستودعات">🏭 إدارة المستودعات</option><option value="إدارة المشتريات">🛒 إدارة المشتريات</option><option value="إدارة التخطيط">📊 إدارة التخطيط</option><option value="إدارة الحركة والنقل">🚚 إدارة الحركة والنقل</option><option value="إدارة Last Mile">🚐 إدارة Last Mile</option></select></div> </div> <div class="task-dates-grid"> <div class="task-date-field"> <label>📅 تاريخ البدء</label> <input id="t-start" type="date" onchange="calcDeadline()" style="font-size:14px;padding:10px 12px;height:42px"> </div> <div class="task-date-field"> <label>⏱️ مدة العمل (بالأيام)</label> <input id="t-duration" type="number" min="0" placeholder="0" oninput="calcDeadline()" style="font-size:14px;padding:10px 12px;height:42px;text-align:center"> </div> <div class="task-date-field"> <label>🏁 الموعد النهائي</label> <input id="t-deadline" type="date" onchange="calcDuration()" style="font-size:14px;padding:10px 12px;height:42px"> </div> </div> <div id="t-assign-row"> <label id="t-assign-label">المُكلَّف</label> <div id="t-assign-list" style="max-height:200px; overflow-y:auto; background:var(--inp); border:1px solid var(--border); border-radius:10px; padding:8px;"></div> <div id="t-assign-hint" style="display:none;margin-top:6px;padding:8px 11px;background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.15);border-radius:8px;font-size:11px;color:var(--tx3);line-height:1.6">
             💡 كموظف، يمكنك تكليف المهمة لنفسك أو لأحد المديرين فقط
           </div> </div> <div id="t-complete-row" style="display:none;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:12px;padding:14px"> <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"> <span style="font-size:18px">✅</span> <label style="margin:0;font-size:13px;font-weight:700;color:#059669">تفاصيل الإنجاز</label> </div> <div class="grid2"> <div> <label>تاريخ الإنجاز</label> <input id="t-complete-date" type="date"> </div> <div> <label>وقت الإنجاز</label> <input id="t-complete-time" type="time"> </div> </div> </div> <div id="t-complete-badge" style="display:none;padding:11px 14px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:10px;color:#059669;font-weight:700"></div>  <div style="padding:14px;background:var(--stat);border:1px solid var(--border);border-radius:12px"> <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"> <span style="font-size:18px">🔁</span> <label style="margin:0;font-size:14px;font-weight:700;color:var(--text)">تكرار المهمة</label> <div style="margin-right:auto;display:flex;align-items:center;gap:7px"> <span style="font-size:12px;color:var(--tx3)">تفعيل</span> <div id="recur-toggle" onclick="toggleRecur()" style="width:38px;height:20px;background:var(--prog);border-radius:99px;cursor:pointer;position:relative;transition:background .2s"> <div id="recur-dot" style="position:absolute;top:2px;right:2px;width:16px;height:16px;background:var(--tx3);border-radius:50%;transition:all .2s"></div> </div> </div> </div> <div id="recur-options" style="display:none" class="gap12"> <div> <label>نوع التكرار</label> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px" id="recur-type-btns"> <button type="button" onclick="setRecurType('daily')" id="rb-daily"
                   style="padding:10px;border-radius:10px;border:2px solid var(--blue);background:rgba(59,130,246,.1);color:var(--blue);font-weight:700;font-size:13px;cursor:pointer;font-family:Tajawal,sans-serif">
@@ -2183,7 +2225,7 @@ if(hint){ hint.style.transition='opacity 0.8s'; hint.style.opacity='1'; }
                 </button> <button type="button" onclick="setRecurType('monthly')" id="rb-monthly"
                   style="padding:10px;border-radius:10px;border:2px solid var(--border);background:transparent;color:var(--tx2);font-weight:700;font-size:13px;cursor:pointer;font-family:Tajawal,sans-serif">
                   🗓️ شهري
-                </button> </div> </div> <div id="recur-info" style="font-size:12px;color:var(--tx3);padding:10px 12px;background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.15);border-radius:9px;line-height:1.7">
+                </button> </div> </div> <div id="recur-weekly-day" style="display:none"> <label>📆 يوم التكرار الأسبوعي</label> <select id="t-recur-weekday" onchange="updateRecurInfo()"> <option value="6" selected>السبت</option> <option value="0">الأحد</option> <option value="1">الاثنين</option> <option value="2">الثلاثاء</option> <option value="3">الأربعاء</option> <option value="4">الخميس</option> <option value="5">الجمعة</option> </select> </div> <div id="recur-monthly-day" style="display:none"> <label>🗓️ يوم التكرار الشهري</label> <select id="t-recur-monthday" onchange="updateRecurInfo()"> <option value="1" selected>1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option><option value="last">آخِر يوم في الشهر</option> </select> </div> <div id="recur-info" style="font-size:12px;color:var(--tx3);padding:10px 12px;background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.15);border-radius:9px;line-height:1.7">
               📅 <strong style="color:var(--text)">يومي:</strong> تُنشأ نسخة جديدة من المهمة كل يوم عند منتصف الليل تلقائياً
             </div> <input type="hidden" id="t-recur-type" value="daily"> </div> </div> </div> </div>  <div class="stab-panel" id="tp-prog"> <div class="gap12"> <textarea id="t-notes" rows="4" style="display:none"></textarea> <input type="hidden" id="t-prog" value="0"> <div> <label style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:8px"> <span>📋 نقاط الإنجاز</span> <span style="font-size:11px;color:var(--tx3);font-weight:600;background:rgba(59,130,246,.08);padding:2px 8px;border-radius:99px;border:1px solid rgba(59,130,246,.2)">كل نقطة = 20%</span> </label> <div style="display:flex;gap:6px;margin-bottom:10px"> <input id="t-point-input" placeholder="اكتب نقطة إنجاز جديدة..." style="flex:1;padding:10px 12px;font-size:13px" onkeypress="if(event.key==='Enter'){event.preventDefault();addTaskPoint();}"> <button class="btn btn-primary" onclick="addTaskPoint()" style="padding:9px 18px;font-size:14px;font-weight:900">＋ إضافة</button> </div> <div id="t-points-list" style="display:flex;flex-direction:column;gap:6px"></div> </div> <div style="padding:14px 16px;background:linear-gradient(135deg,rgba(59,130,246,.06),rgba(139,92,246,.04));border:1px solid var(--border);border-radius:12px"> <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;flex-wrap:wrap;gap:6px"> <span style="font-size:13px;font-weight:800;color:var(--text)">نسبة الإنجاز</span> <div style="display:flex;align-items:baseline;gap:8px"> <strong id="prog-lbl" style="color:var(--blue);font-size:24px;font-weight:900">0%</strong> <span id="t-points-count" style="font-size:11px;color:var(--tx3);font-weight:700">0 نقاط</span> </div> </div> <div class="prog-bar"> <div class="prog-fill" id="prog-fill" style="width:0%;background:linear-gradient(90deg,#3b82f6,#8b5cf6);transition:width .3s"></div> </div> </div> </div> </div>  <div class="stab-panel" id="tp-files"> <div class="file-drop" onclick="document.getElementById('file-inp').click()"> <div style="font-size:32px;margin-bottom:6px">📎</div> <div style="color:var(--tx3);font-size:13px;font-weight:600">اضغط لإرفاق ملفات</div> <div style="color:var(--tx3);font-size:11px;margin-top:3px">PDF، Word، Excel، صور...</div> <input type="file" id="file-inp" multiple style="display:none" onchange="addFiles(this)"> </div> <div id="file-list" style="margin-top:12px" class="gap12"></div> </div>  <div class="stab-panel" id="tp-send"> <div id="send-summary" style="padding:12px;background:var(--stat);border-radius:10px;margin-bottom:14px;font-size:13px;color:var(--tx2)"></div> <div class="grid2" style="gap:10px;margin-bottom:10px"> <div id="wa-status" style="padding:10px 12px;border-radius:10px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;background:var(--stat)"></div> <div id="em-status" style="padding:10px 12px;border-radius:10px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;background:var(--stat)"></div> </div> <div class="grid2" style="gap:10px;margin-bottom:10px"> <button id="wa-btn" class="btn btn-wa" style="padding:12px" onclick="sendWA()">📱 إرسال واتساب</button> <button id="em-btn" class="btn btn-mail" style="padding:12px" onclick="sendEmail()">✉️ إرسال إيميل</button> </div> <button onclick="sendBoth()" class="btn" style="width:100%;padding:12px;background:linear-gradient(135deg,#8b5cf6,#6366f1);color:#fff">🚀 إرسال الاثنين معاً</button> </div> <div class="modal-ftr"> <button class="btn btn-danger" onclick="forceCloseTaskModal()" style="padding:9px 18px;font-size:14px">🚪 خروج</button> <div style="display:flex;gap:8px"> <button id="modal-arch-btn" class="btn" style="padding:8px 12px;font-size:13px;display:none;background:rgba(234,179,8,.15);color:#fbbf24;border:1px solid rgba(234,179,8,.3)" onclick="archiveCurrentTask()">🗃️ أرشفة</button> <button class="btn btn-wa" style="padding:8px 12px;font-size:13px" onclick="sendWA()">📱</button> <button class="btn btn-mail" style="padding:8px 12px;font-size:13px" onclick="sendEmail()">✉️</button> <button class="btn btn-primary" id="edit-task-btn" style="display:none;background:linear-gradient(135deg,#f59e0b,#d97706)" onclick="enableTaskEdit()">✏️ تعديل</button> <button class="btn btn-primary" id="save-task-btn" onclick="saveTask()">💾 حفظ</button> </div> </div> </div>
 </div> 
@@ -2544,15 +2586,30 @@ opts.style.display=active?'block':'none';
 if(tog) tog.style.background=active?'#3b82f6':'var(--prog)';
 if(dot){ dot.style.right=active?'auto':'2px'; dot.style.left=active?'2px':'auto'; dot.style.background=active?'#fff':'var(--tx3)'; }
 }
+var WEEKDAYS_AR=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+function recurDayName(d){ return WEEKDAYS_AR[parseInt(d)] || ''; }
+function updateRecurInfo(){
+var typeEl=document.getElementById('t-recur-type'); if(!typeEl) return;
+var type=typeEl.value;
+var info=document.getElementById('recur-info'); if(!info) return;
+if(type==='weekly'){
+var wd=(document.getElementById('t-recur-weekday')||{}).value||'6';
+info.innerHTML='📆 <strong style="color:var(--text)">أسبوعي:</strong> تُنشأ نسخة جديدة كل يوم '+recurDayName(wd)+' تلقائياً';
+} else if(type==='monthly'){
+var md=(document.getElementById('t-recur-monthday')||{}).value||'1';
+var lbl=(md==='last')?'آخِر يوم في الشهر':('يوم '+md);
+info.innerHTML='🗓️ <strong style="color:var(--text)">شهري:</strong> تُنشأ نسخة جديدة في '+lbl+' من كل شهر تلقائياً';
+} else {
+info.innerHTML='📅 <strong style="color:var(--text)">يومي:</strong> تُنشأ نسخة جديدة كل يوم تلقائياً عند منتصف الليل';
+}
+}
 function setRecurType(type){
 document.getElementById('t-recur-type').value=type;
-const infos={
-daily:'📅 <strong style="color:var(--text)">يومي:</strong> تُنشأ نسخة جديدة كل يوم تلقائياً عند منتصف الليل',
-weekly:'📆 <strong style="color:var(--text)">أسبوعي:</strong> تُنشأ نسخة جديدة كل يوم سبت تلقائياً',
-monthly:'🗓️ <strong style="color:var(--text)">شهري:</strong> تُنشأ نسخة جديدة يوم 1 من كل شهر تلقائياً'
-};
-const info=document.getElementById('recur-info');
-if(info) info.innerHTML=infos[type]||'';
+var wD=document.getElementById('recur-weekly-day');
+var mD=document.getElementById('recur-monthly-day');
+if(wD) wD.style.display=(type==='weekly')?'block':'none';
+if(mD) mD.style.display=(type==='monthly')?'block':'none';
+updateRecurInfo();
 ['daily','weekly','monthly'].forEach(function(t){
 var btn=document.getElementById('rb-'+t);
 if(!btn) return;
@@ -2575,8 +2632,17 @@ var spawned=0;
 DB.tasks.filter(function(t){ return t.recurring&&t.recurring!=='none'; }).forEach(function(tmpl){
 var shouldSpawn=false;
 if(tmpl.recurring==='daily') shouldSpawn=true;
-if(tmpl.recurring==='weekly'&&dayOfWeek===6) shouldSpawn=true;
-if(tmpl.recurring==='monthly'&&dayOfMonth===1) shouldSpawn=true;
+if(tmpl.recurring==='weekly'){
+var _wd=(tmpl.recurWeekday!=null)?parseInt(tmpl.recurWeekday):6;
+if(dayOfWeek===_wd) shouldSpawn=true;
+}
+if(tmpl.recurring==='monthly'){
+var _lastDay=new Date(date.getFullYear(),date.getMonth()+1,0).getDate();
+var _md=tmpl.recurMonthday;
+var _target=(_md==='last'||_md==null)?((_md==='last')?_lastDay:1):Math.min(parseInt(_md)||1,_lastDay);
+if(_md!=='last') _target=Math.min(parseInt(_md)||1,_lastDay);
+if(dayOfMonth===_target) shouldSpawn=true;
+}
 if(!shouldSpawn) return;
 var alreadyToday=DB.tasks.some(function(t){
 return t.recurParentId===tmpl.id && t.createdAt===td;
@@ -7038,13 +7104,50 @@ $('emp-task-list').innerHTML = '<div style="text-align:center;padding:50px;color
 }
 }catch(e){console.error("renderEmpTasks error:",e.message);}
 }
+function _empComplDate(t){
+if(t && t.perUserCompletion && t.perUserCompletion[CU.id] && t.perUserCompletion[CU.id].date) return t.perUserCompletion[CU.id].date;
+if(t && t.completionDate) return t.completionDate;
+return null;
+}
+function _dailyDates(kind){
+var t=(typeof today==='function')?today():new Date().toISOString().split('T')[0];
+var d=new Date(t+'T00:00:00');
+if(kind==='today') return [t,t];
+if(kind==='week'){ var f=new Date(d); f.setDate(f.getDate()-6); return [f.toISOString().split('T')[0],t]; }
+if(kind==='month'){ var f2=new Date(d.getFullYear(),d.getMonth(),1); return [f2.toISOString().split('T')[0],t]; }
+return ['',''];
+}
+function dailyQuickRange(scope,kind){
+var pf=(scope==='mgr')?'mgr-daily':'daily';
+var r=_dailyDates(kind);
+var fe=document.getElementById(pf+'-from'), te=document.getElementById(pf+'-to');
+if(fe) fe.value=r[0]; if(te) te.value=r[1];
+if(scope==='mgr'){ if(typeof renderMgrDailyLog==='function') renderMgrDailyLog(); } else { if(typeof renderDailyLog==='function') renderDailyLog(); }
+}
+function dailyClear(scope){
+var pf=(scope==='mgr')?'mgr-daily':'daily';
+var fe=document.getElementById(pf+'-from'), te=document.getElementById(pf+'-to');
+if(fe) fe.value=''; if(te) te.value='';
+if(scope==='mgr'){ if(typeof renderMgrDailyLog==='function') renderMgrDailyLog(); } else { if(typeof renderDailyLog==='function') renderDailyLog(); }
+}
 function renderDailyLog(){
 try{
-const tasks=getMyTasks(CU.id);
+var all=getMyTasks(CU.id);
+var fe=document.getElementById('daily-from'), te=document.getElementById('daily-to');
+var from=fe&&fe.value?fe.value:'';
+var to=te&&te.value?te.value:'';
+var hdr=document.getElementById('daily-date');
+var tasks=all;
+if(from||to){
+tasks=all.filter(function(t){ var d=_empComplDate(t); if(!d) return false; if(from&&d<from) return false; if(to&&d>to) return false; return true; });
+if(hdr) hdr.textContent='📅 إنجازات الفترة '+(from||'…')+' ← '+(to||'…')+' — '+tasks.length+' مهمة';
+} else {
+if(hdr) hdr.textContent='السجل اليومي — '+today();
+}
 $('daily-list').innerHTML=tasks.map(t=>`
 <div style="background:var(--card);border:1px solid var(--border);border-radius:13px;padding:15px">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-<span onclick="openTaskModal(${t.id},true)" style="font-size:14px;font-weight:700;cursor:pointer;color:var(--text);transition:color .15s" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--text)'" title="عرض تفاصيل المهمة">${escHtml(t.title)}${t.attachments && t.attachments.length > 0 ? " 📎" : ""}</span>
+<span onclick="openTaskModal(${t.id},true)" style="font-size:14px;font-weight:700;cursor:pointer;color:var(--text);transition:color .15s" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--text)'" title="عرض تفاصيل المهمة">${escHtml(t.title)}${t.attachments && t.attachments.length > 0 ? " 📎" : ""}${_empComplDate(t)?` <span style="font-size:11px;color:#10b981;font-weight:700">✅ ${_empComplDate(t)}</span>`:''}</span>
 <select onchange="quickUpdateStatus(${t.id},this.value)" style="width:auto;padding:5px 9px;font-size:12px;border-radius:7px">
 ${['pending','in_progress','completed','cancelled'].map(s=>`<option value="${s}" ${t.status===s?'selected':''}>${STA[s].icon} ${STA[s].label}</option>`).join('')}
 </select>
@@ -7054,36 +7157,50 @@ ${['pending','in_progress','completed','cancelled'].map(s=>`<option value="${s}"
 <input type="range" value="${t.progress}" min="0" max="100" oninput="quickUpdateProg(${t.id},this.value,this.nextElementSibling)" style="flex:1">
 <span style="font-size:12px;color:var(--blue);font-weight:700;min-width:30px">${t.progress}%</span>
 </div>
-</div>`).join('')||'<div style="text-align:center;padding:40px;color:var(--tx3)">لا توجد مهام</div>';
+</div>`).join('')||('<div style="text-align:center;padding:40px;color:var(--tx3)">'+((from||to)?'لا توجد مهام منجزة في هذه الفترة':'لا توجد مهام')+'</div>');
 }catch(e){console.error("renderDailyLog error:",e.message);}
+}
+function _mgrComplDate(t){
+if(t && t.completionDate) return t.completionDate;
+if(t && t.perUserCompletion){ for(var k in t.perUserCompletion){ if(t.perUserCompletion[k] && t.perUserCompletion[k].date) return t.perUserCompletion[k].date; } }
+return null;
 }
 function renderMgrDailyLog(){
   try{
     var tod = (typeof today==='function') ? today() : new Date().toISOString().split('T')[0];
     var dateEl = document.getElementById('mgr-daily-date');
-    if(dateEl){ try{ var d=new Date(tod+'T00:00:00'); dateEl.textContent='📅 '+d.toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'}); }catch(e){ dateEl.textContent='📅 '+tod; } }
     var listEl = document.getElementById('mgr-daily-list');
     if(!listEl) return;
     var tasks = (typeof DB!=='undefined'&&DB&&DB.tasks)?DB.tasks:[];
     var visIds = (typeof getVisibleUserIds==='function') ? getVisibleUserIds() : new Set();
-    var todayTasks = tasks.filter(function(t){
-      var a = Array.isArray(t.assignedTo)?t.assignedTo:[t.assignedTo];
-      return a.some(function(uid){ return Number(uid)===CU.id || visIds.has(Number(uid)); }) &&
-             (t.deadline===tod || t.status==='in_progress' || t.status==='in_progres');
-    });
-    if(!todayTasks.length){
-      listEl.innerHTML='<div style="text-align:center;padding:40px 20px;color:var(--tx3);font-size:15px">📭 لا توجد مهام لهذا اليوم</div>'; return;
-    }
-    listEl.innerHTML = todayTasks.map(function(t){
+    var fe=document.getElementById('mgr-daily-from'), te=document.getElementById('mgr-daily-to');
+    var from=fe&&fe.value?fe.value:'';
+    var to=te&&te.value?te.value:'';
+    function _vis(t){ var a = Array.isArray(t.assignedTo)?t.assignedTo:[t.assignedTo]; return a.some(function(uid){ return Number(uid)===CU.id || visIds.has(Number(uid)); }); }
+    function _card(t){
       var sc = t.status==='completed'?'#10b981':(t.status==='in_progress'||t.status==='in_progres')?'#f59e0b':'#6b7280';
       var sl = t.status==='completed'?'مكتملة':(t.status==='in_progress'||t.status==='in_progres')?'جارية':'معلقة';
+      var cd=_mgrComplDate(t);
       return '<div onclick="openTaskModal('+t.id+',true)" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:10px;cursor:pointer;transition:background .15s,transform .12s" onmouseover="this.style.background=\'var(--taskh)\'" onmouseout="this.style.background=\'var(--card)\'" title="عرض تفاصيل المهمة">'
         +'<div style="width:10px;height:10px;border-radius:50%;background:'+sc+';flex-shrink:0"></div>'
         +'<div style="flex:1"><div style="font-weight:700;font-size:14px;color:var(--text)">'+(t.title||'')+'</div>'
-        +(t.deadline?'<div style="font-size:11px;color:var(--tx3);margin-top:3px">📆 '+t.deadline+'</div>':'')+'</div>'
+        +(cd?'<div style="font-size:11px;color:#10b981;margin-top:3px">✅ '+cd+'</div>':(t.deadline?'<div style="font-size:11px;color:var(--tx3);margin-top:3px">📆 '+t.deadline+'</div>':''))+'</div>'
         +'<span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;background:'+sc+'22;color:'+sc+'">'+sl+'</span>'
         +'</div>';
-    }).join('');
+    }
+    if(from||to){
+      var rangeTasks=tasks.filter(function(t){ if(!_vis(t)) return false; var d=_mgrComplDate(t); if(!d) return false; if(from&&d<from) return false; if(to&&d>to) return false; return true; });
+      rangeTasks.sort(function(a,b){ return (_mgrComplDate(b)||'').localeCompare(_mgrComplDate(a)||''); });
+      if(dateEl) dateEl.textContent='📅 إنجازات الفترة '+(from||'…')+' ← '+(to||'…')+' — '+rangeTasks.length+' مهمة';
+      listEl.innerHTML = rangeTasks.length ? rangeTasks.map(_card).join('') : '<div style="text-align:center;padding:40px 20px;color:var(--tx3);font-size:15px">📭 لا توجد مهام منجزة في هذه الفترة</div>';
+      return;
+    }
+    if(dateEl){ try{ var d=new Date(tod+'T00:00:00'); dateEl.textContent='📅 '+d.toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'}); }catch(e){ dateEl.textContent='📅 '+tod; } }
+    var todayTasks = tasks.filter(function(t){ return _vis(t) && (t.deadline===tod || t.status==='in_progress' || t.status==='in_progres'); });
+    if(!todayTasks.length){
+      listEl.innerHTML='<div style="text-align:center;padding:40px 20px;color:var(--tx3);font-size:15px">📭 لا توجد مهام لهذا اليوم</div>'; return;
+    }
+    listEl.innerHTML = todayTasks.map(_card).join('');
   }catch(e){ console.error('renderMgrDailyLog error:',e); }
 }
 function formatCompletionDate(date,time){try{return new Date(date+(time?' '+time:'')).toLocaleDateString(LANG==='ar'?'ar-SA':'en-US',{weekday:'long',day:'numeric',month:'long'})+(time?' '+time:'');}catch(e){return date;}}
@@ -7296,12 +7413,16 @@ if(recurOpts) recurOpts.style.display='block';
 if(recurTog) recurTog.style.background='#3b82f6';
 if(recurDot){ recurDot.style.right='auto'; recurDot.style.left='2px'; recurDot.style.background='#fff'; }
 if(recurTypeInp) recurTypeInp.value=task.recurring;
+var _rwd=document.getElementById('t-recur-weekday'); if(_rwd) _rwd.value=(task.recurWeekday!=null?String(task.recurWeekday):'6');
+var _rmd=document.getElementById('t-recur-monthday'); if(_rmd) _rmd.value=(task.recurMonthday!=null?String(task.recurMonthday):'1');
 setRecurType(task.recurring);
 } else {
 if(recurOpts) recurOpts.style.display='none';
 if(recurTog) recurTog.style.background='var(--prog)';
 if(recurDot){ recurDot.style.right='2px'; recurDot.style.left='auto'; recurDot.style.background='var(--tx3)'; }
 if(recurTypeInp) recurTypeInp.value='daily';
+var _rwd0=document.getElementById('t-recur-weekday'); if(_rwd0) _rwd0.value='6';
+var _rmd0=document.getElementById('t-recur-monthday'); if(_rmd0) _rmd0.value='1';
 setRecurType('daily');
 }
 openModal('ov-task');
@@ -7407,7 +7528,7 @@ if(window._taskViewOnly){ if(typeof notif==='function') notif('اضغط «تعد
 const title = $('t-title').value.trim();
 if(!title){notif('يرجى إدخال عنوان المهمة','err');$('t-title').focus();return;}
 if(title.length > 200){notif('عنوان المهمة طويل جداً (200 حرف كحد أقصى)','err');return;}
-if(!$('t-dept').value){notif('يرجى اختيار الإدارة المعنية','err');$('t-dept').focus();return;}
+/* تم جعل اختيار الإدارة المعنية اختيارياً (غير إلزامي) */
 const startVal = $('t-start').value;
 let deadlineVal = $('t-deadline').value;
 if(!deadlineVal){
@@ -7493,7 +7614,9 @@ completionDate: sta === 'completed' ? (compDate || existingTask?.completionDate 
 completionTime: sta === 'completed' ? (compTime || existingTask?.completionTime || null) : null,
 perUserCompletion: _newPUC_mgr,
 perUserStatus: _newPUS_mgr,
-recurring: isRecurActive() ? (document.getElementById('t-recur-type')?.value || 'daily') : 'none'
+recurring: isRecurActive() ? (document.getElementById('t-recur-type')?.value || 'daily') : 'none',
+recurWeekday: isRecurActive() ? (parseInt(document.getElementById('t-recur-weekday')?.value)||6) : null,
+recurMonthday: isRecurActive() ? (document.getElementById('t-recur-monthday')?.value || '1') : null
 };
 } else {
 const _prevPerUserStatus = existingTask?.perUserStatus || {};
@@ -7522,7 +7645,9 @@ completionDate: existingTask?.completionDate || null,
 completionTime: existingTask?.completionTime || null,
 perUserStatus: _newPerUserStatus,
 perUserCompletion: _newPerUserCompletion,
-recurring: existingTask?.recurring || 'none'
+recurring: existingTask?.recurring || 'none',
+recurWeekday: (existingTask && existingTask.recurWeekday!=null) ? existingTask.recurWeekday : null,
+recurMonthday: (existingTask && existingTask.recurMonthday!=null) ? existingTask.recurMonthday : null
 };
 }
 const _wasNewTask = !editTaskId;
@@ -21038,6 +21163,320 @@ html.dark #mgr-kpi .kpi-hero{
     if(typeof sbHubNav==='function') sbHubNav('mine','kpi');
     var n=0,iv=setInterval(function(){ n++; var sel=document.getElementById('kpi-dept-filter'); if(sel&&document.body.classList.contains('kpi-active')){ sel.value=deptVal||''; if(typeof renderKPI==='function'){try{renderKPI();}catch(e){}} window._pendingKpiDept=null; clearInterval(iv);} if(n>80) clearInterval(iv); },80);
   };
+})();
+</script>
+
+<style id="mobile-header-redesign-v3">
+/* ════════════════════════════════════════════════════════════
+   إعادة تنظيم هيدر الجوال — v3
+   • صفّان: الصف الأول أزرار كأيقونات (من اليسار إلى اليمين)،
+     الصف الثاني رسالة الترحيب بشكل أنيق.
+   • الأزرار النصية تتحوّل إلى رموز حتى لا تُقتطع أو تختفي.
+   (يوضع في نهاية المستند ليكسب الأولوية على القواعد السابقة)
+   ════════════════════════════════════════════════════════════ */
+@media (max-width:768px){
+  :root{ --hdr-h:98px !important; }
+
+  #main-hdr-mgr, #main-hdr-emp{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    height:auto !important;
+    min-height:0 !important;
+    padding:9px 12px 9px 58px !important; /* مساحة لزر القائمة ☰ على اليسار */
+    gap:8px !important;
+  }
+
+  /* ── الصف الأول: شريط الأزرار (أيقونات) ── */
+  #main-hdr-mgr .hdr-right, #main-hdr-emp .hdr-right{
+    order:-1 !important;
+    display:flex !important;
+    flex-direction:row !important;
+    direction:ltr !important;              /* الترتيب من اليسار إلى اليمين */
+    align-items:center !important;
+    justify-content:flex-start !important; /* تبدأ من جهة اليسار */
+    gap:8px !important;
+    flex-wrap:nowrap !important;
+    width:100% !important;
+    padding:0 0 8px 0 !important;
+    margin:0 !important;
+    border-bottom:1px solid var(--border) !important;
+  }
+
+  /* إخفاء العناصر غير اللازمة فقط (دون إخفاء زر الأدمن المُدار بالـJS) */
+  #main-hdr-mgr .hdr-user-info, #main-hdr-emp .hdr-user-info{ display:none !important; }
+  #back-nav-btn-mgr, #back-nav-btn-emp{ display:none !important; }
+
+  /* مقاس أيقونة موحّد لكل أزرار الشريط (عدا مفتاح المظهر) */
+  #main-hdr-mgr .hdr-right > button, #main-hdr-emp .hdr-right > button{
+    width:38px !important; height:38px !important; padding:0 !important;
+    border-radius:11px !important; flex:0 0 auto !important;
+    display:inline-flex !important; align-items:center !important; justify-content:center !important;
+    font-size:17px !important; line-height:1 !important; white-space:nowrap !important;
+  }
+
+  /* زر إضافة مهمة → رمز ＋ */
+  #main-hdr-mgr .hdr-right > button[onclick*="openTaskModal"],
+  #main-hdr-emp .hdr-right > button[onclick*="openTaskModal"]{ font-size:0 !important; }
+  #main-hdr-mgr .hdr-right > button[onclick*="openTaskModal"]::before,
+  #main-hdr-emp .hdr-right > button[onclick*="openTaskModal"]::before{
+    content:"＋"; font-size:23px !important; font-weight:900 !important; color:#fff !important;
+  }
+
+  /* جرس الإشعارات */
+  #main-hdr-mgr #notif-bell-mgr, #main-hdr-emp #notif-bell-emp{ position:relative !important; font-size:18px !important; }
+
+  /* زر اللغة EN (رمز نصي مدمج) */
+  #main-hdr-mgr #lang-btn, #main-hdr-emp #lang-btn-emp{ font-size:12.5px !important; font-weight:800 !important; }
+
+  /* زر الخروج → رمز باب */
+  #main-hdr-mgr .hdr-logout-btn, #main-hdr-emp .hdr-logout-btn{ font-size:0 !important; }
+  #main-hdr-mgr .hdr-logout-btn::before, #main-hdr-emp .hdr-logout-btn::before{
+    content:"🚪"; font-size:18px !important;
+  }
+
+  /* زر لوحة الأدمن (يظهر للأدمن فقط) → رمز درع */
+  #main-hdr-mgr #admin-panel-btn{ font-size:0 !important; }
+  #main-hdr-mgr #admin-panel-btn::before{ content:"🛡️"; font-size:18px !important; }
+
+  /* مفتاح تبديل المظهر — يبقى على شكل مفتاح صغير */
+  #main-hdr-mgr .tgl, #main-hdr-emp .tgl{
+    display:inline-flex !important; width:42px !important; height:24px !important;
+    flex:0 0 auto !important; padding:0 !important; align-self:center !important;
+  }
+
+  /* ── الصف الثاني: رسالة الترحيب ── */
+  #main-hdr-mgr .hdr-left, #main-hdr-emp .hdr-left{
+    order:1 !important;
+    display:flex !important; align-items:center !important;
+    gap:9px !important; min-width:0 !important; width:100% !important; padding:0 !important;
+  }
+  #main-hdr-mgr .hdr-left > button:first-child{ display:none !important; } /* زر الرجوع */
+  #main-hdr-mgr .badge-role, #main-hdr-emp .badge-role{
+    display:inline-flex !important; align-items:center !important;
+    font-size:10.5px !important; padding:3px 9px !important; border-radius:99px !important;
+    flex:0 0 auto !important; font-weight:800 !important;
+  }
+  #main-hdr-mgr .hdr-greet, #main-hdr-emp .hdr-greet{
+    display:flex !important; flex-direction:column !important; justify-content:center !important;
+    min-width:0 !important; flex:1 !important; gap:2px !important;
+  }
+  #main-hdr-mgr .hdr-greet-hi, #main-hdr-emp .hdr-greet-hi{
+    font-size:15.5px !important; font-weight:800 !important; line-height:1.25 !important;
+    color:var(--text) !important;
+    white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important;
+    display:block !important; -webkit-line-clamp:unset !important;
+  }
+  #main-hdr-mgr .hdr-greet-sub, #main-hdr-emp .hdr-greet-sub{
+    font-size:11.5px !important; font-weight:600 !important; color:var(--tx3) !important;
+    display:block !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important;
+    margin-top:1px !important;
+  }
+
+  /* مباعدة المحتوى أسفل الهيدر الثابت */
+  .content{ padding-top:calc(var(--hdr-h) + 8px) !important; }
+}
+
+/* ── شاشات الجوال الصغيرة جداً (≤420px) ── */
+@media (max-width:420px){
+  #main-hdr-mgr, #main-hdr-emp{ padding:8px 10px 8px 54px !important; }
+  #main-hdr-mgr .hdr-right > button, #main-hdr-emp .hdr-right > button{ width:35px !important; height:35px !important; }
+  #main-hdr-mgr .hdr-right, #main-hdr-emp .hdr-right{ gap:7px !important; }
+  #main-hdr-mgr .hdr-greet-hi, #main-hdr-emp .hdr-greet-hi{ font-size:14px !important; }
+  #main-hdr-mgr .hdr-greet-sub, #main-hdr-emp .hdr-greet-sub{ font-size:11px !important; }
+}
+/* ── أصغر الهواتف (≤360px) ── */
+@media (max-width:360px){
+  #main-hdr-mgr .hdr-right > button, #main-hdr-emp .hdr-right > button{ width:33px !important; height:33px !important; font-size:16px !important; }
+  #main-hdr-mgr .hdr-right, #main-hdr-emp .hdr-right{ gap:6px !important; }
+  #main-hdr-mgr .badge-role, #main-hdr-emp .badge-role{ display:none !important; }
+  #main-hdr-mgr .hdr-greet-hi, #main-hdr-emp .hdr-greet-hi{ font-size:13.5px !important; }
+}
+</style>
+
+<style id="mobile-modal-antijitter-v1">
+/* ════════════════════════════════════════════════════════════
+   تثبيت النوافذ العائمة ومنع الرعشة على الجوال — v1
+   الأسباب المُعالَجة:
+   1) أنميشن backdrop-filter على .ov يُعيد رسم الخلفية مع كل تمرير
+      (خصوصاً عند تمرير قائمة المُكلَّفين داخل المهمة) → اهتزاز.
+   2) دخول المودال بـ transform:scale فوق خلفية ضبابية → ارتعاش بكسلي.
+   3) خلط وحدات vh/dvh وارتفاعات متعددة → تغيّر حجم النافذة مع
+      ظهور/اختفاء شريط المتصفح → "رجفة" رأسية.
+   4) تمرير القوائم الداخلية يُحرّك الصفحة خلفها (scroll-chaining).
+   ════════════════════════════════════════════════════════════ */
+
+/* دخول ثابت بالشفافية فقط + ترقية لطبقة GPU مستقلة (يمنع الارتعاش) */
+@keyframes modalFadeStable{ from{opacity:0} to{opacity:1} }
+.ov:not(.side) .modal{
+  animation:modalFadeStable .2s ease both !important;
+  transform:translateZ(0) !important;
+  -webkit-backface-visibility:hidden !important;
+  backface-visibility:hidden !important;
+  will-change:opacity;
+}
+
+@media (max-width:768px){
+  /* (1) إزالة فلتر الخلفية المتحرك — أهم سبب للرعشة */
+  .ov{
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    background:rgba(10,15,30,.66) !important;
+    transition:opacity .2s ease !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+  /* (3) ارتفاع ثابت بوحدة dvh لمنع تغيّر الحجم مع شريط المتصفح */
+  .ov:not(.side) .modal{
+    height:auto !important;
+    max-height:90dvh !important;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+    overscroll-behavior:contain !important;
+    margin:auto !important;
+  }
+  /* (4) القوائم القابلة للتمرير داخل النافذة: منع تحريك الصفحة خلفها */
+  #t-assign-list, #file-list, #t-points-list,
+  .modal .stab-panel, .modal-body{
+    overscroll-behavior:contain !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+}
+
+/* احتياط لأجهزة لا تدعم dvh */
+@supports not (height: 100dvh){
+  @media (max-width:768px){ .ov:not(.side) .modal{ max-height:90vh !important; } }
+}
+</style>
+
+<style id="mobile-gesture-fix-style">
+/* منع إيماءات المتصفح: السحب-للتحديث (رأسي) والرجوع بالسحب (أفقي) */
+html, body{
+  overscroll-behavior:none !important;
+  overscroll-behavior-y:contain !important;
+  overscroll-behavior-x:none !important;
+}
+/* مؤشر السحب للتحديث المخصص */
+#ptr-ind{
+  position:fixed; top:0; left:50%; z-index:99999;
+  transform:translateX(-50%) translateY(-64px);
+  background:var(--card,#1e293b); color:var(--text,#0f172a);
+  border:1px solid var(--border,rgba(0,0,0,.12)); border-top:none;
+  border-radius:0 0 16px 16px; padding:9px 18px;
+  font-size:13px; font-weight:800; font-family:inherit;
+  box-shadow:0 8px 22px rgba(0,0,0,.18);
+  display:flex; align-items:center; gap:8px; pointer-events:none;
+  transition:transform .18s ease, opacity .18s ease; opacity:0;
+}
+#ptr-ind.show{ transform:translateX(-50%) translateY(0); opacity:1; }
+#ptr-ind .ptr-spin{ width:15px; height:15px; border:2px solid currentColor; border-top-color:transparent; border-radius:50%; }
+#ptr-ind.loading .ptr-spin{ animation:ptrspin .7s linear infinite; }
+@keyframes ptrspin{ to{ transform:rotate(360deg); } }
+</style>
+<script id="mobile-gesture-fix-js">
+(function(){
+  'use strict';
+
+  /* ═══ (أ) منع الرجوع/الخروج عند السحب من الحافة أو زر الرجوع ═══
+     نُبقي المستخدم داخل التطبيق بإعادة دفع حالة التاريخ.
+     أزرار الرجوع الداخلية (goBack) تعمل بمنطقها الخاص ولا تتأثر. */
+  try{
+    history.pushState(null, document.title, location.href);
+    window.addEventListener('popstate', function(){
+      history.pushState(null, document.title, location.href);
+    });
+  }catch(e){}
+
+  /* ═══ (ب) سحب للتحديث مخصّص: يبقى على نفس الصفحة ويحدّث البيانات فقط ═══ */
+  var ind=null;
+  function getInd(){
+    if(!ind && document.body){
+      ind=document.createElement('div');
+      ind.id='ptr-ind';
+      ind.innerHTML='<span class="ptr-spin"></span><span class="ptr-txt">اسحب للتحديث</span>';
+      document.body.appendChild(ind);
+    }
+    return ind;
+  }
+  function setTxt(t){ var el=getInd(); if(el){ var x=el.querySelector('.ptr-txt'); if(x) x.textContent=t; } }
+
+  var startY=0, startX=0, pulling=false, dist=0;
+  var THRESH=72, MAX=120;
+
+  function windowAtTop(){ return (window.scrollY||document.documentElement.scrollTop||document.body.scrollTop||0) <= 0; }
+  function inModal(t){ return !!(t && t.closest && t.closest('.ov, .modal, #tania-sidebar')); }
+  /* أقرب عنصر قابل للتمرير يجب أن يكون في أعلاه أيضاً */
+  function ancestorsAtTop(t){
+    var el=t;
+    while(el && el.nodeType===1 && el!==document.body && el!==document.documentElement){
+      try{
+        var cs=getComputedStyle(el), oy=cs.overflowY;
+        if((oy==='auto'||oy==='scroll') && el.scrollHeight>el.clientHeight+1){
+          return el.scrollTop<=0;
+        }
+      }catch(e){}
+      el=el.parentElement;
+    }
+    return true;
+  }
+
+  function doRefresh(done){
+    var finished=false;
+    function fin(){ if(finished) return; finished=true; try{ if(typeof window.refreshCurrentView==='function') window.refreshCurrentView(); }catch(e){} done(); }
+    try{
+      if(typeof window.forcePull==='function'){
+        Promise.resolve(window.forcePull()).then(fin, fin);
+        setTimeout(fin, 4000); /* أمان: لا تعلّق المؤشر */
+      } else {
+        fin();
+      }
+    }catch(e){ fin(); }
+  }
+
+  document.addEventListener('touchstart', function(e){
+    if(!e.touches || e.touches.length!==1){ pulling=false; return; }
+    var t=e.target;
+    if(inModal(t)){ pulling=false; return; }
+    if(!windowAtTop() || !ancestorsAtTop(t)){ pulling=false; return; }
+    startY=e.touches[0].clientY; startX=e.touches[0].clientX; pulling=true; dist=0;
+  }, {passive:true});
+
+  document.addEventListener('touchmove', function(e){
+    if(!pulling || !e.touches || e.touches.length!==1) return;
+    var y=e.touches[0].clientY, x=e.touches[0].clientX;
+    var dy=y-startY, dx=x-startX;
+    if(Math.abs(dx) > Math.abs(dy)){ pulling=false; var el0=getInd(); if(el0) el0.classList.remove('show'); return; } /* أفقي → تجاهل */
+    dist=dy;
+    var el=getInd(); if(!el) return;
+    if(dist<=0){ el.classList.remove('show'); el.style.transform=''; return; }
+    if(!windowAtTop()){ pulling=false; el.classList.remove('show'); return; }
+    var shown=Math.min(dist, MAX);
+    var ty=Math.min(shown*0.5, 60);
+    el.classList.add('show');
+    el.style.transform='translateX(-50%) translateY('+(ty-64+64)+'px)';
+    el.style.opacity='1';
+    setTxt(dist>=THRESH ? 'حرّر للتحديث ⟳' : 'اسحب للتحديث');
+  }, {passive:true});
+
+  document.addEventListener('touchend', function(){
+    if(!pulling) return;
+    pulling=false;
+    var el=getInd(); if(!el) return;
+    if(dist>=THRESH){
+      el.classList.add('loading','show');
+      el.style.transform='translateX(-50%) translateY(0)';
+      el.style.opacity='1';
+      setTxt('جارٍ التحديث…');
+      doRefresh(function(){
+        el.classList.remove('loading');
+        setTxt('تم التحديث ✓');
+        setTimeout(function(){ el.classList.remove('show'); el.style.transform=''; el.style.opacity='0'; }, 700);
+      });
+    } else {
+      el.classList.remove('show'); el.style.transform=''; el.style.opacity='0';
+    }
+  }, {passive:true});
 })();
 </script>
 
