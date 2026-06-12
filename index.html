@@ -1255,22 +1255,11 @@ html,body{max-width:100%;overflow-x:hidden}
   .u-tab span[data-i18n]{font-size:12px}
 }
 
-/* ═══ شريط حالة المزامنة ═══ */
-.sync-bar{position:fixed;bottom:max(10px,env(safe-area-inset-bottom));inset-inline-start:max(10px,env(safe-area-inset-left));z-index:9990;display:flex;align-items:center;gap:8px;background:rgba(15,23,42,.92);color:#e2e8f0;padding:8px 14px;border-radius:99px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:transform .15s;user-select:none;-webkit-user-select:none}
-.sync-bar:active{transform:scale(.96)}
-.sync-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.sync-dot.ok{background:#22c55e;box-shadow:0 0 6px #22c55e}
-.sync-dot.warn{background:#f59e0b;box-shadow:0 0 6px #f59e0b}
-.sync-dot.err{background:#ef4444;box-shadow:0 0 6px #ef4444}
-.sync-dot.off{background:#64748b}
-.sync-refresh{font-size:13px;opacity:.7}
-@media print{.sync-bar{display:none}}
-@media (max-width:640px){.sync-bar{font-size:11px;padding:7px 12px}}
 .sync-ver{font-size:10.5px;font-weight:800;letter-spacing:.3px;color:#cbd5e1;background:rgba(255,255,255,.14);padding:2px 8px;border-radius:99px;margin-inline-start:2px}
 /* زر مسح الكاش في صفحة الدخول — خفيف جداً وشبه غير مرئي، يظهر عند اللمس/التحويم */
-.login-cache-btn{display:block;margin:9px auto 0;width:28px;height:28px;border-radius:50%;border:1px solid rgba(148,163,184,.25);background:transparent;color:#94a3b8;font-size:15px;line-height:1;cursor:pointer;font-family:inherit;opacity:.1;transition:opacity .2s ease,transform .15s ease,background .2s ease,color .2s ease}
-.login-cache-btn:hover,.login-cache-btn:active,.login-cache-btn:focus{opacity:1;background:rgba(47,126,216,.12);color:#2f7ed8;transform:scale(1.06);outline:none}
-.login-cache-btn:disabled{opacity:1;color:#2f7ed8;cursor:default}
+
+
+
 /* ═══ إصلاحات iOS Safari ═══ */
 @supports (-webkit-touch-callout: none) {
   /* Safari iOS فقط: 100vh مكسور بسبب شريط العنوان المتحرك */
@@ -1407,11 +1396,8 @@ button,.navbtn,.d-tile,.hub-tile,.kpi{-webkit-tap-highlight-color:rgba(47,126,21
 
 /* ═══ إخفاء الأزرار العائمة وإظهارها عند القرب (الإصبع/الماوس) ═══ */
 /* الحالة الافتراضية: شفافة جداً وغير معترِضة للّمس حتى لا تُزعج */
-.edit-fab,.sync-bar,.landscape-btn.lb-visible,.modal-back-btn,.menu-btn{
+.edit-fab,.landscape-btn.lb-visible,.modal-back-btn,.menu-btn{
   transition:opacity .28s ease,transform .28s ease !important;
-}
-body:not(.fbtn-reveal) .sync-bar{
-  opacity:.12;
 }
 /* زر تعديل المسميات: مخفي تماماً ولا يعترض اللمس، ويظهر فقط عند لمس منطقته */
 body:not(.fbtn-reveal) .edit-fab{
@@ -1421,7 +1407,6 @@ body:not(.fbtn-reveal) .edit-fab{
 body:not(.fbtn-reveal) .landscape-btn.lb-visible{opacity:.16}
 /* عند القرب: تظهر كاملة */
 body.fbtn-reveal .edit-fab,
-body.fbtn-reveal .sync-bar,
 body.fbtn-reveal .landscape-btn.lb-visible,
 body.fbtn-reveal .modal-back-btn{
   opacity:1 !important;
@@ -1431,7 +1416,6 @@ body.fbtn-reveal .edit-fab{pointer-events:auto !important}
 .landscape-btn.lb-pulse,.landscape-btn.lb-active{opacity:1 !important}
 /* على الكمبيوتر: المؤشّر يكفي، نُبقي السلوك لكن بحدّ أدنى أوضح قليلاً */
 @media (min-width:901px){
-  body:not(.fbtn-reveal) .sync-bar{opacity:.22}
   body:not(.fbtn-reveal) .edit-fab{opacity:0;pointer-events:none}
 }
 </style>
@@ -2110,7 +2094,6 @@ html[dir=rtl] #page-home .d-tile:hover .tgo svg{transform:scaleX(-1) translateX(
         <div class="login-err" id="login-err"></div>
         <div class="login-forgot"><a href="javascript:void(0)" onclick="openForgot()" data-i18n="forgot_pwd">Forgot password?</a></div>
         <div class="login-build" id="login-build" style="margin-top:14px;text-align:center;font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:.3px">v5.9 · 2026-06-12-B</div>
-        <button id="login-cache-btn" class="login-cache-btn" type="button" onclick="forceFreshReload()" title="مسح الكاش وتحميل أحدث نسخة" aria-label="refresh">&#8635;</button>
       </div>
     </div>
   </div>
@@ -7449,7 +7432,7 @@ function drSync(){
       if(data&&(!data.space||!data.space.groups||!data.space.groups.length)&&DEFAULT_DAILY_REPORTS.space&&DEFAULT_DAILY_REPORTS.space.groups){data.space=DEFAULT_DAILY_REPORTS.space;}
       if(data&&(!data.bottle||!data.bottle.spec)&&DEFAULT_DAILY_REPORTS.bottle&&DEFAULT_DAILY_REPORTS.bottle.spec){data.bottle=DEFAULT_DAILY_REPORTS.bottle;}
       var json=JSON.stringify(data);_lastDRJson=json;_drCloudReady=true;
-      saveDR(data);try{window._lastCloudSync=(dd.updatedAt||Date.now());_updateSyncBar();}catch(e){}
+      saveDR(data);
       try{if(window._rrModalOpen){window._rrPendingRebuild=true;}else{var cur=currentReportKey();if(cur)renderDailyReport(cur);}renderUploadStatus();updateHomeDates();}catch(e){}
     },function(e){});
   }catch(e){}
@@ -7802,48 +7785,7 @@ function renderBottleReport(rep){
 </script>
 
 
-<!-- شريط حالة المزامنة -->
-<div id="sync-bar" class="sync-bar" onclick="forceSyncNow()" title="اضغط للتحديث من السحابة">
-  <span id="sync-dot" class="sync-dot off"></span>
-  <span id="sync-txt">جارٍ الاتصال…</span>
-  <span class="sync-ver" id="sync-ver">v5.9</span>
-  <span class="sync-refresh">&#128260;</span>
-</div>
-<script>
-/* ═══ نظام مؤشّر المزامنة ═══ */
-window._lastCloudSync=0;
-function _fmtAgo(ts){
-  if(!ts)return (typeof drIsAr==='function'&&drIsAr())?'لم تتم مزامنة بعد':'not synced yet';
-  var ar=(typeof drIsAr==='function'&&drIsAr());
-  var s=Math.floor((Date.now()-ts)/1000);
-  if(s<60)return ar?'الآن':'just now';
-  if(s<3600)return ar?('قبل '+Math.floor(s/60)+' د'):(Math.floor(s/60)+'m ago');
-  if(s<86400)return ar?('قبل '+Math.floor(s/3600)+' س'):(Math.floor(s/3600)+'h ago');
-  var d=new Date(ts);return d.toLocaleDateString()+' '+d.toLocaleTimeString().slice(0,5);
-}
-function _updateSyncBar(){
-  try{
-    var dot=document.getElementById('sync-dot'),txt=document.getElementById('sync-txt');
-    if(!dot||!txt)return;
-    var ar=(typeof drIsAr==='function'&&drIsAr());
-    var live=false;try{live=localStorage.getItem('fb_live')==='1';}catch(e){}
-    var online=navigator.onLine!==false;
-    if(!online){dot.className='sync-dot err';txt.textContent=ar?'لا يوجد إنترنت — بيانات محلية':'Offline — local data';return;}
-    if(window._lastCloudSync){dot.className='sync-dot ok';txt.textContent=(ar?'متزامن · ':'Synced · ')+_fmtAgo(window._lastCloudSync);}
-    else{dot.className='sync-dot warn';txt.textContent=ar?'بيانات محلية — اضغط للتحديث':'Local data — tap to refresh';}
-  }catch(e){}
-}
-function forceSyncNow(){
-  var ar=(typeof drIsAr==='function'&&drIsAr());
-  var txt=document.getElementById('sync-txt');if(txt)txt.textContent=ar?'جارٍ التحديث…':'Refreshing…';
-  try{if(typeof fbConnect==='function')fbConnect(true);}catch(e){}
-  setTimeout(_updateSyncBar,2500);
-}
-setInterval(_updateSyncBar,30000);
-document.addEventListener('DOMContentLoaded',function(){setTimeout(_updateSyncBar,2000);});
-window.addEventListener('online',_updateSyncBar);
-window.addEventListener('offline',_updateSyncBar);
-</script>
+
 
 
 <script>
@@ -8053,7 +7995,7 @@ function _lbPulse(){
   var NEAR=90;        /* نصف قطر القرب (px) */
   var HIDE_MS=2200;   /* مدة البقاء ظاهراً بعد الابتعاد */
   /* الأزرار العائمة المعنية (selectors) */
-  var SEL='.edit-fab,.sync-bar,.landscape-btn,.modal-back-btn,.menu-btn';
+  var SEL='.edit-fab,.landscape-btn,.modal-back-btn,.menu-btn';
   var _hideT=null;
 
   function _floatBtns(){
